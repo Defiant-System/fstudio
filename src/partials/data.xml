@@ -1,0 +1,104 @@
+<Data>
+	<Unicode>
+		<!-- Basic Latin -->
+		<i id="0x20" name="Space"/>
+		<i id="0x21" name="Exclamation mark"/>
+		<i id="0x22" name="Quotation mark"/>
+		<i id="0x23" name="Number sign, Hash tag"/>
+		<i id="0x24" name="Dollar sign"/>
+		<i id="0x25" name="Percent sign"/>
+		<i id="0x26" name="Ampersand"/>
+		<i id="0x27" name="Apostrophe"/>
+		<i id="0x28" name="Left parenthesis"/>
+		<i id="0x29" name="Right parenthesis"/>
+		<i id="0x2A" name="Asterisk"/>
+		<i id="0x2B" name="Plus sign"/>
+		<i id="0x2C" name="Comma"/>
+		<i id="0x2D" name="Hyphen-minus"/>
+		<i id="0x2E" name="Full stop"/>
+		<i id="0x2F" name="Slash (Solidus)"/>
+		<i id="0x30" name="Digit Zero"/>
+		<i id="0x31" name="Digit One"/>
+		<i id="0x32" name="Digit Two"/>
+		<i id="0x33" name="Digit Three"/>
+		<i id="0x34" name="Digit Four"/>
+		<i id="0x35" name="Digit Five"/>
+		<i id="0x36" name="Digit Six"/>
+		<i id="0x37" name="Digit Seven"/>
+		<i id="0x38" name="Digit Eight"/>
+		<i id="0x39" name="Digit Nine"/>
+		<i id="0x3A" name="Colon"/>
+		<i id="0x3B" name="Semicolon"/>
+		<i id="0x3C" name="Less-than sign"/>
+		<i id="0x3D" name="Equal sign"/>
+		<i id="0x3E" name="Greater-than sign"/>
+		<i id="0x3F" name="Question mark"/>
+		<i id="0x40" name="At sign"/>
+		
+		<i id="0x41" name="Latin Capital Letter A"/>
+		<i id="0x42" name="Latin Capital Letter B"/>
+		<i id="0x43" name="Latin Capital Letter C"/>
+		<i id="0x44" name="Latin Capital Letter D"/>
+		<i id="0x45" name="Latin Capital Letter E"/>
+		<i id="0x46" name="Latin Capital Letter F"/>
+		<i id="0x47" name="Latin Capital Letter G"/>
+		<i id="0x48" name="Latin Capital Letter H"/>
+		<i id="0x49" name="Latin Capital Letter I"/>
+		<i id="0x4A" name="Latin Capital Letter J"/>
+		<i id="0x4B" name="Latin Capital Letter K"/>
+		<i id="0x4C" name="Latin Capital Letter L"/>
+		<i id="0x4D" name="Latin Capital Letter M"/>
+		<i id="0x4E" name="Latin Capital Letter N"/>
+		<i id="0x4F" name="Latin Capital Letter O"/>
+		<i id="0x50" name="Latin Capital Letter P"/>
+		<i id="0x51" name="Latin Capital Letter Q"/>
+		<i id="0x52" name="Latin Capital Letter R"/>
+		<i id="0x53" name="Latin Capital Letter S"/>
+		<i id="0x54" name="Latin Capital Letter T"/>
+		<i id="0x55" name="Latin Capital Letter U"/>
+		<i id="0x56" name="Latin Capital Letter V"/>
+		<i id="0x57" name="Latin Capital Letter W"/>
+		<i id="0x58" name="Latin Capital Letter X"/>
+		<i id="0x59" name="Latin Capital Letter Y"/>
+		<i id="0x5A" name="Latin Capital Letter Z"/>
+
+		<i id="0x5B" name="Left Square Bracket"/>
+		<i id="0x5C" name="Backslash"/>
+		<i id="0x5D" name="Right Square Bracket"/>
+		<i id="0x5E" name="Circumflex accent"/>
+		<i id="0x5F" name="Low line"/>
+		<i id="0x60" name="Grave accent"/>
+
+		<i id="0x61" name="Latin Small Letter A"/>
+		<i id="0x62" name="Latin Small Letter B"/>
+		<i id="0x63" name="Latin Small Letter C"/>
+		<i id="0x64" name="Latin Small Letter D"/>
+		<i id="0x65" name="Latin Small Letter E"/>
+		<i id="0x66" name="Latin Small Letter F"/>
+		<i id="0x67" name="Latin Small Letter G"/>
+		<i id="0x68" name="Latin Small Letter H"/>
+		<i id="0x69" name="Latin Small Letter I"/>
+		<i id="0x6A" name="Latin Small Letter J"/>
+		<i id="0x6B" name="Latin Small Letter K"/>
+		<i id="0x6C" name="Latin Small Letter L"/>
+		<i id="0x6D" name="Latin Small Letter M"/>
+		<i id="0x6E" name="Latin Small Letter N"/>
+		<i id="0x6F" name="Latin Small Letter O"/>
+		<i id="0x70" name="Latin Small Letter P"/>
+		<i id="0x71" name="Latin Small Letter Q"/>
+		<i id="0x72" name="Latin Small Letter R"/>
+		<i id="0x73" name="Latin Small Letter S"/>
+		<i id="0x74" name="Latin Small Letter T"/>
+		<i id="0x75" name="Latin Small Letter U"/>
+		<i id="0x76" name="Latin Small Letter V"/>
+		<i id="0x77" name="Latin Small Letter W"/>
+		<i id="0x78" name="Latin Small Letter X"/>
+		<i id="0x79" name="Latin Small Letter Y"/>
+		<i id="0x7A" name="Latin Small Letter Z"/>
+
+		<i id="0x7B" name="Left Curly Bracket"/>
+		<i id="0x7C" name="Vertical bar"/>
+		<i id="0x7D" name="Right Curly Bracket"/>
+		<i id="0x7E" name="Tilde"/>
+	</Unicode>
+</Data>

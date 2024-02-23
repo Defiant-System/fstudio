@@ -1,0 +1,185 @@
+
+
+
+content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+
+	> div {
+		&:nth-child(1) {
+			width: 180px;
+			background: var( --sidebar-bg );
+			border-right: 1px solid rgba(#000,.1);
+		}
+
+		&:nth-child(2) {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+
+			.draw {
+				flex: 1;
+			}
+
+			.foot {
+				height: 30px;
+				background: var( --sidebar-bg );
+				border-top: 1px solid rgba(#000,.1);
+			}
+		}
+
+		&:nth-child(3) {
+			width: 200px;
+			background: var( --sidebar-bg );
+			border-left: 1px solid rgba(#000,.1);
+		}
+
+
+		&[data-area="leftSize"] {
+			padding: 2px 0;
+
+			legend {
+				padding: 3px 5px;
+				font-size: 12px;
+				color: #999;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: clip;
+
+				&:not(:first-child) {
+					margin-top: 11px;
+				}
+			}
+
+			.list-wrapper {
+				position: relative;
+				max-height: 500px;
+				overflow: hidden;
+
+				ul {
+					list-style: none;
+					
+					li {
+						position: relative;
+						display: block;
+						height: 20px;
+						padding-left: 29px;
+						padding-top: 1px;
+						margin-bottom: 1px;
+
+						&.active {
+							background: rgba(#000,.25);
+							color: #fff;
+						}
+
+						i {
+							// background: rgba(#000,.1);
+							display: inline-block;
+							position: absolute;
+							top: 1px;
+							left: 7px;
+							width: 18px;
+							height: 18px;
+						}
+
+						span {
+							display: inline-block;
+							padding: 3px 0 0 0;
+						}
+					}
+				}
+			}
+
+			[class*="icon-"],
+			[class^="icon-"] {
+				width: 18px;
+				height: 18px;
+				background-position: 50% 50%;
+				background-repeat: no-repeat;
+				background-size: contain;
+			}
+
+			.icon-category-letter { background-image: url(~/icons/icon-category-letter.png); }
+			.icon-category-number { background-image: url(~/icons/icon-category-number.png); }
+		}
+	}
+
+	.glyph-list {
+		padding: 11px 17px;
+		font-size: 0;
+
+		h2 {
+			padding: 1px 0 7px;
+			margin: 0 0 11px;
+			font-size: 18px;
+			color: rgba(#000,.65);
+			border-bottom: 1px solid rgba(#999,.25);
+
+			&:not(:first-child) {
+				margin-top: 29px;
+			}
+		}
+
+		.glyph {
+			background: rgba(#fff,.25);
+			border: 1px solid rgba(#000,.1);
+			border-radius: 2px;
+			display: inline-block;
+			width: 52px;
+			height: 75px;
+			margin: 0 7px 5px 0;
+			text-align: center;
+			font-family: FiraGo;
+			font-size: 14px;
+			cursor: pointer;
+
+			&:hover {
+				background: rgba(#eee,.125);
+				border-color: rgba(#000,.15);
+
+				.thumbnail {
+					color: rgba(#000,.25);
+				}
+
+				.name {
+					color: rgba(#000,.5);
+				}
+			}
+
+			.thumbnail {
+				display: inline-block;
+				padding: 7px 0 0;
+				width: 50px;
+				height: 48px;
+				font-size: 36px;
+				color: rgba(#000,.125);
+			}
+
+			.name {
+				background: rgba(#aaa,.1);
+				color: rgba(#000,.25);
+				display: inline-block;
+				padding: 6px 0 0;
+				width: 50px;
+				height: 26px;
+				border-top: 1px solid rgba(#777,.1);
+			}
+		}
+	}
+}
+
+
+/* latin */
+@font-face {
+	font-family: "FiraGo";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url(~/fonts/FiraGO-Regular.woff2) format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+

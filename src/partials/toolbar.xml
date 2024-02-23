@@ -1,0 +1,12 @@
+<ToolBar>
+	<Group width="69%">
+		<Tool symbol="icon-sidebar" state="active"/>
+		<Options>
+			<Tool symbol="icon-undo" state="disabled"/>
+			<Tool symbol="icon-redo" state="disabled"/>
+		</Options>
+	</Group>
+	<Group width="31%">
+		<Tool symbol="icon-format" state="active"/>
+	</Group>
+</ToolBar>
