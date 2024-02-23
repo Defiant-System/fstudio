@@ -1,6 +1,5 @@
 <ToolBar>
 	<Group width="17%">
-		<Tool symbol="icon-sidebar" state="active"/>
 		<Options>
 			<Tool symbol="icon-undo" state="disabled"/>
 			<Tool symbol="icon-redo" state="disabled"/>

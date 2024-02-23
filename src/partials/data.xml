@@ -1,4 +1,53 @@
 <Data>
+	<Set name="Basic Latin">
+		<!-- A-Z -->
+		<i id="0x41"/><i id="0x42"/><i id="0x43"/><i id="0x44"/><i id="0x45"/><i id="0x46"/><i id="0x47"/><i id="0x48"/><i id="0x49"/><i id="0x4A"/><i id="0x4B"/><i id="0x4C"/><i id="0x4D"/><i id="0x4E"/><i id="0x4F"/><i id="0x50"/><i id="0x51"/><i id="0x52"/><i id="0x53"/><i id="0x54"/><i id="0x55"/><i id="0x56"/><i id="0x57"/><i id="0x58"/><i id="0x59"/><i id="0x5A"/>
+		<!-- a-z -->
+		<i id="0x61"/><i id="0x62"/><i id="0x63"/><i id="0x64"/><i id="0x65"/><i id="0x66"/><i id="0x67"/><i id="0x68"/><i id="0x69"/><i id="0x6A"/><i id="0x6B"/><i id="0x6C"/><i id="0x6D"/><i id="0x6E"/><i id="0x6F"/><i id="0x70"/><i id="0x71"/><i id="0x72"/><i id="0x73"/><i id="0x74"/><i id="0x75"/><i id="0x76"/><i id="0x77"/><i id="0x78"/><i id="0x79"/><i id="0x7A"/>
+		<!-- 0-9 -->
+		<i id="0x30"/><i id="0x31"/><i id="0x32"/><i id="0x33"/><i id="0x34"/><i id="0x35"/><i id="0x36"/><i id="0x37"/><i id="0x38"/><i id="0x39"/>
+		<!-- mixed -->
+		<i id="0x21"/><i id="0x22"/><i id="0x23"/><i id="0x24"/><i id="0x25"/><i id="0x26"/><i id="0x27"/><i id="0x28"/><i id="0x29"/><i id="0x2A"/><i id="0x2B"/><i id="0x2C"/><i id="0x2D"/><i id="0x2E"/><i id="0x2F"/><i id="0x3A"/><i id="0x3B"/><i id="0x3C"/><i id="0x3D"/><i id="0x3E"/><i id="0x3F"/><i id="0x40"/><i id="0x5B"/><i id="0x5C"/><i id="0x5D"/><i id="0x5E"/><i id="0x5F"/><i id="0x60"/><i id="0x7B"/><i id="0x7C"/><i id="0x7D"/><i id="0x7E"/><i id="0x20"/>
+	</Set>
+
+	<Set name="Letter">
+		<!-- A-Z -->
+		<i id="0x41"/><i id="0x42"/><i id="0x43"/><i id="0x44"/><i id="0x45"/><i id="0x46"/><i id="0x47"/><i id="0x48"/><i id="0x49"/><i id="0x4A"/><i id="0x4B"/><i id="0x4C"/><i id="0x4D"/><i id="0x4E"/><i id="0x4F"/><i id="0x50"/><i id="0x51"/><i id="0x52"/><i id="0x53"/><i id="0x54"/><i id="0x55"/><i id="0x56"/><i id="0x57"/><i id="0x58"/><i id="0x59"/><i id="0x5A"/>
+		<!-- a-z -->
+		<i id="0x61"/><i id="0x62"/><i id="0x63"/><i id="0x64"/><i id="0x65"/><i id="0x66"/><i id="0x67"/><i id="0x68"/><i id="0x69"/><i id="0x6A"/><i id="0x6B"/><i id="0x6C"/><i id="0x6D"/><i id="0x6E"/><i id="0x6F"/><i id="0x70"/><i id="0x71"/><i id="0x72"/><i id="0x73"/><i id="0x74"/><i id="0x75"/><i id="0x76"/><i id="0x77"/><i id="0x78"/><i id="0x79"/><i id="0x7A"/>
+	</Set>
+
+	<Set name="Number">
+		<!-- 0-9 -->
+		<i id="0x30"/><i id="0x31"/><i id="0x32"/><i id="0x33"/><i id="0x34"/><i id="0x35"/><i id="0x36"/><i id="0x37"/><i id="0x38"/><i id="0x39"/>
+	</Set>
+
+	<Set name="Punctuation">
+		<i id="0x21"/>
+		<i id="0x27"/>
+		<i id="0x28"/>
+		<i id="0x29"/>
+		<i id="0x2C"/>
+		<i id="0x2D"/>
+		<i id="0x2E"/>
+		<i id="0x3A"/>
+		<i id="0x3B"/>
+	</Set>
+
+	<Set name="Separator">
+	</Set>
+
+	<Set name="Symbol">
+	</Set>
+
+	<Set name="Ligature">
+		<i id="liga-f-f-i"/>
+		<i id="liga-f-f-l"/>
+		<i id="liga-f-f"/>
+		<i id="liga-f-i"/>
+		<i id="liga-f-l"/>
+	</Set>
+
 	<Unicode>
 		<!-- Basic Latin -->
 		<i id="0x20" name="Space"/>
@@ -100,5 +149,118 @@
 		<i id="0x7C" name="Vertical bar"/>
 		<i id="0x7D" name="Right Curly Bracket"/>
 		<i id="0x7E" name="Tilde"/>
+
+		<!-- General Punctuation -->
+		<i id="0x2000" name="EN QUAD"/>
+		<i id="0x2001" name="EM QUAD"/>
+		<i id="0x2002" name="EN SPACE"/>
+		<i id="0x2003" name="EM SPACE"/>
+		<i id="0x2004" name="THREE-PER-EM SPACE"/>
+		<i id="0x2005" name="FOUR-PER-EM SPACE"/>
+		<i id="0x2006" name="SIX-PER-EM SPACE"/>
+		<i id="0x2007" name="FIGURE SPACE"/>
+		<i id="0x2008" name="PUNCTUATION SPACE"/>
+		<i id="0x2009" name="THIN SPACE"/>
+		<i id="0x200A" name="HAIR SPACE"/>
+		<i id="0x200B" name="ZERO WIDTH SPACE"/>
+		<i id="0x200C" name="ZERO WIDTH NON-JOINER"/>
+		<i id="0x200D" name="ZERO WIDTH JOINER"/>
+		<i id="0x200E" name="LEFT-TO-RIGHT MARK"/>
+		<i id="0x200F" name="RIGHT-TO-LEFT MARK"/>
+		<i id="0x2010" name="HYPHEN"/>
+		<i id="0x2011" name="NON-BREAKING HYPHEN"/>
+		<i id="0x2012" name="FIGURE DASH"/>
+		<i id="0x2013" name="EN DASH"/>
+		<i id="0x2014" name="EM DASH"/>
+		<i id="0x2015" name="HORIZONTAL BAR"/>
+		<i id="0x2016" name="DOUBLE VERTICAL LINE"/>
+		<i id="0x2017" name="DOUBLE LOW LINE"/>
+		<i id="0x2018" name="LEFT SINGLE QUOTATION MARK"/>
+		<i id="0x2019" name="RIGHT SINGLE QUOTATION MARK"/>
+		<i id="0x201A" name="SINGLE LOW-9 QUOTATION MARK"/>
+		<i id="0x201B" name="SINGLE HIGH-REVERSED-9 QUOTATION MARK"/>
+		<i id="0x201C" name="LEFT DOUBLE QUOTATION MARK"/>
+		<i id="0x201D" name="RIGHT DOUBLE QUOTATION MARK"/>
+		<i id="0x201E" name="DOUBLE LOW-9 QUOTATION MARK"/>
+		<i id="0x201F" name="DOUBLE HIGH-REVERSED-9 QUOTATION MARK"/>
+		<i id="0x2020" name="DAGGER"/>
+		<i id="0x2021" name="DOUBLE DAGGER"/>
+		<i id="0x2022" name="BULLET"/>
+		<i id="0x2023" name="TRIANGULAR BULLET"/>
+		<i id="0x2024" name="ONE DOT LEADER"/>
+		<i id="0x2025" name="TWO DOT LEADER"/>
+		<i id="0x2026" name="HORIZONTAL ELLIPSIS"/>
+		<i id="0x2027" name="HYPHENATION POINT"/>
+		<i id="0x2028" name="LINE SEPARATOR"/>
+		<i id="0x2029" name="PARAGRAPH SEPARATOR"/>
+		<i id="0x202A" name="LEFT-TO-RIGHT EMBEDDING"/>
+		<i id="0x202B" name="RIGHT-TO-LEFT EMBEDDING"/>
+		<i id="0x202C" name="POP DIRECTIONAL FORMATTING"/>
+		<i id="0x202D" name="LEFT-TO-RIGHT OVERRIDE"/>
+		<i id="0x202E" name="RIGHT-TO-LEFT OVERRIDE"/>
+		<i id="0x202F" name="NARROW NO-BREAK SPACE"/>
+		<i id="0x2030" name="PER MILLE SIGN"/>
+		<i id="0x2031" name="PER TEN THOUSAND SIGN"/>
+		<i id="0x2032" name="PRIME"/>
+		<i id="0x2033" name="DOUBLE PRIME"/>
+		<i id="0x2034" name="TRIPLE PRIME"/>
+		<i id="0x2035" name="REVERSED PRIME"/>
+		<i id="0x2036" name="REVERSED DOUBLE PRIME"/>
+		<i id="0x2037" name="REVERSED TRIPLE PRIME"/>
+		<i id="0x2038" name="CARET"/>
+		<i id="0x2039" name="SINGLE LEFT-POINTING ANGLE QUOTATION MARK"/>
+		<i id="0x203A" name="SINGLE RIGHT-POINTING ANGLE QUOTATION MARK"/>
+		<i id="0x203B" name="REFERENCE MARK"/>
+		<i id="0x203C" name="DOUBLE EXCLAMATION MARK"/>
+		<i id="0x203D" name="INTERROBANG"/>
+		<i id="0x203E" name="OVERLINE"/>
+		<i id="0x203F" name="UNDERTIE"/>
+		<i id="0x2040" name="CHARACTER TIE"/>
+		<i id="0x2041" name="CARET INSERTION POINT"/>
+		<i id="0x2042" name="ASTERISM"/>
+		<i id="0x2043" name="HYPHEN BULLET"/>
+		<i id="0x2044" name="FRACTION SLASH"/>
+		<i id="0x2045" name="LEFT SQUARE BRACKET WITH QUILL"/>
+		<i id="0x2046" name="RIGHT SQUARE BRACKET WITH QUILL"/>
+		<i id="0x2047" name="DOUBLE QUESTION MARK"/>
+		<i id="0x2048" name="QUESTION EXCLAMATION MARK"/>
+		<i id="0x2049" name="EXCLAMATION QUESTION MARK"/>
+		<i id="0x204A" name="TIRONIAN SIGN ET"/>
+		<i id="0x204B" name="REVERSED PILCROW SIGN"/>
+		<i id="0x204C" name="BLACK LEFTWARDS BULLET"/>
+		<i id="0x204D" name="BLACK RIGHTWARDS BULLET"/>
+		<i id="0x204E" name="LOW ASTERISK"/>
+		<i id="0x204F" name="REVERSED SEMICOLON"/>
+		<i id="0x2050" name="CLOSE UP"/>
+		<i id="0x2051" name="TWO ASTERISKS ALIGNED VERTICALLY"/>
+		<i id="0x2052" name="COMMERCIAL MINUS SIGN"/>
+		<i id="0x2053" name="SWUNG DASH"/>
+		<i id="0x2054" name="INVERTED UNDERTIE"/>
+		<i id="0x2055" name="FLOWER PUNCTUATION MARK"/>
+		<i id="0x2056" name="THREE DOT PUNCTUATION"/>
+		<i id="0x2057" name="QUADRUPLE PRIME"/>
+		<i id="0x2058" name="FOUR DOT PUNCTUATION"/>
+		<i id="0x2059" name="FIVE DOT PUNCTUATION"/>
+		<i id="0x205A" name="TWO DOT PUNCTUATION"/>
+		<i id="0x205B" name="FOUR DOT MARK"/>
+		<i id="0x205C" name="DOTTED CROSS"/>
+		<i id="0x205D" name="TRICOLON"/>
+		<i id="0x205E" name="VERTICAL FOUR DOTS"/>
+		<i id="0x205F" name="MEDIUM MATHEMATICAL SPACE"/>
+		<i id="0x2060" name="WORD JOINER"/>
+		<i id="0x2061" name="FUNCTION APPLICATION"/>
+		<i id="0x2062" name="INVISIBLE TIMES"/>
+		<i id="0x2063" name="INVISIBLE SEPARATOR"/>
+		<i id="0x2064" name="INVISIBLE PLUS"/>
+		<i id="0x2066" name="LEFT-TO-RIGHT ISOLATE"/>
+		<i id="0x2067" name="RIGHT-TO-LEFT ISOLATE"/>
+		<i id="0x2068" name="FIRST STRONG ISOLATE"/>
+		<i id="0x2069" name="POP DIRECTIONAL ISOLATE"/>
+		<i id="0x206A" name="INHIBIT SYMMETRIC SWAPPING"/>
+		<i id="0x206B" name="ACTIVATE SYMMETRIC SWAPPING"/>
+		<i id="0x206C" name="INHIBIT ARABIC FORM SHAPING"/>
+		<i id="0x206D" name="ACTIVATE ARABIC FORM SHAPING"/>
+		<i id="0x206E" name="NATIONAL DIGIT SHAPES"/>
+		<i id="0x206F" name="NOMINAL DIGIT SHAPES"/>
 	</Unicode>
 </Data>
