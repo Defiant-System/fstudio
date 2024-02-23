@@ -9,7 +9,8 @@
 		};
 
 		// translate all unicodes in data.xml
-		window.bluePrint.selectNodes(`//Unicode/*[@id]`).map(x => x.setAttribute("value", String.fromCharCode(x.getAttribute("id"))));
+		window.bluePrint.selectNodes(`//Unicode/*[not(@value)]`).map(x =>
+			x.setAttribute("value", String.fromCharCode(x.getAttribute("id"))));
 		// console.log( window.bluePrint.root );
 
 		// render glyph list
@@ -24,7 +25,7 @@
 			case "render-glyph-list":
 				window.render({
 					template: "glyph-list",
-					match: `//Data/Set[@name="Basic Latin"]`,
+					match: `//Data`,
 					target: Self.els.el,
 				});
 				break;
