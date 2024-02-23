@@ -1,9 +1,22 @@
 <ToolBar>
-	<Group width="69%">
+	<Group width="17%">
 		<Tool symbol="icon-sidebar" state="active"/>
 		<Options>
 			<Tool symbol="icon-undo" state="disabled"/>
 			<Tool symbol="icon-redo" state="disabled"/>
+		</Options>
+	</Group>
+	<Group width="62%">
+		<Options>
+			<Tool symbol="icon-move"/>
+			<Tool symbol="icon-pan"/>
+			<Tool symbol="icon-pen"/>
+		</Options>
+		<Options>
+			<Tool symbol="icon-path-add"/>
+			<Tool symbol="icon-new-rectangle"/>
+			<Tool symbol="icon-new-oval"/>
+			<Tool symbol="icon-new-path"/>
 		</Options>
 	</Group>
 	<Group width="31%">

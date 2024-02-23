@@ -39,7 +39,7 @@ content {
 		}
 
 
-		&[data-area="leftSize"] {
+		&[data-area="leftSide"] {
 			padding: 2px 0;
 
 			legend {
@@ -107,19 +107,45 @@ content {
 				background-position: 50% 50%;
 				background-repeat: no-repeat;
 				background-size: contain;
+
+				&.icon-category-all         { background-image: url(~/icons/icon-category-all.png); }
+				&.icon-category-letter      { background-image: url(~/icons/icon-category-letter.png); }
+				&.icon-category-number      { background-image: url(~/icons/icon-category-number.png); }
+				&.icon-category-punctuation { background-image: url(~/icons/icon-category-punctuation.png); }
+				&.icon-category-separator   { background-image: url(~/icons/icon-category-separator.png); }
+				&.icon-category-symbol      { background-image: url(~/icons/icon-category-symbol.png); }
+				&.icon-category-ligature    { background-image: url(~/icons/icon-category-ligature.png); }
+
+				&.icon-language-latin       { background-image: url(~/icons/icon-language-latin.png); }
+				&.icon-language-cryllic     { background-image: url(~/icons/icon-language-cryllic.png); }
+				&.icon-language-greek       { background-image: url(~/icons/icon-language-greek.png); }
 			}
+		}
 
-			.icon-category-all         { background-image: url(~/icons/icon-category-all.png); }
-			.icon-category-letter      { background-image: url(~/icons/icon-category-letter.png); }
-			.icon-category-number      { background-image: url(~/icons/icon-category-number.png); }
-			.icon-category-punctuation { background-image: url(~/icons/icon-category-punctuation.png); }
-			.icon-category-separator   { background-image: url(~/icons/icon-category-separator.png); }
-			.icon-category-symbol      { background-image: url(~/icons/icon-category-symbol.png); }
-			.icon-category-ligature    { background-image: url(~/icons/icon-category-ligature.png); }
+		&[data-area="rightSide"] {
+			padding: 3px 5px;
+			
+			[class*="icon-"],
+			[class^="icon-"] {
+				position: relative;
+				width: 17px;
+				height: 17px;
+				display: inline-block;
+				background-position: 50% 50%;
+				background-repeat: no-repeat;
+				background-size: contain;
+				margin: 5px;
+				opacity: .5;
 
-			.icon-language-latin       { background-image: url(~/icons/icon-language-latin.png); }
-			.icon-language-cryllic     { background-image: url(~/icons/icon-language-cryllic.png); }
-			.icon-language-greek       { background-image: url(~/icons/icon-language-greek.png); }
+				&.icon-align-top          { background-image: url(~/icons/icon-align-top.png) }
+				&.icon-align-middle       { background-image: url(~/icons/icon-align-middle.png) }
+				&.icon-align-bottom       { background-image: url(~/icons/icon-align-bottom.png) }
+				&.icon-vertical-centers   { background-image: url(~/icons/icon-vertical-centers.png) }
+				&.icon-align-left         { background-image: url(~/icons/icon-align-left.png) }
+				&.icon-align-center       { background-image: url(~/icons/icon-align-center.png) }
+				&.icon-align-right        { background-image: url(~/icons/icon-align-right.png) }
+				&.icon-horizontal-centers { background-image: url(~/icons/icon-horizontal-centers.png) }
+			}
 		}
 	}
 
