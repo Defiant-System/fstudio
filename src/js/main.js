@@ -39,12 +39,12 @@ const glyphr = {
 				}
 		}
 	},
-	head: @import "areas/head.js"
-	overview: @import "areas/overview.js"
-	design: @import "areas/design.js"
-	kearning: @import "areas/kearning.js"
-	preview: @import "areas/preview.js"
-	sidebar: @import "areas/sidebar.js"
+	head: @import "areas/head.js",
+	overview: @import "areas/overview.js",
+	design: @import "areas/design.js",
+	kearning: @import "areas/kearning.js",
+	preview: @import "areas/preview.js",
+	sidebar: @import "areas/sidebar.js",
 };
 
 window.exports = glyphr;

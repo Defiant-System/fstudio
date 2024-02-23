@@ -3,7 +3,17 @@
 
 {
 	init() {
-		
+		// fast references
+		this.els = {
+			el: window.find(`.area-body[data-area="overview"]`),
+		};
+
+		// translate all unicodes in data.xml
+		window.bluePrint.selectNodes(`//Unicode/*[@id]`).map(x => x.setAttribute("value", String.fromCharCode(x.getAttribute("id"))));
+		// console.log( window.bluePrint.root );
+
+		// render glyph list
+		this.dispatch({ type: "render-glyph-list" });
 	},
 	dispatch(event) {
 		let APP = glyphr,
@@ -11,7 +21,12 @@
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "init-mode":
+			case "render-glyph-list":
+				window.render({
+					template: "glyph-list",
+					match: `//Data/Set[@name="Basic Latin"]`,
+					target: Self.els.el,
+				});
 				break;
 		}
 	}
