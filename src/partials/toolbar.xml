@@ -8,18 +8,18 @@
 	</Group>
 	<Group width="62%">
 		<Options>
-			<Tool symbol="icon-move"/>
-			<Tool symbol="icon-pan"/>
-			<Tool symbol="icon-pen"/>
+			<Tool symbol="icon-move" state="disabled"/>
+			<Tool symbol="icon-pan" state="disabled"/>
+			<Tool symbol="icon-pen" state="disabled"/>
 		</Options>
 		<Options>
-			<Tool symbol="icon-path-add"/>
-			<Tool symbol="icon-new-rectangle"/>
-			<Tool symbol="icon-new-oval"/>
-			<Tool symbol="icon-new-path"/>
+			<Tool symbol="icon-path-add" state="disabled"/>
+			<Tool symbol="icon-new-rectangle" state="disabled"/>
+			<Tool symbol="icon-new-oval" state="disabled"/>
+			<Tool symbol="icon-new-path" state="disabled"/>
 		</Options>
 	</Group>
-	<Group width="31%">
+	<Group width="21%">
 		<Tool symbol="icon-format" state="active"/>
 	</Group>
 </ToolBar>
