@@ -11,7 +11,7 @@ content {
 
 	> div {
 		&:nth-child(1) {
-			width: 180px;
+			width: 160px;
 			background: var( --sidebar-bg );
 			border-right: 1px solid rgba(#000,.1);
 		}
@@ -74,16 +74,21 @@ content {
 						&.active {
 							background: rgba(#000,.25);
 							color: #fff;
+							text-shadow: 0 1px 0 rgba(#000,.15);
+
+							i {
+								opacity: 1;
+								filter: invert(1) brightness(2) drop-shadow(0 1px 0 rgba(#000,.15));
+							}
 						}
 
 						i {
 							// background: rgba(#000,.1);
 							display: inline-block;
 							position: absolute;
-							top: 1px;
+							top: 2px;
 							left: 7px;
-							width: 18px;
-							height: 18px;
+							opacity: .5;
 						}
 
 						span {
@@ -96,15 +101,25 @@ content {
 
 			[class*="icon-"],
 			[class^="icon-"] {
-				width: 18px;
-				height: 18px;
+				position: relative;
+				width: 16px;
+				height: 16px;
 				background-position: 50% 50%;
 				background-repeat: no-repeat;
 				background-size: contain;
 			}
 
-			.icon-category-letter { background-image: url(~/icons/icon-category-letter.png); }
-			.icon-category-number { background-image: url(~/icons/icon-category-number.png); }
+			.icon-category-all         { background-image: url(~/icons/icon-category-all.png); }
+			.icon-category-letter      { background-image: url(~/icons/icon-category-letter.png); }
+			.icon-category-number      { background-image: url(~/icons/icon-category-number.png); }
+			.icon-category-punctuation { background-image: url(~/icons/icon-category-punctuation.png); }
+			.icon-category-separator   { background-image: url(~/icons/icon-category-separator.png); }
+			.icon-category-symbol      { background-image: url(~/icons/icon-category-symbol.png); }
+			.icon-category-ligature    { background-image: url(~/icons/icon-category-ligature.png); }
+
+			.icon-language-latin       { background-image: url(~/icons/icon-language-latin.png); }
+			.icon-language-cryllic     { background-image: url(~/icons/icon-language-cryllic.png); }
+			.icon-language-greek       { background-image: url(~/icons/icon-language-greek.png); }
 		}
 	}
 
