@@ -45,6 +45,7 @@ const glyphr = {
 	kearning: @import "areas/kearning.js",
 	preview: @import "areas/preview.js",
 	sidebar: @import "areas/sidebar.js",
+	foot: @import "areas/foot.js",
 };
 
 window.exports = glyphr;

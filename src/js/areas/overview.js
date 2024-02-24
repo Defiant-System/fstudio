@@ -14,11 +14,12 @@
 		// console.log( window.bluePrint.root );
 
 		// render glyph list
-		this.dispatch({ type: "render-glyph-list" });
+		setTimeout(() => this.dispatch({ type: "render-glyph-list" }), 10);
 	},
 	dispatch(event) {
 		let APP = glyphr,
 			Self = APP.overview,
+			value,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -28,6 +29,12 @@
 					match: `//Data`,
 					target: Self.els.el,
 				});
+				// update glyph count in footer
+				value = Self.els.el.find(".glyph").length;
+				APP.foot.dispatch({ type: "set-count-value", value });
+				break;
+			case "set-glyph-size":
+				Self.els.el.css({ "--gSize": event.value });
 				break;
 		}
 	}
