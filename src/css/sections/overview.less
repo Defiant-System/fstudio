@@ -76,6 +76,7 @@
 				padding-left: 29px;
 				padding-top: 1px;
 				margin-bottom: 1px;
+				cursor: pointer;
 
 				&.active {
 					background: rgba(#000,.25);
@@ -86,6 +87,11 @@
 						opacity: 1;
 						filter: invert(1) brightness(2) drop-shadow(0 1px 0 rgba(#000,.15));
 					}
+				}
+
+				&.disabled {
+					opacity: .5;
+					cursor: default;
 				}
 
 				i {
@@ -194,9 +200,9 @@
 				position: absolute;
 				left: 0;
 				right: 0;
-				margin-top: -3px;
-				top: calc( var( --gSize ) * 0.1px );
-				font-size: calc( var( --gSize ) * 0.575px );
+				// margin-top: -3px;
+				top: calc( var( --gSize ) * 0.075px );
+				font-size: calc( var( --gSize ) * 0.55px );
 				color: rgba(#000,.075);
 			}
 

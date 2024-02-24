@@ -21,6 +21,8 @@
 	dispatch(event) {
 		let APP = glyphr,
 			Self = APP.overview,
+			changePath,
+			changeSelect,
 			value,
 			el;
 		// console.log(event);
@@ -34,10 +36,6 @@
 				});
 				// auto select first tree item
 				Self.els.left.find("ul li:first-child").trigger("click");
-
-				// update glyph count in footer
-				value = Self.els.body.find(".glyph").length;
-				APP.foot.dispatch({ type: "set-count-value", value });
 				break;
 			case "select-tree-item":
 				el = $(event.target);
@@ -45,12 +43,24 @@
 				Self.els.left.find(".active").removeClass("active");
 				el.addClass("active");
 
+				if (el.data("sets")) {
+					// [@name='Punctuation' or @name='Number']
+					changePath = `//div/xsl:for-each[@select]`;
+					changeSelect = `./Set[${el.data("sets").split(",").map(e => `@id='${e}'`).join(" or ")}]`;
+				}
+
 				// glyph list
 				window.render({
 					template: "glyph-list",
 					match: `//Data`,
 					target: Self.els.body,
+					changePath,
+					changeSelect,
 				});
+				
+				// update glyph count in footer
+				value = Self.els.body.find(".glyph").length;
+				APP.foot.dispatch({ type: "set-count-value", value });
 				break;
 			case "set-glyph-size":
 				Self.els.body.css({ "--gSize": event.value });

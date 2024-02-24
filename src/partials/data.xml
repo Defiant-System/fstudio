@@ -2,36 +2,36 @@
 	<Overview>
 		<Group name="Categories">
 			<i name="All" icon="icon-category-all"/>
-			<i name="Letter" icon="icon-category-letter"/>
-			<i name="Number" icon="icon-category-number"/>
-			<i name="Punctuation" icon="icon-category-punctuation"/>
-			<i name="Separator" icon="icon-category-separator"/>
-			<i name="Symbol" icon="icon-category-symbol"/>
-			<i name="Ligature" icon="icon-category-ligature"/>
+			<i name="Letter" icon="icon-category-letter" sets="1,2"/>
+			<i name="Number" icon="icon-category-number" sets="3"/>
+			<i name="Punctuation" icon="icon-category-punctuation" sets="4"/>
+			<i name="Separator" icon="icon-category-separator" sets="5"/>
+			<i name="Symbol" icon="icon-category-symbol" sets="6"/>
+			<i name="Ligature" icon="icon-category-ligature" sets="7"/>
 		</Group>
 		<Group name="Languages">
-			<i name="Latin" icon="icon-language-latin"/>
-			<i name="Cryllic" icon="icon-language-cryllic"/>
-			<i name="Greek" icon="icon-language-greek"/>
+			<i state="disabled" name="Latin" icon="icon-language-latin"/>
+			<i state="disabled" name="Cryllic" icon="icon-language-cryllic"/>
+			<i state="disabled" name="Greek" icon="icon-language-greek"/>
 		</Group>
 	</Overview>
 
-	<Set name="Letter, Capital">
+	<Set id="1" name="Letter, Capital">
 		<!-- A-Z -->
 		<i id="0x41"/><i id="0x42"/><i id="0x43"/><i id="0x44"/><i id="0x45"/><i id="0x46"/><i id="0x47"/><i id="0x48"/><i id="0x49"/><i id="0x4A"/><i id="0x4B"/><i id="0x4C"/><i id="0x4D"/><i id="0x4E"/><i id="0x4F"/><i id="0x50"/><i id="0x51"/><i id="0x52"/><i id="0x53"/><i id="0x54"/><i id="0x55"/><i id="0x56"/><i id="0x57"/><i id="0x58"/><i id="0x59"/><i id="0x5A"/>
 	</Set>
 
-	<Set name="Letter, Small">
+	<Set id="2" name="Letter, Small">
 		<!-- a-z -->
 		<i id="0x61"/><i id="0x62"/><i id="0x63"/><i id="0x64"/><i id="0x65"/><i id="0x66"/><i id="0x67"/><i id="0x68"/><i id="0x69"/><i id="0x6A"/><i id="0x6B"/><i id="0x6C"/><i id="0x6D"/><i id="0x6E"/><i id="0x6F"/><i id="0x70"/><i id="0x71"/><i id="0x72"/><i id="0x73"/><i id="0x74"/><i id="0x75"/><i id="0x76"/><i id="0x77"/><i id="0x78"/><i id="0x79"/><i id="0x7A"/>
 	</Set>
 
-	<Set name="Number">
+	<Set id="3" name="Number">
 		<!-- 0-9 -->
 		<i id="0x30"/><i id="0x31"/><i id="0x32"/><i id="0x33"/><i id="0x34"/><i id="0x35"/><i id="0x36"/><i id="0x37"/><i id="0x38"/><i id="0x39"/>
 	</Set>
 
-	<Set name="Punctuation">
+	<Set id="4" name="Punctuation">
 		<i id="0x21"/>
 		<i id="0x27"/>
 		<i id="0x28"/>
@@ -43,7 +43,7 @@
 		<i id="0x3B"/>
 	</Set>
 
-	<Set name="Separator">
+	<Set id="5" name="Separator">
 		<i id="0x22"/>
 		<i id="0x23"/>
 		<i id="0x24"/>
@@ -64,14 +64,14 @@
 		<i id="0x7E"/>
 	</Set>
 
-	<Set name="Symbol">
+	<Set id="6" name="Symbol">
 		<i id="0x25"/>
 		<i id="0x26"/>
 		<i id="0x2B"/>
 		<i id="0x2F"/>
 	</Set>
 
-	<Set name="Ligature">
+	<Set id="7" name="Ligature">
 		<i id="liga-f-f-i" name="ffi" value="ffi"/>
 		<i id="liga-f-f-l" name="ffl" value="ffl"/>
 		<i id="liga-f-f" name="ff" value="ff"/>

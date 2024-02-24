@@ -7,6 +7,8 @@
 			<ul>
 				<xsl:for-each select="./i">
 				<li>
+					<xsl:attribute name="data-sets"><xsl:value-of select="@sets"/></xsl:attribute>
+					<xsl:if test="@state = 'disabled'"><xsl:attribute name="class">disabled</xsl:attribute></xsl:if>
 					<i>
 						<xsl:attribute name="class"><xsl:value-of select="@icon"/></xsl:attribute>
 					</i>
