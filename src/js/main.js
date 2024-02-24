@@ -26,7 +26,18 @@ const glyphr = {
 			// system events
 			case "window.init":
 				break;
+			case "window.resize":
+				// proxy event
+				Self[Self.head.active].dispatch(event);
+				break;
 			// custom events
+			case "open-file":
+				Spawn.dialog.open({
+					otf: fsItem => console.log(fsItem),
+					ttf: fsItem => console.log(fsItem),
+					woff: fsItem => console.log(fsItem),
+				});
+				break;
 			case "open-help":
 				karaqu.shell("fs -u '~/help/index.md'");
 				break;

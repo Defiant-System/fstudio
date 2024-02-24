@@ -20,14 +20,18 @@
 			case "select-view":
 				el = $(event.target);
 				if (el.data("view")) {
+					// reference t oactive view
+					Self.active = el.data("view");
 					// tab row update
 					Self.els.el.find(".head-reel .active").removeClass("active");
 					el.addClass("active");
 					// tab body update
-					Self.els.main.data({ show: el.data("view") });
+					Self.els.main.data({ show: Self.active });
 
-					value = el.data("view") === "overview";
+					value = Self.active === "overview";
 					Self.els.content.toggleClass("show-sidebar", value);
+					// auto resize for canvas
+					APP[Self.active].dispatch({ type: "window.resize" });
 				}
 				break;
 		}
