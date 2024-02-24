@@ -65,6 +65,11 @@
 			case "set-glyph-size":
 				Self.els.body.css({ "--gSize": event.value });
 				break;
+			case "select-glyph":
+				el = $(event.target);
+				if (!el.hasClass("glyph")) return;
+				console.log("select glyph", el);
+				break;
 		}
 	}
 }

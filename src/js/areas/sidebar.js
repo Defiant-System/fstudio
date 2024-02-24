@@ -28,7 +28,7 @@
 					el.addClass("active");
 					// update tab body
 					let pEl = event.el.parent();
-					pEl.find(".active").removeClass("active");
+					pEl.find(".sidebar-body.active").removeClass("active");
 					pEl.find(`.sidebar-body`).get(el.index()).addClass("active");
 				}
 				break;

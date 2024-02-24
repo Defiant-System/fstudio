@@ -19,6 +19,6 @@
 		</Options>
 	</Group>
 	<Group width="21%">
-		<Tool symbol="icon-format" click="toggle-sidebar"/>
+		<Tool symbol="icon-format" click="toggle-sidebar" state="disabled"/>
 	</Group>
 </ToolBar>

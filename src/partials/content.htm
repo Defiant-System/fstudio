@@ -1,5 +1,5 @@
 <content>
-	<div class="main">
+	<div class="main" data-show="overview">
 		<div class="head" data-area="head">
 			<div class="head-reel" data-click="select-view">
 				<span data-view="overview" class="active">Overview</span>
@@ -8,7 +8,7 @@
 				<span data-view="preview">Preview</span>
 			</div>
 		</div>
-		<div class="body" data-show="overview">
+		<div class="body">
 			@import "sections/overview.htm"
 			@import "sections/design.htm"
 			@import "sections/kerning.htm"
@@ -17,15 +17,9 @@
 	</div>
 	<div class="sidebar" data-area="sidebar">
 		<div class="wrapper">
-			<div class="sidebar-head" data-click="select-tab">
-				<span class="active">Glyph</span>
-				<span>Guides</span>
-				<span>History</span>
-			</div>
-
-			@import "sections/sidebar-glyph.htm"
-			@import "sections/sidebar-guides.htm"
-			@import "sections/sidebar-history.htm"
+			@import "sections/sidebar-design.htm"
+			@import "sections/sidebar-kerning.htm"
+			@import "sections/sidebar-preview.htm"
 		</div>
 	</div>
 </content>

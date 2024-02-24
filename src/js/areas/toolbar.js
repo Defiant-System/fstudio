@@ -3,7 +3,11 @@
 
 {
 	init() {
-		
+		// fast references
+		this.els = {
+			el: window.find(`.win-toolbar_[data-area="toolbar"]`),
+			btnSidebar: window.find(`.toolbar-tool_[data-click="toggle-sidebar"]`),
+		};
 	},
 	dispatch(event) {
 		let APP = glyphr,

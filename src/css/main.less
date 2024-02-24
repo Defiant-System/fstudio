@@ -1,4 +1,34 @@
 
+
+@sidebar_bg: #ececec;
+@layout_outline: #bbb;
+
+&.win-body-focused_ {
+	.sidebar {
+		border-left-color: @layout_outline;
+
+		.sidebar-head {
+			border-bottom-color: @layout_outline;
+
+			span {
+				&:not(:first-child) {
+					border-left-color: @layout_outline;
+				}
+
+				&.active {
+					background: #489bf7;
+					color: #fff;
+
+					&:after {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}
+
+
 content {
 	position: absolute;
 	top: 0;
@@ -39,6 +69,8 @@ content {
 					&.active {
 						background: #d6e6fb;
 						color: #4591e8;
+						// background: #489bf7;
+						// color: #fff;
 						cursor: default;
 
 						+ span:before {
@@ -75,42 +107,54 @@ content {
 			@import "sections/kerning";
 			@import "sections/overview";
 			@import "sections/preview";
+		}
 
 
-			&[data-show="design"] {
-				.view-design {
-					flex: 1;
-					opacity: 1;
-					visibility: visible;
-					pointer-events: initial;
-				}
+		&[data-show="overview"] {
+			.body .view-overview {
+				flex: 1;
+				opacity: 1;
+				visibility: visible;
+				pointer-events: initial;
+			}
+		}
+
+		&[data-show="design"] {
+			.body .view-design {
+				flex: 1;
+				opacity: 1;
+				visibility: visible;
+				pointer-events: initial;
 			}
 
-			&[data-show="kerning"] {
-				.view-kerning {
-					flex: 1;
-					opacity: 1;
-					visibility: visible;
-					pointer-events: initial;
-				}
+			+ .sidebar .wrapper .design-sidebar {
+				display: block;
+			}
+		}
+
+		&[data-show="kerning"] {
+			.body .view-kerning {
+				flex: 1;
+				opacity: 1;
+				visibility: visible;
+				pointer-events: initial;
 			}
 
-			&[data-show="overview"] {
-				.view-overview {
-					flex: 1;
-					opacity: 1;
-					visibility: visible;
-					pointer-events: initial;
-				}
+			+ .sidebar .wrapper .kerning-sidebar {
+				display: block;
+			}
+		}
+
+		&[data-show="preview"] {
+			.body .view-preview {
+				flex: 1;
+				opacity: 1;
+				visibility: visible;
+				pointer-events: initial;
 			}
 
-			&[data-show="preview"] {
-				.view-preview {
-					flex: 1;
-					opacity: 1;
-					visibility: visible;
-					pointer-events: initial;
-				}
+			+ .sidebar .wrapper .preview-sidebar {
+				display: block;
 			}
 		}
 	}
@@ -118,14 +162,20 @@ content {
 	.sidebar {
 		width: 0;
 		overflow: hidden;
-		transition: width 200ms ease-in-out;
+		// transition: width 150ms ease-in-out;
 		
 		.wrapper {
 			position: relative;
 			height: 100%;
 			width: 250px;
 			background: var( --sidebar-bg );
-			border-left: 1px solid rgba(#000,.1);
+			border-left: 1px solid lighten(@layout_outline, 9%);
+
+			.design-sidebar,
+			.kerning-sidebar,
+			.preview-sidebar {
+				display: none;
+			}
 		}
 
 		[class*="icon-"],

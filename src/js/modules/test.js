@@ -1,6 +1,8 @@
 
 let Test = {
 	init(APP) {
-		// setTimeout(() => window.find(`.toolbar-tool_[data-click="toggle-sidebar"]`).trigger("click"), 100);
+		
+		setTimeout(() => window.find(`.head span[data-view="design"]`).trigger("click"), 100);
+		// setTimeout(() => APP.toolbar.els.btnSidebar.trigger("click"), 100);
 	}
 };
