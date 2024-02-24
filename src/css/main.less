@@ -7,6 +7,12 @@ content {
 	bottom: 0;
 	display: flex;
 
+	&.show-sidebar {
+		.sidebar {
+			width: 250px;
+		}
+	}
+
 	.main {
 		display: flex;
 		flex-direction: column;
@@ -110,9 +116,17 @@ content {
 	}
 
 	.sidebar {
-		width: 250px;
-		background: var( --sidebar-bg );
-		border-left: 1px solid rgba(#000,.1);
+		width: 0;
+		overflow: hidden;
+		transition: width 200ms ease-in-out;
+		
+		.wrapper {
+			position: relative;
+			height: 100%;
+			width: 250px;
+			background: var( --sidebar-bg );
+			border-left: 1px solid rgba(#000,.1);
+		}
 
 		[class*="icon-"],
 		[class^="icon-"] {

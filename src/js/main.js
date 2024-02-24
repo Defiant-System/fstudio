@@ -40,6 +40,7 @@ const glyphr = {
 				}
 		}
 	},
+	toolbar: @import "areas/toolbar.js",
 	head: @import "areas/head.js",
 	overview: @import "areas/overview.js",
 	design: @import "areas/design.js",
