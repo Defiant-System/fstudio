@@ -1,80 +1,18 @@
 <content>
 	<div class="main">
 		<div class="head" data-area="head">
-			<div class="head-reel">
-				<span class="active">Overview</span>
-				<span>Design</span>
-				<span>Kerning</span>
-				<span>Preview</span>
+			<div class="head-reel" data-click="select-view">
+				<span data-view="overview" class="active">Overview</span>
+				<span data-view="design">Design</span>
+				<span data-view="kerning">Kerning</span>
+				<span data-view="preview">Preview</span>
 			</div>
 		</div>
-		<div class="body">
-			<div class="left-side">
-				<legend>Categories</legend>
-				<div class="list-wrapper">
-					<ul>
-						<li>
-							<i class="icon-category-all"></i>
-							<span>All</span>
-						</li>
-						<li class="active">
-							<i class="icon-category-letter"></i>
-							<span>Letter</span>
-						</li>
-						<li>
-							<i class="icon-category-number"></i>
-							<span>Number</span>
-						</li>
-						<li>
-							<i class="icon-category-punctuation"></i>
-							<span>Punctuation</span>
-						</li>
-						<li>
-							<i class="icon-category-separator"></i>
-							<span>Separator</span>
-						</li>
-						<li>
-							<i class="icon-category-symbol"></i>
-							<span>Symbol</span>
-						</li>
-						<li>
-							<i class="icon-category-ligature"></i>
-							<span>Ligature</span>
-						</li>
-					</ul>
-				</div>
-
-				<legend>Languages</legend>
-				<div class="list-wrapper">
-					<ul>
-						<li>
-							<i class="icon-language-latin"></i>
-							<span>Latin</span>
-						</li>
-						<li>
-							<i class="icon-language-cryllic"></i>
-							<span>Cryllic</span>
-						</li>
-						<li>
-							<i class="icon-language-greek"></i>
-							<span>Greek</span>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div>
-				<div class="area-body" data-area="overview">
-					<!-- glyph list goes here -->
-				</div>
-				<div class="foot" data-area="foot">
-					<div class="status">
-						<span class="count">&#160;</span> glyphs
-					</div>
-					<div class="resize">
-						<input type="range" class="glyph-resizer" value="75" min="60" max="120" data-change="set-glyph-size"/>
-					</div>
-				</div>
-			</div>
+		<div class="body" data-show="overview">
+			@import "sections/overview.htm"
+			@import "sections/design.htm"
+			@import "sections/kerning.htm"
+			@import "sections/preview.htm"
 		</div>
 	</div>
 	<div class="sidebar">

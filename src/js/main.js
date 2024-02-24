@@ -43,7 +43,7 @@ const glyphr = {
 	head: @import "areas/head.js",
 	overview: @import "areas/overview.js",
 	design: @import "areas/design.js",
-	kearning: @import "areas/kearning.js",
+	kerning: @import "areas/kerning.js",
 	preview: @import "areas/preview.js",
 	sidebar: @import "areas/sidebar.js",
 	foot: @import "areas/foot.js",

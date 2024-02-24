@@ -1,5 +1,5 @@
 
-// glyphr.kearning
+// glyphr.kerning
 
 {
 	init() {
@@ -7,7 +7,7 @@
 	},
 	dispatch(event) {
 		let APP = glyphr,
-			Self = APP.kearning,
+			Self = APP.kerning,
 			el;
 		// console.log(event);
 		switch (event.type) {

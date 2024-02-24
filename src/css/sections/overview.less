@@ -1,0 +1,215 @@
+// body layout
+.view-overview {
+	flex: 1;
+	display: flex;
+	overflow: hidden;
+
+	> div {
+		&:nth-child(1) {
+			width: 160px;
+			background: var( --sidebar-bg );
+			border-right: 1px solid rgba(#000,.1);
+		}
+
+		&:nth-child(2) {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+
+			.area-body {
+				flex: 1;
+				background: #f2f2f2;
+				overflow: auto;
+			}
+
+			.foot {
+				height: 30px;
+				background: var( --sidebar-bg );
+				border-top: 1px solid rgba(#000,.1);
+				padding: 3px 11px;
+				display: flex;
+
+				.status {
+					flex: 1;
+					text-align: center;
+					padding: 5px 0 0 90px;
+					opacity: .5;
+				}
+
+				.resize {
+					width: 90px;
+				}
+			}
+		}
+	}
+}
+
+// left sidebar
+.left-side {
+	padding: 2px 0;
+
+	legend {
+		padding: 3px 5px;
+		font-size: 12px;
+		color: #999;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: clip;
+
+		&:not(:first-child) {
+			margin-top: 11px;
+		}
+	}
+
+	.list-wrapper {
+		position: relative;
+		max-height: 500px;
+		overflow: hidden;
+
+		ul {
+			list-style: none;
+			
+			li {
+				position: relative;
+				display: block;
+				height: 20px;
+				padding-left: 29px;
+				padding-top: 1px;
+				margin-bottom: 1px;
+
+				&.active {
+					background: rgba(#000,.25);
+					color: #fff;
+					text-shadow: 0 1px 0 rgba(#000,.15);
+
+					i {
+						opacity: 1;
+						filter: invert(1) brightness(2) drop-shadow(0 1px 0 rgba(#000,.15));
+					}
+				}
+
+				i {
+					// background: rgba(#000,.1);
+					display: inline-block;
+					position: absolute;
+					top: 2px;
+					left: 7px;
+					opacity: .5;
+				}
+
+				span {
+					display: inline-block;
+					padding: 3px 0 0 0;
+				}
+			}
+		}
+	}
+
+	[class*="icon-"],
+	[class^="icon-"] {
+		position: relative;
+		width: 16px;
+		height: 16px;
+		background-position: 50% 50%;
+		background-repeat: no-repeat;
+		background-size: contain;
+
+		&.icon-category-all         { background-image: url(~/icons/icon-category-all.png); }
+		&.icon-category-letter      { background-image: url(~/icons/icon-category-letter.png); }
+		&.icon-category-number      { background-image: url(~/icons/icon-category-number.png); }
+		&.icon-category-punctuation { background-image: url(~/icons/icon-category-punctuation.png); }
+		&.icon-category-separator   { background-image: url(~/icons/icon-category-separator.png); }
+		&.icon-category-symbol      { background-image: url(~/icons/icon-category-symbol.png); }
+		&.icon-category-ligature    { background-image: url(~/icons/icon-category-ligature.png); }
+
+		&.icon-language-latin       { background-image: url(~/icons/icon-language-latin.png); }
+		&.icon-language-cryllic     { background-image: url(~/icons/icon-language-cryllic.png); }
+		&.icon-language-greek       { background-image: url(~/icons/icon-language-greek.png); }
+	}
+}
+
+.area-body {
+	--gSize: 75;
+
+	.glyph-list {
+		padding: 11px 17px;
+		font-size: 0;
+
+		h2 {
+			padding: 1px 0 7px;
+			margin: 0 0 11px;
+			font-size: 18px;
+			color: rgba(#000,.65);
+			border-bottom: 1px solid rgba(#999,.25);
+
+			&:not(:first-child) {
+				margin-top: 29px;
+			}
+		}
+
+		.glyph {
+			background: rgba(#fff,.25);
+			border: 1px solid rgba(#000,.1);
+			border-radius: 2px;
+			display: inline-block;
+			position: relative;
+			width: calc( var( --gSize ) * .7px );
+			height: calc( var( --gSize ) * 1px );
+			margin: 0 7px 11px 0;
+			text-align: center;
+			font-family: FiraGo;
+			font-size: 0;
+			cursor: pointer;
+
+			&:hover {
+				background: rgba(#eee,.125);
+				border-color: rgba(#000,.15);
+
+				.thumbnail {
+					color: rgba(#000,.25);
+				}
+
+				.name {
+					color: rgba(#000,.5);
+				}
+			}
+
+			&.white-space {
+				.thumbnail:before {
+					content: "white space";
+					position: absolute;
+					top: 15px;
+					left: 0;
+					font-size: 12px;
+				}
+
+				.name {
+					font-size: 12px;
+				}
+			}
+
+			.thumbnail {
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin-top: -3px;
+				top: calc( var( --gSize ) * 0.1px );
+				font-size: calc( var( --gSize ) * 0.575px );
+				color: rgba(#000,.075);
+			}
+
+			.name {
+				background: rgba(#aaa,.1);
+				color: rgba(#000,.25);
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				padding: 3px 0 0;
+				height: 21px;
+				font-size: 14px;
+				border-top: 1px solid rgba(#777,.1);
+			}
+		}
+	}
+}
