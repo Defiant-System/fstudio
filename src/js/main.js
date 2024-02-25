@@ -32,7 +32,7 @@ const glyphr = {
 				break;
 			// custom events
 			case "open-file":
-				Spawn.dialog.open({
+				window.dialog.open({
 					otf: fsItem => console.log(fsItem),
 					ttf: fsItem => console.log(fsItem),
 					woff: fsItem => console.log(fsItem),
@@ -51,6 +51,7 @@ const glyphr = {
 				}
 		}
 	},
+	blankView: @import "areas/blank-view.js",
 	toolbar: @import "areas/toolbar.js",
 	head: @import "areas/head.js",
 	overview: @import "areas/overview.js",

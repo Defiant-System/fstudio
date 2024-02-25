@@ -1,4 +1,9 @@
 
+// for dark theme
+@import "theme-dark";
+@import "blank-view";
+
+
 
 @sidebar_bg: #ececec;
 @layout_outline: #bbb;
@@ -36,6 +41,17 @@ content {
 	right: 0;
 	bottom: 0;
 	display: flex;
+
+	&.show-blank-view {
+		.main,
+		.sidebar {
+			display: none;
+		}
+
+		.blank-view {
+			display: block;
+		}
+	}
 
 	&.show-sidebar {
 		.sidebar {
