@@ -8,6 +8,8 @@
 			el: window.find(".view-design"),
 			cvs: window.find("canvas.glyph-editor"),
 		};
+		// get reference to canvas
+		this.els.ctx = this.els.cvs[0].getContext("2d");
 	},
 	dispatch(event) {
 		let APP = glyphr,
@@ -31,19 +33,19 @@
 				height = el.prop("offsetHeight");
 				Self.els.cvs.attr({ width, height });
 
-				let ctx = Self.els.cvs[0].getContext("2d"),
-					options = {
-						kerning: true,
-						hinting: true,
-						features: {
-							liga: true,
-							rlig: true
-						}
-					},
-					fontSize = 224;
-				
-				Font.draw(ctx, "A", 0, 200, fontSize, options);
+				let fontSize = 300,
+					x = 300,
+					y = 380;
 
+				// let glyph = Font.glyphs.get(36);
+				let glyph = Font.glyphs.get(34);
+				console.log( glyph.path );
+
+				Self.els.ctx.translate(.5, .5);
+
+				glyph.draw(Self.els.ctx, x, y, fontSize);
+				glyph.drawPoints(Self.els.ctx, x, y, fontSize);
+				// glyph.drawMetrics(Self.els.ctx, x, y, fontSize);
 				break;
 		}
 	}

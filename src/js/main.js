@@ -37,7 +37,7 @@ const glyphr = {
 			// custom events
 			case "load-sample":
 				// temp font file
-				value = event.url || `~/fonts/FiraSans-Medium.woff`;
+				value = `~/fonts/${event.name}`;
 				// fetch file
 				window.fetch(value, { responseType: "arrayBuffer" })
 					// forward event to app
