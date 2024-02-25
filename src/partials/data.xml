@@ -1,9 +1,9 @@
 <Data>
 	<Samples>
-		<i path="FiraSans-Medium.woff" img="~/img/blank.png"/>
-		<i path="Helvetica Neue.otf" img="~/img/blank.png"/>
-		<i path="Arial.ttf" img="~/img/blank.png"/>
-		<i path="Comic Sans.ttf" img="~/img/blank.png"/>
+		<i path="Times New Roman.woff" img="~/icons/tmp-file-times.png"/>
+		<i path="Helvetica Neue.otf" img="~/icons/tmp-file-helvetica.png"/>
+		<i path="Courier New.ttf" img="~/icons/tmp-file-courier.png"/>
+		<i path="Comic Sans.ttf" img="~/icons/tmp-file-comic-sans.png"/>
 	</Samples>
 
 	<Overview>
