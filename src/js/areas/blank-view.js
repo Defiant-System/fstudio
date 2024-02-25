@@ -41,19 +41,7 @@
 				// TODO
 				break;
 			case "select-sample":
-				let url = `~/fonts/FiraSans-Medium.woff`;
-					// parts = url.slice(url.lastIndexOf("/") + 1),
-					// [ name, kind ] = parts.split("."),
-					// file = new karaqu.File({ name, kind });
-				// fetch file
-				window.fetch(url, { responseType: "arrayBuffer" })
-					// forward event to app
-					.then(file => {
-						let tmp = OpenType.parse(file.arrayBuffer);
-						console.log( tmp );
-
-						Self.dispatch({ type: "hide-blank-view" });
-					});
+				APP.dispatch({ type: "load-sample" });
 				break;
 			case "select-recent-file":
 				break;

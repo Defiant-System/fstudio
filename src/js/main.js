@@ -3,6 +3,8 @@
 @import "./classes/file.js"
 @import "./modules/test.js"
 
+let Font;
+
 
 const glyphr = {
 	init() {
@@ -21,6 +23,7 @@ const glyphr = {
 	dispatch(event) {
 		let Self = glyphr,
 			name,
+			value,
 			pEl,
 			el;
 		switch (event.type) {
@@ -33,8 +36,19 @@ const glyphr = {
 				break;
 			// custom events
 			case "load-sample":
-				// enable toolbar
-				Self.blankView.dispatch({ type: "hide-blank-view" });
+				// temp font file
+				value = event.url || `~/fonts/FiraSans-Medium.woff`;
+				// fetch file
+				window.fetch(value, { responseType: "arrayBuffer" })
+					// forward event to app
+					.then(file => {
+						// reference to loaded font object
+						Font = OpenType.parse(file.arrayBuffer);
+						// hide blank view
+						Self.blankView.dispatch({ type: "hide-blank-view" });
+						// init design view
+						Self.design.dispatch({ type: "init-view" });
+					});
 				break;
 			case "open-file":
 				window.dialog.open({
