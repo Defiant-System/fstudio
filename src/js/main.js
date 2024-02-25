@@ -1,5 +1,6 @@
 
 @import "./ext/opentypejs_1-3-1.js"
+@import "./classes/file.js"
 @import "./modules/test.js"
 
 

@@ -49,9 +49,10 @@
 				window.fetch(url, { responseType: "arrayBuffer" })
 					// forward event to app
 					.then(file => {
-						console.log( file );
+						let tmp = OpenType.parse(file.arrayBuffer);
+						console.log( tmp );
 
-						// Self.dispatch({ type: "hide-blank-view" });
+						Self.dispatch({ type: "hide-blank-view" });
 					});
 				break;
 			case "select-recent-file":
