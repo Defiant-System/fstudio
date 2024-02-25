@@ -31,6 +31,10 @@ const glyphr = {
 				Self[Self.head.active].dispatch(event);
 				break;
 			// custom events
+			case "load-sample":
+				// enable toolbar
+				Self.blankView.dispatch({ type: "hide-blank-view" });
+				break;
 			case "open-file":
 				window.dialog.open({
 					otf: fsItem => console.log(fsItem),
