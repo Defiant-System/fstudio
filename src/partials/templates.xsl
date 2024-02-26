@@ -74,23 +74,23 @@
 	<div class="font-details">
 		<div class="field">
 			<span>Name</span>
-			<span>Oblegg</span>
+			<span>&#160;</span>
 		</div>
 		<div class="field">
 			<span>Style</span>
-			<span>Regular</span>
+			<span>&#160;</span>
 		</div>
 		<div class="field">
 			<span>Glyphs</span>
-			<span>102</span>
+			<span>&#160;</span>
 		</div>
 		<div class="field">
 			<span>File</span>
-			<span>Oblegg-Regular.otf</span>
+			<span>&#160;</span>
 		</div>
 		<div class="field">
 			<span>Size</span>
-			<span>47 kB</span>
+			<span>&#160;</span>
 		</div>
 	</div>
 </xsl:template>
@@ -105,6 +105,7 @@
 				<div class="glyph">
 					<xsl:if test="$char/@type = 'ws'"><xsl:attribute name="class">glyph white-space</xsl:attribute></xsl:if>
 					<xsl:attribute name="title"><xsl:value-of select="$char/@name"/></xsl:attribute>
+					<xsl:attribute name="data-id"><xsl:value-of select="$char/@id"/></xsl:attribute>
 					<span class="thumbnail"><xsl:value-of select="$char/@value"/></span>
 					<span class="name">
 						<xsl:value-of select="$char/@value"/>

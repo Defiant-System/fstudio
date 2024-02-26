@@ -3,7 +3,7 @@
 @import "./classes/file.js"
 @import "./modules/test.js"
 
-let Font;
+let FontFile;
 
 
 const glyphr = {
@@ -41,21 +41,21 @@ const glyphr = {
 				// fetch file
 				window.fetch(value, { responseType: "arrayBuffer" })
 					// forward event to app
-					.then(file => {
-						// reference to loaded font object
-						Font = OpenType.parse(file.arrayBuffer);
-						// hide blank view
-						Self.blankView.dispatch({ type: "hide-blank-view" });
-						// init overview view
-						Self.overview.dispatch({ type: "render-initial-view" });
-					});
+					.then(file => Self.dispatch({ type: "handle-font-file", file }));
 				break;
 			case "open-file":
 				window.dialog.open({
-					otf: fsItem => console.log(fsItem),
-					ttf: fsItem => console.log(fsItem),
-					woff: fsItem => console.log(fsItem),
+					otf: file => Self.dispatch({ type: "handle-font-file", file }),
+					ttf: file => Self.dispatch({ type: "handle-font-file", file }),
+					woff: file => Self.dispatch({ type: "handle-font-file", file }),
 				});
+				break;
+			case "handle-font-file":
+				FontFile = new File(event.file);
+				// hide blank view
+				Self.blankView.dispatch({ type: "hide-blank-view" });
+				// init overview view
+				Self.overview.dispatch({ type: "render-initial-view" });
 				break;
 			case "open-help":
 				karaqu.shell("fs -u '~/help/index.md'");

@@ -25,7 +25,7 @@
 		// console.log(event);
 		switch (event.type) {
 			case "render-initial-view":
-				console.log( Font );
+				console.log( FontFile );
 
 				// left side tree
 				window.render({
@@ -67,10 +67,8 @@
 			case "select-glyph":
 				el = $(event.target);
 				if (!el.hasClass("glyph")) return;
-				console.log("select glyph", el);
-
 				// init design view
-				APP.design.dispatch({ type: "init-view" });
+				APP.design.dispatch({ type: "init-view", id: +el.data("id") });
 				break;
 		}
 	}

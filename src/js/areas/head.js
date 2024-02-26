@@ -9,6 +9,8 @@
 			content: window.find(`content`),
 			main: window.find(`.main`),
 		};
+		// default active view
+		this.active = "overview";
 	},
 	dispatch(event) {
 		let APP = glyphr,

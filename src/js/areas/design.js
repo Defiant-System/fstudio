@@ -39,6 +39,7 @@
 	dispatch(event) {
 		let APP = glyphr,
 			Self = APP.design,
+			Font = FontFile.font,
 			width,
 			height,
 			el;
@@ -53,8 +54,9 @@
 				Self.els.cvs.attr(Self.data.cvsDim);
 				break;
 			case "init-view":
+				if (APP.head.active !== "design") APP.head.els.el.find(`span[data-view="design"]`).trigger("click");
 				if (!Self.data.cvsDim.width) Self.dispatch({ type: "window.resize" });
-				Self.data.glyph = Font.glyphs.get(37); // 74
+				Self.data.glyph = Font.glyphs.get(event.id); // 37, 74
 
 				Self.draw.glyph(Self);
 				break;
@@ -67,7 +69,8 @@
 	},
 	draw: {
 		glyph(Self) {
-			let Data = Self.data,
+			let Font = FontFile.font,
+				Data = Self.data,
 				ctx = Self.els.ctx,
 				glyph = Data.glyph,
 				commands = glyph.path.commands,

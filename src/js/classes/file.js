@@ -1,9 +1,12 @@
 
 class File {
-	constructor(fsFile, el) {
+	constructor(fsFile) {
 		// save reference to original FS file
 		this._file = fsFile || new karaqu.File({ kind: "otf" });
 		
+		// reference to loaded font object
+		this.font = OpenType.parse(fsFile.arrayBuffer);
+
 		switch (this.kind) {
 			case "otf":
 			case "ttf":
