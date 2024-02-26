@@ -102,6 +102,28 @@
 
 			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view.dX, Data.view.dY, scale);
 			if (Data.draw.handles) this.handles(ctx, handles, Data.view.dX, Data.view.dY, scale);
+
+
+			let pixelRatio = window.devicePixelRatio || 1;
+			let w = Data.cvsDim.width / pixelRatio;
+			let h = Data.cvsDim.height / pixelRatio;
+			let glyphMargin = 5;
+			let glyphW = w - glyphMargin * 2;
+			let glyphH = h - glyphMargin * 2;
+			let head = Font.tables.head;
+			let maxHeight = head.yMax - head.yMin;
+			let glyphScale = Math.min(glyphW / (head.xMax - head.xMin), glyphH / maxHeight);
+			let glyphBaseline = glyphMargin + glyphH * head.yMax / maxHeight;
+			let values = { w, h, glyphBaseline, glyphScale };
+
+			ctx.fillStyle = '#a0a0a0';
+			this.hLine(ctx, "Baseline", values, 0);
+			this.hLine(ctx, "yMax", values, Font.tables.head.yMax);
+			this.hLine(ctx, "yMin", values, Font.tables.head.yMin);
+			this.hLine(ctx, "Ascender", values, Font.tables.hhea.ascender);
+			this.hLine(ctx, "Descender", values, Font.tables.hhea.descender);
+			this.hLine(ctx, "Typo Ascender", values, Font.tables.os2.sTypoAscender);
+			this.hLine(ctx, "Typo Descender", values, Font.tables.os2.sTypoDescender);
 		},
 		path(ctx, path) {
 			var i, cmd, x1, y1, x2, y2;
@@ -170,6 +192,11 @@
 			ctx.closePath();
 			ctx.stroke();
 			ctx.fill();
+		},
+		hLine(ctx, text, values, yunits) {
+			let ypx = values.glyphBaseline - yunits * values.glyphScale;
+			ctx.fillText(text, 2, ypx + 3);
+			ctx.fillRect(80, ypx, values.w, 1);
 		}
 	},
 	viewPan(event) {
