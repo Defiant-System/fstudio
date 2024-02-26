@@ -51,7 +51,7 @@
 				break;
 			case "init-view":
 				if (!Self.data.cvsDim.width) Self.dispatch({ type: "window.resize" });
-				Self.data.glyph = Font.glyphs.get(37);
+				Self.data.glyph = Font.glyphs.get(37); // 74
 
 				Self.draw.glyph(Self);
 				break;
@@ -67,15 +67,14 @@
 			let Data = Self.data,
 				ctx = Self.els.ctx,
 				glyph = Data.glyph,
-				scale = 1 / glyph.path.unitsPerEm * Data.fontSize,
 				commands = glyph.path.commands,
 				anchors = [],
 				handles = [],
 				path;
-
+			// set scale
+			Data.view.scale = 1 / glyph.path.unitsPerEm * Data.fontSize,
 			// reset canvas
 			Self.els.cvs.attr(Self.data.cvsDim);
-			// ctx.translate(.5, .5);
 
 			// draw glyph base
 			path = glyph.getPath(Data.view.dX, Data.view.dY, Data.fontSize);
@@ -100,30 +99,17 @@
 				}
 			}
 
-			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view.dX, Data.view.dY, scale);
-			if (Data.draw.handles) this.handles(ctx, handles, Data.view.dX, Data.view.dY, scale);
-
-
-			let pixelRatio = window.devicePixelRatio || 1;
-			let w = Data.cvsDim.width / pixelRatio;
-			let h = Data.cvsDim.height / pixelRatio;
-			let glyphMargin = 5;
-			let glyphW = w - glyphMargin * 2;
-			let glyphH = h - glyphMargin * 2;
-			let head = Font.tables.head;
-			let maxHeight = head.yMax - head.yMin;
-			let glyphScale = Math.min(glyphW / (head.xMax - head.xMin), glyphH / maxHeight);
-			let glyphBaseline = glyphMargin + glyphH * head.yMax / maxHeight;
-			let values = { w, h, glyphBaseline, glyphScale };
+			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view.dX, Data.view.dY, Data.view.scale);
+			if (Data.draw.handles) this.handles(ctx, handles, Data.view.dX, Data.view.dY, Data.view.scale);
 
 			ctx.fillStyle = '#a0a0a0';
-			this.hLine(ctx, "Baseline", values, 0);
-			this.hLine(ctx, "yMax", values, Font.tables.head.yMax);
-			this.hLine(ctx, "yMin", values, Font.tables.head.yMin);
-			this.hLine(ctx, "Ascender", values, Font.tables.hhea.ascender);
-			this.hLine(ctx, "Descender", values, Font.tables.hhea.descender);
-			this.hLine(ctx, "Typo Ascender", values, Font.tables.os2.sTypoAscender);
-			this.hLine(ctx, "Typo Descender", values, Font.tables.os2.sTypoDescender);
+			this.hLine(ctx, "Baseline", Data, 0);
+			// this.hLine(ctx, "yMax", Data, Font.tables.head.yMax);
+			// this.hLine(ctx, "yMin", Data, Font.tables.head.yMin);
+			// this.hLine(ctx, "Ascender", Data, Font.tables.hhea.ascender);
+			// this.hLine(ctx, "Descender", Data, Font.tables.hhea.descender);
+			this.hLine(ctx, "Typo Ascender", Data, Font.tables.os2.sTypoAscender);
+			this.hLine(ctx, "Typo Descender", Data, Font.tables.os2.sTypoDescender);
 		},
 		path(ctx, path) {
 			var i, cmd, x1, y1, x2, y2;
@@ -193,10 +179,11 @@
 			ctx.stroke();
 			ctx.fill();
 		},
-		hLine(ctx, text, values, yunits) {
-			let ypx = values.glyphBaseline - yunits * values.glyphScale;
+		hLine(ctx, text, Data, y) {
+			let ypx = Data.view.dY - y * Data.view.scale,
+				w = Data.cvsDim.width;
 			ctx.fillText(text, 2, ypx + 3);
-			ctx.fillRect(80, ypx, values.w, 1);
+			ctx.fillRect(80, ypx, w, 1);
 		}
 	},
 	viewPan(event) {
