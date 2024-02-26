@@ -19,11 +19,13 @@
 		this.data = {
 			tool: "pan",
 			draw: {
+				lines: "#cccccc",
 				fill: "#11111122",
 				stroke: "#66666677",
 				strokeWidth: 1,
 				anchors: true,
 				handles: true,
+				guides: true,
 			},
 			fontSize: 350,
 			view: {
@@ -75,13 +77,25 @@
 			Data.view.scale = 1 / glyph.path.unitsPerEm * Data.fontSize,
 			// reset canvas
 			Self.els.cvs.attr(Self.data.cvsDim);
+			ctx.translate(-.5, -.5);
+
+			if (Data.draw.guides) {
+				ctx.fillStyle = Data.draw.lines;
+				this.hLine(ctx, "Baseline", Data, 0);
+				// this.hLine(ctx, "yMax", Data, Font.tables.head.yMax);
+				// this.hLine(ctx, "yMin", Data, Font.tables.head.yMin);
+				// this.hLine(ctx, "Ascender", Data, Font.tables.hhea.ascender);
+				// this.hLine(ctx, "Descender", Data, Font.tables.hhea.descender);
+				this.hLine(ctx, "Ascent", Data, Font.tables.os2.sTypoAscender);
+				this.hLine(ctx, "Descent", Data, Font.tables.os2.sTypoDescender);
+				
+				this.vLine(ctx, "Left side", Data, 0);
+				this.vLine(ctx, "Right side", Data, glyph.advanceWidth);
+			}
 
 			// draw glyph base
 			path = glyph.getPath(Data.view.dX, Data.view.dY, Data.fontSize);
-			path.fill = Data.draw.fill;
-			path.stroke = Data.draw.stroke;
-			path.strokeWidth = Data.draw.strokeWidth;
-			this.path(ctx, path);
+			this.path(ctx, path, Data);
 
 			// draw glyph path anchors + handles
 			for (let i=0, il=commands.length; i<il; i += 1) {
@@ -99,22 +113,13 @@
 				}
 			}
 
-			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view.dX, Data.view.dY, Data.view.scale);
 			if (Data.draw.handles) this.handles(ctx, handles, Data.view.dX, Data.view.dY, Data.view.scale);
-
-			ctx.fillStyle = '#a0a0a0';
-			this.hLine(ctx, "Baseline", Data, 0);
-			// this.hLine(ctx, "yMax", Data, Font.tables.head.yMax);
-			// this.hLine(ctx, "yMin", Data, Font.tables.head.yMin);
-			// this.hLine(ctx, "Ascender", Data, Font.tables.hhea.ascender);
-			// this.hLine(ctx, "Descender", Data, Font.tables.hhea.descender);
-			this.hLine(ctx, "Typo Ascender", Data, Font.tables.os2.sTypoAscender);
-			this.hLine(ctx, "Typo Descender", Data, Font.tables.os2.sTypoDescender);
+			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view.dX, Data.view.dY, Data.view.scale);
 		},
-		path(ctx, path) {
-			var i, cmd, x1, y1, x2, y2;
+		path(ctx, path, Data) {
+			var cmd, x1, y1, x2, y2;
 			ctx.beginPath();
-			for (i = 0; i < path.commands.length; i += 1) {
+			for (let i=0, il=path.commands.length; i<il; i += 1) {
 				cmd = path.commands[i];
 				if (cmd.type === "M") {
 					ctx.moveTo(cmd.x, cmd.y);
@@ -136,31 +141,29 @@
 				x2 = cmd.x;
 				y2 = cmd.y;
 			}
-			if (path.fill) {
-				ctx.fillStyle = path.fill;
-				ctx.fill();
-			}
-			if (path.stroke) {
-				ctx.strokeStyle = path.stroke;
-				ctx.lineWidth = path.strokeWidth;
-				ctx.stroke();
-			}
+			ctx.save();
+			ctx.fillStyle = Data.draw.fill;
+			ctx.fill();
+			ctx.strokeStyle = Data.draw.stroke;
+			ctx.lineWidth = Data.draw.strokeWidth;
+			ctx.stroke();
+			ctx.restore();
 		},
 		anchors(ctx, l, x, y, scale) {
 			let size = 6,
 				hS = size * .5;
 			ctx.fillStyle = "#fff";
-			ctx.strokeStyle = "#999";
+			ctx.strokeStyle = "#aaa";
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				let rx = x + (l[j].x * scale) - hS,
-					ry = y + (l[j].y * scale) - hS;
+				let rx = Math.round(x + (l[j].x * scale) - hS),
+					ry = Math.round(y + (l[j].y * scale) - hS);
 				ctx.fillRect(rx, ry, size, size);
 				ctx.strokeRect(rx, ry, size, size);
 			}
 		},
 		handles(ctx, l, x, y, scale) {
 			ctx.fillStyle = "#fff";
-			ctx.strokeStyle = "#999";
+			ctx.strokeStyle = "#aaa";
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
@@ -172,18 +175,32 @@
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				ctx.moveTo(x + (l[j].x * scale), y + (l[j].y * scale));
-				ctx.arc(x + (l[j].x * scale), y + (l[j].y * scale), 3, 0, Math.PI * 2, false);
+				let hx = Math.round(x + (l[j].x * scale)),
+					hy = Math.round(y + (l[j].y * scale));
+				ctx.moveTo(hx, hy);
+				ctx.arc(hx, hy, 2.5, 0, Math.PI * 2, false);
 			}
 			ctx.closePath();
 			ctx.stroke();
 			ctx.fill();
 		},
+		vLine(ctx, text, Data, x) {
+			let xpx = Math.round(Data.view.dX + x * Data.view.scale),
+				h = Data.cvsDim.height;
+			ctx.fillText(text, xpx + 3, 12);
+			ctx.save();
+			ctx.globalAlpha = .5;
+			ctx.fillRect(xpx, 0, 1, h);
+			ctx.restore();
+		},
 		hLine(ctx, text, Data, y) {
-			let ypx = Data.view.dY - y * Data.view.scale,
+			let ypx = Math.round(Data.view.dY - y * Data.view.scale),
 				w = Data.cvsDim.width;
-			ctx.fillText(text, 2, ypx + 3);
-			ctx.fillRect(80, ypx, w, 1);
+			ctx.fillText(text, 2, ypx - 3);
+			ctx.save();
+			ctx.globalAlpha = .5;
+			ctx.fillRect(0, ypx, w, 1);
+			ctx.restore();
 		}
 	},
 	viewPan(event) {

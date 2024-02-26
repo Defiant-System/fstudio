@@ -3,6 +3,25 @@
 	display: flex;
 	overflow: hidden;
 
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		top: 129px;
+		left: 392px;
+		width: 19px;
+		height: 19px;
+		border-radius: 50%;
+		background: rgba(#393,.35);
+		mix-blend-mode: multiply;
+		cursor: crosshair;
+	}
+
+	&:after {
+		top: 190px;
+		left: 479px;
+	}
+
 	canvas.glyph-editor {
 		
 	}
@@ -18,15 +37,15 @@
 			position: relative;
 			display: inline-block;
 			height: 19px;
-			padding-top: 2px;
+			padding-top: 3px;
 			border-radius: 2px;
 			vertical-align: text-top;
 
 			&.zoom-value {
 				width: 56px;
-				font-size: 14px;
+				font-size: 13px;
 				text-align: center;
-				color: #888;
+				color: #999;
 			}
 
 			&[data-click] {
