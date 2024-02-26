@@ -18,6 +18,7 @@
 		// view preferences
 		this.data = {
 			tool: "pan",
+			cvsDim: { width: 0, height: 0 },
 			draw: {
 				lines: "#cccccc",
 				fill: "#11111122",
@@ -202,6 +203,9 @@
 			ctx.fillRect(0, ypx, w, 1);
 			ctx.restore();
 		}
+	},
+	viewLasso(event) {
+
 	},
 	viewPan(event) {
 		let Self = glyphr.design,

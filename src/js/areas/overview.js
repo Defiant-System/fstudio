@@ -14,9 +14,6 @@
 		window.bluePrint.selectNodes(`//Unicode/*[not(@value)]`).map(x =>
 			x.setAttribute("value", String.fromCharCode(x.getAttribute("id"))));
 		// console.log( window.bluePrint.root );
-
-		// render glyph list
-		setTimeout(() => this.dispatch({ type: "render-initial-view" }), 10);
 	},
 	dispatch(event) {
 		let APP = glyphr,
@@ -28,6 +25,8 @@
 		// console.log(event);
 		switch (event.type) {
 			case "render-initial-view":
+				console.log( Font );
+
 				// left side tree
 				window.render({
 					template: "overview-tree",
@@ -69,6 +68,9 @@
 				el = $(event.target);
 				if (!el.hasClass("glyph")) return;
 				console.log("select glyph", el);
+
+				// init design view
+				APP.design.dispatch({ type: "init-view" });
 				break;
 		}
 	}

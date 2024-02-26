@@ -46,8 +46,8 @@ const glyphr = {
 						Font = OpenType.parse(file.arrayBuffer);
 						// hide blank view
 						Self.blankView.dispatch({ type: "hide-blank-view" });
-						// init design view
-						Self.design.dispatch({ type: "init-view" });
+						// init overview view
+						Self.overview.dispatch({ type: "render-initial-view" });
 					});
 				break;
 			case "open-file":
