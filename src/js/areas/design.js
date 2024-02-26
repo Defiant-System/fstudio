@@ -42,8 +42,6 @@
 				Self.els.cvs.attr({ width, height });
 				break;
 			case "init-view":
-				// console.log( Font.draw );
-
 				el = Self.els.cvs.parent();
 				width = el.prop("offsetWidth");
 				height = el.prop("offsetHeight");
@@ -53,6 +51,11 @@
 				Self.data.glyph = Font.glyphs.get(37);
 
 				Self.draw.glyph();
+				break;
+			case "zoom-minus":
+			case "zoom-plus":
+			case "zoom-fit":
+				console.log(event);
 				break;
 		}
 	},
@@ -162,5 +165,9 @@
 			ctx.stroke();
 			ctx.fill();
 		}
+	},
+	pan(event) {
+		let Self = glyphr,
+			Drag = Self.drag;
 	}
 }
