@@ -5,7 +5,7 @@
 
 	> div {
 		&:nth-child(1) {
-			width: 160px;
+			width: 170px;
 			background: var( --sidebar-bg );
 			border-right: 1px solid rgba(#000,.1);
 		}
@@ -45,15 +45,17 @@
 
 // left sidebar
 .left-side {
-	padding: 2px 0;
+	position: relative;
+	padding: 3px 0 0;
 
 	legend {
 		padding: 3px 5px;
-		font-size: 12px;
+		font-size: 10px;
 		color: #999;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: clip;
+		text-transform: uppercase;
 
 		&:not(:first-child) {
 			margin-top: 11px;
@@ -132,6 +134,53 @@
 		&.icon-language-latin       { background-image: url(~/icons/icon-language-latin.png); }
 		&.icon-language-cryllic     { background-image: url(~/icons/icon-language-cryllic.png); }
 		&.icon-language-greek       { background-image: url(~/icons/icon-language-greek.png); }
+	}
+
+	.font-details {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 173px;
+		padding-top: 53px;
+		border-top: 1px solid rgba(#000,.1);
+		font-size: 12px;
+		color: rgba(#000,.65);
+
+		&:before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 67px;
+			background: url(/app/ant/icons/app-icon-glyphr.png) 50% 5px no-repeat;
+			background-size: 25% auto;
+			filter: grayscale(1);
+		}
+
+		.field {
+			margin-bottom: 7px;
+			display: flex;
+
+			span {
+				padding-top: 1px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+
+				&:nth-child(1) {
+					font-size: 11px;
+					text-align: right;
+					width: 53px;
+					opacity: .5;
+					padding-top: 2px;
+					padding-right: 3px;
+
+					&:after { content: ":"; }
+				}
+			}
+		}
 	}
 }
 

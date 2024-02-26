@@ -71,6 +71,28 @@
 			</ul>
 		</div>
 	</xsl:for-each>
+	<div class="font-details">
+		<div class="field">
+			<span>Name</span>
+			<span>Oblegg</span>
+		</div>
+		<div class="field">
+			<span>Style</span>
+			<span>Regular</span>
+		</div>
+		<div class="field">
+			<span>Glyphs</span>
+			<span>102</span>
+		</div>
+		<div class="field">
+			<span>File</span>
+			<span>Oblegg-Regular.otf</span>
+		</div>
+		<div class="field">
+			<span>Size</span>
+			<span>47 kB</span>
+		</div>
+	</div>
 </xsl:template>
 
 
