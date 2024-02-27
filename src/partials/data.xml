@@ -6,24 +6,7 @@
 		<i path="Comic Sans.ttf" img="~/icons/tmp-file-comic-sans.png"/>
 	</Samples>
 
-	<Overview>
-		<Group name="Categories">
-			<i name="All" icon="icon-category-all"/>
-			<i name="Letter" icon="icon-category-letter" sets="1,2"/>
-			<i name="Number" icon="icon-category-number" sets="3"/>
-			<i name="Punctuation" icon="icon-category-punctuation" sets="4"/>
-			<i name="Separator" icon="icon-category-separator" sets="5"/>
-			<i name="Symbol" icon="icon-category-symbol" sets="6"/>
-			<i name="Ligature" icon="icon-category-ligature" sets="7"/>
-		</Group>
-		<Group name="Languages">
-			<i state="disabled" name="Latin" icon="icon-language-latin"/>
-			<i state="disabled" name="Cryllic" icon="icon-language-cryllic"/>
-			<i state="disabled" name="Greek" icon="icon-language-greek"/>
-		</Group>
-	</Overview>
-
-	<File name="Oblegg" style="Regular" glyphs="102" filename="Oblegg-Regular.otf" size="47 kB"/>
+	<Files />
 	
 	<Set id="1" name="Letter, Capital">
 		<!-- A-Z -->

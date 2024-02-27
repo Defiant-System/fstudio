@@ -25,12 +25,10 @@
 		// console.log(event);
 		switch (event.type) {
 			case "render-initial-view":
-				console.log( FontFile );
-
 				// left side tree
 				window.render({
 					template: "overview-tree",
-					match: `//Data/Overview`,
+					match: `//Data/Files/File`,
 					target: Self.els.left,
 				});
 				// auto select first tree item

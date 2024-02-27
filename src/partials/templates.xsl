@@ -54,6 +54,7 @@
 
 
 <xsl:template name="overview-tree">
+	<xsl:variable name="file" select="ancestor::Data/Files/File"/>
 	<xsl:for-each select="./Group">
 		<legend><xsl:value-of select="@name"/></legend>
 		<div class="list-wrapper">
@@ -74,23 +75,23 @@
 	<div class="font-details">
 		<div class="field">
 			<span>Name</span>
-			<span>&#160;</span>
+			<span><xsl:value-of select="$file/@name"/></span>
 		</div>
 		<div class="field">
 			<span>Style</span>
-			<span>&#160;</span>
+			<span><xsl:value-of select="$file/@style"/></span>
 		</div>
 		<div class="field">
 			<span>Glyphs</span>
-			<span>&#160;</span>
+			<span><xsl:value-of select="$file/@glyphs"/></span>
 		</div>
 		<div class="field">
 			<span>File</span>
-			<span>&#160;</span>
+			<span><xsl:value-of select="$file/@filename"/></span>
 		</div>
 		<div class="field">
 			<span>Size</span>
-			<span>&#160;</span>
+			<span><xsl:value-of select="$file/@size"/></span>
 		</div>
 	</div>
 </xsl:template>
