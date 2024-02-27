@@ -6,25 +6,36 @@ class File {
 		// reference to loaded font object
 		this.font = OpenType.parse(fsFile.arrayBuffer);
 
-		let cvs = $(`<canvas width="44" height="40" style="position: absolute; top: 0; left: 0;"></canvas>`)[0],
-			ctx = cvs.getContext("2d", { willReadFrequently: true }),
-			glyph = this.font.glyphs.get(1);
-
+		let cvs = $(`<canvas width="50" height="59" style="position: absolute; top: 0; left: 0;"></canvas>`)[0],
+			ctx = cvs.getContext("2d", { willReadFrequently: true });
+		// draw black glyph
 		ctx.fillStyle = "#000";
-		glyph.draw(ctx, 15, 26, 25);
 
+		let glyphs = this.font.glyphs,
+			keys = Object.keys(glyphs.glyphs).map(i => i),
+			parseNext = () => {
+				let glyph = glyphs.get(+keys.shift()),
+					hexCode = (glyph.unicode || 0).toHex();
+				
+				// clear canvas
+				cvs.width = 50;
+				glyph.draw(ctx, 3, 47, 47);
+				cvs.toBlob(async blob => {
+					let name = `${hexCode}.png`,
+						test = await window.cache.set({ name, blob });
+
+					window.find(`.glyph-list .glyph[data-id="${hexCode}"]`).css({ "--bg": `url('~/cache/${name}')` });
+
+					if (keys.length) parseNext();
+				});
+			};
+
+		parseNext();
+
+		/*
 		// window.cache.get("/app/ant/glyphr/cache/temp11.png").then(e => console.log( e ));
 		// window.cache.clear("temp11.png").then(e => console.log( e ));
-
-		cvs.toBlob(async blob => {
-			let test = await window.cache.set({ name: "temp11.png", blob });
-			console.log( `url('~/cache/temp11.png')` );
-		});
-
-		setTimeout(() => {
-			window.find(`.glyph-list .glyph[data-id="0x41"]`).css({ "--bg": `url('~/cache/temp11.png')` });
-		}, 500);
-		
+		*/
 
 
 		let xParent = window.bluePrint.selectSingleNode(`//Data/Files`);
