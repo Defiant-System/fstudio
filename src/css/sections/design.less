@@ -3,27 +3,40 @@
 	display: flex;
 	overflow: hidden;
 
-	&:before,
 	&:after {
 		content: "";
 		position: absolute;
-		top: 129px;
-		left: 392px;
-		width: 19px;
-		height: 19px;
-		border-radius: 50%;
-		background: rgba(#393,.35);
-		mix-blend-mode: multiply;
-		cursor: crosshair;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		background-image: conic-gradient(#eee 0% 25%, #fff 25% 50%, #eee 50% 75%, #fff 75% 100%);
+		background-size: 20px 20px;
 	}
 
-	&:after {
-		top: 190px;
-		left: 478px;
-	}
+	// &:before,
+	// &:after {
+	// 	content: "";
+	// 	position: absolute;
+	// 	top: 129px;
+	// 	left: 392px;
+	// 	width: 19px;
+	// 	height: 19px;
+	// 	border-radius: 50%;
+	// 	background: rgba(#393,.35);
+	// 	mix-blend-mode: multiply;
+	// 	cursor: crosshair;
+	// }
+
+	// &:after {
+	// 	top: 190px;
+	// 	left: 478px;
+	// }
 
 	canvas.glyph-editor {
-		
+		position: relative;
+		z-index: 2;
 	}
 
 	.zoom-tools {
