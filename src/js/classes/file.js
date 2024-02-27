@@ -15,11 +15,17 @@ class File {
 			keys = Object.keys(glyphs.glyphs).map(i => i),
 			parseNext = () => {
 				let glyph = glyphs.get(+keys.shift()),
-					hexCode = (glyph.unicode || 0).toHex();
+					hexCode = (glyph.unicode || 0).toHex(),
+					fontSize = 47,
+					scale = 1 / glyph.path.unitsPerEm * fontSize,
+					w = 50,
+					x = (w - (glyph.advanceWidth * scale)) >> 1,
+					y = 47;
 				
 				// clear canvas
-				cvs.width = 50;
-				glyph.draw(ctx, 3, 47, 47);
+				cvs.width = w;
+				glyph.draw(ctx, x, y, fontSize);
+
 				cvs.toBlob(async blob => {
 					let name = `${hexCode}.png`,
 						test = await window.cache.set({ name, blob });
