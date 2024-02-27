@@ -56,7 +56,8 @@
 			case "init-view":
 				if (APP.head.active !== "design") APP.head.els.el.find(`span[data-view="design"]`).trigger("click");
 				if (!Self.data.cvsDim.width) Self.dispatch({ type: "window.resize" });
-				Self.data.glyph = Font.glyphs.get(event.id); // 37, 74
+				// fetch flyph by unicode
+				Self.data.glyph = FontFile.getGlyphByUnicode(event.id);
 
 				Self.draw.glyph(Self);
 				break;

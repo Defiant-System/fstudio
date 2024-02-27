@@ -6,13 +6,11 @@ class File {
 		// reference to loaded font object
 		this.font = OpenType.parse(fsFile.arrayBuffer);
 
+		// draw black glyph and put it in app cache
 		let cvs = $(`<canvas width="50" height="59" style="position: absolute; top: 0; left: 0;"></canvas>`)[0],
-			ctx = cvs.getContext("2d", { willReadFrequently: true });
-		// draw black glyph
-		ctx.fillStyle = "#000";
-
-		let glyphs = this.font.glyphs,
-			keys = Object.keys(glyphs.glyphs).map(i => i),
+			ctx = cvs.getContext("2d", { willReadFrequently: true }),
+			glyphs = this.font.glyphs,
+			keys = Object.keys(glyphs.glyphs),
 			parseNext = () => {
 				let glyph = glyphs.get(+keys.shift()),
 					hexCode = (glyph.unicode || 0).toHex(),
@@ -35,14 +33,9 @@ class File {
 					if (keys.length) parseNext();
 				});
 			};
-
 		parseNext();
 
-		/*
-		// window.cache.get("/app/ant/glyphr/cache/temp11.png").then(e => console.log( e ));
-		// window.cache.clear("temp11.png").then(e => console.log( e ));
-		*/
-
+		
 
 		let xParent = window.bluePrint.selectSingleNode(`//Data/Files`);
 		let xAttr = [],
@@ -89,6 +82,16 @@ class File {
 			base = this._file.base;
 		if (!base) base = path.slice(path.lastIndexOf("/") + 1);
 		return base;
+	}
+
+	getGlyphByUnicode(uc) {
+		let glyphs = this.font.glyphs,
+			keys = Object.keys(glyphs.glyphs),
+			unicode = +uc;
+		while (keys.length) {
+			let glyph = glyphs.get(+keys.shift());
+			if (glyph.unicode === unicode) return glyph;
+		}
 	}
 
 	toBlob(opt={}) {
