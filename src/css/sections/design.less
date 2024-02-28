@@ -6,14 +6,6 @@
 	/* checkers
 	&:after {
 		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-		background-image: conic-gradient(#eee 0% 25%, #fff 25% 50%, #eee 50% 75%, #fff 75% 100%);
-		background-size: 20px 20px;
 	}
 	*/
 
@@ -41,12 +33,31 @@
 		z-index: 2;
 	}
 
+	.ux-wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		overflow: hidden;
+
+		.ux-layer {
+			position: absolute;
+			top: 90px;
+			left: 130px;
+			width: 200px;
+			height: 300px;
+			background-image: conic-gradient(#eee 0% 25%, #fff 25% 50%, #eee 50% 75%, #fff 75% 100%);
+			background-size: 20px 20px;
+		}
+	}
+
 	.zoom-tools {
 		position: absolute;
 		bottom: 9px;
 		right: 11px;
 		font-size: 0;
-		z-index: 3;
+		z-index: 5;
 
 		span {
 			// background: rgba(#000,.1);

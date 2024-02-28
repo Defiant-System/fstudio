@@ -61,7 +61,7 @@
 				// fetch flyph by unicode
 				Self.data.glyph = FontFile.getGlyphByUnicode(event.id);
 
-				// console.log( FontFile );
+				console.log( FontFile.font );
 
 				Self.draw.glyph(Self);
 				break;
