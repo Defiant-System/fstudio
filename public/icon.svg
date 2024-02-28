@@ -2,14 +2,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55">
 	<style type="text/css">
 		.st0{fill:url(#SVGID_1_);filter:url(#defapp-filter-1);}
-		.st1{fill:#FFFFFF;}
+		.st1{fill:#fff;}
 	</style>
 	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="27.5217" y1="2.214" x2="27.5217" y2="50.8038">
-		<stop  offset="0" style="stop-color:#81D7BC"/>
-		<stop  offset="0.1888" style="stop-color:#4AC685"/>
-		<stop  offset="0.506" style="stop-color:#2FBE6E"/>
-		<stop  offset="0.7631" style="stop-color:#00AF26"/>
-		<stop  offset="1" style="stop-color:#00AF29"/>
+		<stop offset="0" style="stop-color:#81D7BC"/>
+		<stop offset="0.1888" style="stop-color:#4AC685"/>
+		<stop offset="0.506" style="stop-color:#2FBE6E"/>
+		<stop offset="0.7631" style="stop-color:#00AF26"/>
+		<stop offset="1" style="stop-color:#00AF29"/>
 	</linearGradient>
 	<filter filterUnits="objectBoundingBox" id="defapp-filter-1">
 		<feOffset dx="0" dy="0.75" in="SourceAlpha" result="defappShadowOffsetOuter1"></feOffset>
