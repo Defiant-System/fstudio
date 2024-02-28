@@ -7,6 +7,8 @@
 
 @sidebar_bg: #ececec;
 @layout_outline: #bbb;
+@outline_color: #bbb;
+
 
 &.win-body-focused_ {
 	.sidebar {
@@ -317,6 +319,16 @@ content {
 				position: relative;
 				padding: 13px 11px 7px;
 				margin-bottom: 1px;
+
+				&:not(:last-child):after {
+					content: "";
+					position: absolute;
+					left: 17px;
+					right: 17px;
+					bottom: 0px;
+					height: 1px;
+					background: fadeout(@outline_color, 47%);
+				}
 				
 				.flex-row {
 					display: flex;
@@ -361,7 +373,7 @@ content {
 
 						&.has-title {
 							position: relative;
-							margin-bottom: 13px;
+							margin-bottom: 23px;
 
 							&:before {
 								content: attr(title);
@@ -370,7 +382,7 @@ content {
 								left: 0;
 								right: 16px;
 								text-align: center;
-								margin-top: 5px;
+								margin-top: 3px;
 								font-size: 11px;
 							}
 						}

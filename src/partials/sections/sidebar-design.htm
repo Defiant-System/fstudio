@@ -10,16 +10,9 @@
 	<div class="sidebar-body active">
 		<div class="group-row">
 			<div class="flex-row">
-				<legend class="bold">Size</legend>
-				<div class="indent has-title" title="Width" data-suffix="px">
-					<input type="number" min="0" max="1e5" step="1" name="width"/>
-					<div>
-						<span></span>
-						<span></span>
-					</div>
-				</div>
-				<div class="has-title" title="Height" data-suffix="px">
-					<input type="number" min="0" max="1e5" step="1" name="height"/>
+				<legend class="bold">Advance Width</legend>
+				<div>
+					<input type="number" min="7" max="1e5" name="table-rows-num" value="1608"/>
 					<div>
 						<span></span>
 						<span></span>
@@ -30,16 +23,53 @@
 
 		<div class="group-row">
 			<div class="flex-row">
-				<legend class="bold">Position</legend>
-				<div class="indent has-title" title="X" data-suffix="px">
-					<input type="number" min="0" max="1e5" step="1" name="x"/>
+				<legend class="bold">Bearings</legend>
+				<div class="indent has-title" title="Left">
+					<input type="number" min="0" max="1e5" step="1" name="left" value="0"/>
 					<div>
 						<span></span>
 						<span></span>
 					</div>
 				</div>
-				<div class="has-title" title="Y" data-suffix="px">
-					<input type="number" min="0" max="1e5" step="1" name="y"/>
+				<div class="has-title" title="Right">
+					<input type="number" min="0" max="1e5" step="1" name="right" value="62"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row">
+			<div class="flex-row">
+				<legend class="bold">Overall Paths</legend>
+				<div class="indent has-title" title="X">
+					<input type="number" min="0" max="1e5" step="1" name="x" value="0"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="has-title" title="Y">
+					<input type="number" min="0" max="1e5" step="1" name="y" value="1495"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+			<div class="flex-row">
+				<legend class="bold"></legend>
+				<div class="indent has-title" title="Width">
+					<input type="number" min="0" max="1e5" step="1" name="width" value="1546"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="has-title" title="Height">
+					<input type="number" min="0" max="1e5" step="1" name="height" value="1511"/>
 					<div>
 						<span></span>
 						<span></span>
