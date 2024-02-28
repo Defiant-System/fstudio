@@ -61,7 +61,7 @@
 				// fetch flyph by unicode
 				Self.data.glyph = FontFile.getGlyphByUnicode(event.id);
 
-				console.log( FontFile.font );
+				// console.log( FontFile.font );
 
 				Self.draw.glyph(Self);
 				break;
@@ -137,14 +137,14 @@
 			if (Data.draw.handles) this.handles(ctx, handles, Data.view);
 			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view);
 
-			let lW = 10,
-				w = Data.view.dW,
-				h = Data.view.dH,
-				x = Data.view.dX,
-				y = (Self.data.cvsDim.height - h + lW) >> 1;
-			ctx.strokeStyle = "#ff111110";
-			ctx.lineWidth = lW;
-			ctx.strokeRect(x, y, w, h);
+			// let lW = 10,
+			// 	w = Data.view.dW,
+			// 	h = Data.view.dH,
+			// 	x = Data.view.dX,
+			// 	y = (Self.data.cvsDim.height - h + lW) >> 1;
+			// ctx.strokeStyle = "#ff111110";
+			// ctx.lineWidth = lW;
+			// ctx.strokeRect(x, y, w, h);
 		},
 		path(ctx, path, Data) {
 			var cmd, x1, y1, x2, y2;

@@ -3,31 +3,6 @@
 	display: flex;
 	overflow: hidden;
 
-	/* checkers
-	&:after {
-		content: "";
-	}
-	*/
-
-	// &:before,
-	// &:after {
-	// 	content: "";
-	// 	position: absolute;
-	// 	top: 129px;
-	// 	left: 392px;
-	// 	width: 19px;
-	// 	height: 19px;
-	// 	border-radius: 50%;
-	// 	background: rgba(#393,.35);
-	// 	mix-blend-mode: multiply;
-	// 	cursor: crosshair;
-	// }
-
-	// &:after {
-	// 	top: 190px;
-	// 	left: 478px;
-	// }
-
 	canvas.glyph-editor {
 		position: relative;
 		z-index: 2;
@@ -39,16 +14,30 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
+		z-index: 3;
 		overflow: hidden;
+		pointer-events: none;
 
 		.ux-layer {
 			position: absolute;
-			top: 90px;
-			left: 130px;
-			width: 200px;
-			height: 300px;
-			background-image: conic-gradient(#eee 0% 25%, #fff 25% 50%, #eee 50% 75%, #fff 75% 100%);
-			background-size: 20px 20px;
+			top: 92px;
+			left: 226px;
+			width: 277px;
+			height: 436px;
+			border: 1px solid rgba(#000,.15);
+			// background-image: conic-gradient(#eee 0% 25%, #fff 25% 50%, #eee 50% 75%, #fff 75% 100%);
+			// background-size: 20px 20px;
+
+			.anchor {
+				background: rgba(#3a3,.25);
+				position: absolute;
+				margin: -8px 0 0 -8px;
+				width: 17px;
+				height: 17px;
+				border-radius: 50%;
+				cursor: crosshair;
+				pointer-events: all;
+			}
 		}
 	}
 
