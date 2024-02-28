@@ -23,9 +23,9 @@
 				lines: "#cccccc",
 				fill: "#11111122",
 				stroke: "#66666677",
-				strokeWidth: 1,
+				strokeWidth: 1.25,
 				anchors: true,
-				handles: true,
+				handles: false,
 				guides: true,
 			},
 			fontSize: 350,
@@ -59,12 +59,24 @@
 				// fetch flyph by unicode
 				Self.data.glyph = FontFile.getGlyphByUnicode(event.id);
 
+				// console.log( FontFile );
+
 				Self.draw.glyph(Self);
 				break;
 			case "zoom-minus":
 			case "zoom-plus":
-			case "zoom-fit":
 				console.log(event);
+				break;
+			case "zoom-fit":
+				let glyph = Self.data.glyph,
+					os2 = FontFile.font.tables.os2,
+					dZ = 1 / glyph.path.unitsPerEm * Self.data.fontSize,
+					dX = (Self.data.cvsDim.width - (glyph.advanceWidth * dZ)) >> 1,
+					dY = (os2.sTypoAscender - os2.sTypoDescender) * dZ;
+				
+				Self.data.view = { dX, dY, dZ };
+				// update canvas
+				Self.draw.glyph(Self);
 				break;
 		}
 	},
@@ -78,10 +90,11 @@
 				anchors = [],
 				handles = [],
 				path;
-			// set scale
-			Data.view.scale = 1 / glyph.path.unitsPerEm * Data.fontSize,
+			// set zoom / scale
+			Data.view.dZ = 1 / glyph.path.unitsPerEm * Data.fontSize,
 			// reset canvas
 			Self.els.cvs.attr(Self.data.cvsDim);
+			// for sharper lines
 			ctx.translate(-.5, -.5);
 
 			if (Data.draw.guides) {
@@ -118,8 +131,8 @@
 				}
 			}
 
-			if (Data.draw.handles) this.handles(ctx, handles, Data.view.dX, Data.view.dY, Data.view.scale);
-			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view.dX, Data.view.dY, Data.view.scale);
+			if (Data.draw.handles) this.handles(ctx, handles, Data.view);
+			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view);
 		},
 		path(ctx, path, Data) {
 			var cmd, x1, y1, x2, y2;
@@ -154,34 +167,34 @@
 			ctx.stroke();
 			ctx.restore();
 		},
-		anchors(ctx, l, x, y, scale) {
+		anchors(ctx, l, view) {
 			let size = 6,
 				hS = size * .5;
 			ctx.fillStyle = "#fff";
 			ctx.strokeStyle = "#aaa";
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				let rx = Math.round(x + (l[j].x * scale) - hS),
-					ry = Math.round(y + (l[j].y * scale) - hS);
+				let rx = Math.round(view.dX + (l[j].x * view.dZ) - hS),
+					ry = Math.round(view.dY + (l[j].y * view.dZ) - hS);
 				ctx.fillRect(rx, ry, size, size);
 				ctx.strokeRect(rx, ry, size, size);
 			}
 		},
-		handles(ctx, l, x, y, scale) {
+		handles(ctx, l, view) {
 			ctx.fillStyle = "#fff";
 			ctx.strokeStyle = "#aaa";
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				ctx.moveTo(x + (l[j].ox * scale), y + (l[j].oy * scale));
-				ctx.lineTo(x + (l[j].x * scale), y + (l[j].y * scale));
+				ctx.moveTo(view.dX + (l[j].ox * view.dZ), view.dY + (l[j].oy * view.dZ));
+				ctx.lineTo(view.dX + (l[j].x * view.dZ), view.dY + (l[j].y * view.dZ));
 			}
 			ctx.closePath();
 			ctx.stroke();
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				let hx = Math.round(x + (l[j].x * scale)),
-					hy = Math.round(y + (l[j].y * scale));
+				let hx = Math.round(view.dX + (l[j].x * view.dZ)),
+					hy = Math.round(view.dY + (l[j].y * view.dZ));
 				ctx.moveTo(hx, hy);
 				ctx.arc(hx, hy, 2.5, 0, Math.PI * 2, false);
 			}
@@ -190,7 +203,7 @@
 			ctx.fill();
 		},
 		vLine(ctx, text, Data, x) {
-			let xpx = Math.round(Data.view.dX + x * Data.view.scale),
+			let xpx = Math.round(Data.view.dX + x * Data.view.dZ),
 				h = Data.cvsDim.height;
 			ctx.fillText(text, xpx + 3, 12);
 			ctx.save();
@@ -199,7 +212,7 @@
 			ctx.restore();
 		},
 		hLine(ctx, text, Data, y) {
-			let ypx = Math.round(Data.view.dY - y * Data.view.scale),
+			let ypx = Math.round(Data.view.dY - y * Data.view.dZ),
 				w = Data.cvsDim.width;
 			ctx.fillText(text, 2, ypx - 3);
 			ctx.save();
