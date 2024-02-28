@@ -7,6 +7,8 @@ class File {
 		this.font = OpenType.parse(fsFile.arrayBuffer);
 
 		// draw black glyph and put it in app cache
+		this._cached = [];
+		// temp: this._cached.push("0x41", "0x42", "0x43");
 		let cvs = $(`<canvas width="50" height="59" style="position: absolute; top: 0; left: 0;"></canvas>`)[0],
 			ctx = cvs.getContext("2d", { willReadFrequently: true }),
 			glyphs = this.font.glyphs,
@@ -27,28 +29,29 @@ class File {
 				cvs.toBlob(async blob => {
 					let name = `${hexCode}.png`,
 						test = await window.cache.set({ name, blob });
-
-					window.find(`.glyph-list .glyph[data-id="${hexCode}"]`).css({ "--bg": `url('~/cache/${name}')` });
-
+					// add bg-node for rendereing
+					this._cached.push(hexCode);
+					// look up HTML element & add attribute
+					window.find(` .glyph[data-id="${hexCode}"]`).css({ "--bg": `url('~/cache/${name}')` });
+					// draw next glyph
 					if (keys.length) parseNext();
 				});
 			};
 		parseNext();
 
-		
-
-		let xParent = window.bluePrint.selectSingleNode(`//Data/Files`);
-		let xAttr = [],
+		// add font details to app blueprint
+		let xParent = window.bluePrint.selectSingleNode(`//Data/Files`),
+			xAttr = [],
 			xGroups = [];
-
+		// font node details
 		xAttr.push(`name="${this.font.tables.name.fontFamily.en}"`);
 		xAttr.push(`style="${this.font.tables.name.fontSubfamily.en || "Regular"}"`);
 		xAttr.push(`glyphs="${this.font.numGlyphs}"`);
 		xAttr.push(`filename="${this.base}"`);
 		xAttr.push(`size="${+(fsFile.size / 1024).toFixed(1)} kB"`);
-
+		// sidebar tree
 		xGroups.push(`<Group name="Categories">
-						<i name="All" icon="icon-category-all"/>
+						<i name="All" icon="icon-category-all" sets="1,2,3,4,5,6,7"/>
 						<i name="Letter" icon="icon-category-letter" sets="1,2"/>
 						<i name="Number" icon="icon-category-number" sets="3"/>
 						<i name="Punctuation" icon="icon-category-punctuation" sets="4"/>
@@ -62,6 +65,7 @@ class File {
 						<i state="disabled" name="Greek" icon="icon-language-greek"/>
 					</Group>`);
 
+		// add to app blueprint
 		let xNode = $.nodeFromString(`<File ${xAttr.join(" ")}>${xGroups.join("\n")}</File>`);
 		this._xNode = xParent.appendChild(xNode);
 

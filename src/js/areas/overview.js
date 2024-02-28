@@ -5,7 +5,7 @@
 	init() {
 		// fast references
 		this.els = {
-			body: window.find(".view-overview"),
+			view: window.find(".view-overview"),
 			left: window.find(".left-side"),
 			body: window.find(".area-body"),
 		};
@@ -54,6 +54,10 @@
 					changePath,
 					changeSelect,
 				});
+
+				// look up HTML element & add attribute
+				FontFile._cached.map(hexCode =>
+					Self.els.body.find(`.glyph[data-id="${hexCode}"]`).css({ "--bg": `url('~/cache/${hexCode}.png')` }));
 				
 				// update glyph count in footer
 				value = Self.els.body.find(".glyph").length;
