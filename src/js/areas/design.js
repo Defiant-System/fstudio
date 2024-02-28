@@ -1,5 +1,5 @@
 
-// glyphr.design
+// fstudio.design
 
 {
 	init() {
@@ -41,7 +41,7 @@
 		};
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.design,
 			Font = FontFile.font,
 			width,
@@ -236,7 +236,7 @@
 		}
 	},
 	viewLasso(event) {
-		let Self = glyphr.design,
+		let Self = fstudio.design,
 			Drag = Self.drag;
 		switch(event.type) {
 			case "mousedown":
@@ -291,7 +291,7 @@
 		}
 	},
 	viewPan(event) {
-		let Self = glyphr.design,
+		let Self = fstudio.design,
 			Drag = Self.drag;
 		switch(event.type) {
 			case "mousedown":

@@ -1,5 +1,5 @@
 
-// glyphr.sidebar
+// fstudio.sidebar
 
 {
 	init() {
@@ -10,7 +10,7 @@
 		};
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.sidebar,
 			value,
 			el;

@@ -1,5 +1,5 @@
 
-// glyphr.blankView
+// fstudio.blankView
 
 {
 	init() {
@@ -12,7 +12,7 @@
 		this.dispatch({ type: "init-blank-view" });
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.blankView,
 			el;
 		// console.log(event);

@@ -1,5 +1,5 @@
 
-// glyphr.preview
+// fstudio.preview
 
 {
 	init() {
@@ -10,7 +10,7 @@
 		};
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.preview,
 			el;
 		// console.log(event);

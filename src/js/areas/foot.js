@@ -1,5 +1,5 @@
 
-// glyphr.foot
+// fstudio.foot
 
 {
 	init() {
@@ -9,7 +9,7 @@
 		};
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.foot,
 			el;
 		// console.log(event);

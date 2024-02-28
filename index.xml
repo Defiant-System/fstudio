@@ -1,10 +1,10 @@
 <Application>
 	<Head>
-		<meta name="id" value="glyphr"/>
-		<meta name="title" value="Glyph Studio" version="1.1"/>
+		<meta name="id" value="fstudio"/>
+		<meta name="title" value="ƒStudio" version="1.1"/>
 		<meta name="author" value="Hakan Bilgin" namespace="ant"/>
 		<meta name="license" value="AGPL-3.0"/>
-		<meta name="repository" value="https://github.com/Defiant-System/glyphr"/>
+		<meta name="repository" value="https://github.com/Defiant-System/fstudio"/>
 		<meta name="width" value="980"/>
 		<meta name="height" value="640"/>
 		<meta name="top" value="165"/>

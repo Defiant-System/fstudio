@@ -1,5 +1,5 @@
 
-// glyphr.kerning
+// fstudio.kerning
 
 {
 	init() {
@@ -10,7 +10,7 @@
 		};
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.kerning,
 			el;
 		// console.log(event);

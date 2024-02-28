@@ -1,5 +1,5 @@
 
-// glyphr.toolbar
+// fstudio.toolbar
 
 {
 	init() {
@@ -10,7 +10,7 @@
 		};
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.toolbar,
 			el;
 		// console.log(event);

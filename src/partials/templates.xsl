@@ -2,7 +2,7 @@
 
 
 <xsl:template name="blank-view">
-	<h2>Welcome to Glyphr Studio.</h2>
+	<h2>Welcome to ƒStudio.</h2>
 
 	<div class="block-buttons">
 		<div class="btn" data-click="open-file">

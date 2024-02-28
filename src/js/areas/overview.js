@@ -1,5 +1,5 @@
 
-// glyphr.overview
+// fstudio.overview
 
 {
 	init() {
@@ -16,7 +16,7 @@
 		// console.log( window.bluePrint.root );
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.overview,
 			changePath,
 			changeSelect,

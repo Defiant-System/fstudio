@@ -6,7 +6,7 @@
 let FontFile;
 
 
-const glyphr = {
+const fstudio = {
 	init() {
 		// fast references
 		this.content = window.find("content");
@@ -21,7 +21,7 @@ const glyphr = {
 		// DEV-ONLY-END
 	},
 	dispatch(event) {
-		let Self = glyphr,
+		let Self = fstudio,
 			name,
 			value,
 			pEl,
@@ -81,4 +81,4 @@ const glyphr = {
 	foot: @import "areas/foot.js",
 };
 
-window.exports = glyphr;
+window.exports = fstudio;

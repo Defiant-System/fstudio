@@ -1,5 +1,5 @@
 
-// glyphr.head
+// fstudio.head
 
 {
 	init() {
@@ -13,7 +13,7 @@
 		this.active = "overview";
 	},
 	dispatch(event) {
-		let APP = glyphr,
+		let APP = fstudio,
 			Self = APP.head,
 			value,
 			el;
