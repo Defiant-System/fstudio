@@ -73,6 +73,7 @@
 		</div>
 	</xsl:for-each>
 	<div class="font-details">
+		<div class="progress"><span></span></div>
 		<div class="field">
 			<span>Name</span>
 			<span><xsl:value-of select="$file/@name"/></span>

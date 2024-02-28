@@ -31,6 +31,7 @@
 				.status {
 					flex: 1;
 					text-align: center;
+					position: relative;
 					padding: 5px 0 0 90px;
 					opacity: .5;
 				}
@@ -158,6 +159,13 @@
 			background-size: 25% auto;
 			filter: grayscale(1);
 		}
+
+		&.working {
+			.progress { display: block; }
+			.field { display: none; }
+		}
+
+		.progress { display: none; }
 
 		.field {
 			margin-bottom: 7px;

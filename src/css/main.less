@@ -324,6 +324,31 @@ content {
 			}
 		}
 	}
+
+	.progress {
+		background: rgba(#000,.25);
+		box-shadow: 0 0 0 1px rgba(#000,.25);
+		display: inline-block;
+		position: relative;
+		top: 0;
+		left: 43px;
+		width: 89px;
+		height: 5px;
+		border-radius: 5px;
+		vertical-align: top;
+		--progress: 0;
+
+		span {
+			background: rgba(#fff,.75);
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			width: calc( calc( var( --progress ) * 1% ) - 1px );
+			border-radius: inherit;
+			pointer-events: none;
+		}
+	}
 }
 
 

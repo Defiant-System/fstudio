@@ -8,11 +8,14 @@ class File {
 
 		// draw black glyph and put it in app cache
 		this._cached = [];
-		// temp: this._cached.push("0x41", "0x42", "0x43");
 		let cvs = $(`<canvas width="50" height="59" style="position: absolute; top: 0; left: 0;"></canvas>`)[0],
 			ctx = cvs.getContext("2d", { willReadFrequently: true }),
 			glyphs = this.font.glyphs,
 			keys = Object.keys(glyphs.glyphs),
+			// for progress bar
+			workload = keys.length-1,
+			pEl,
+			// work function
 			parseNext = () => {
 				let glyph = glyphs.get(+keys.shift()),
 					hexCode = (glyph.unicode || 0).toHex(),
@@ -26,18 +29,28 @@ class File {
 				cvs.width = w;
 				glyph.draw(ctx, x, y, fontSize);
 
+				// update progress-bar
+				if (!pEl || !pEl.length) {
+					pEl = window.find(`.font-details .progress`);
+					pEl.parent().addClass("working");
+				}
+				pEl.css({ "--progress": (1 - (keys.length / workload)) * 100 | 1 });
+
 				cvs.toBlob(async blob => {
 					let name = `${hexCode}.png`,
 						test = await window.cache.set({ name, blob });
 					// add bg-node for rendereing
 					this._cached.push(hexCode);
 					// look up HTML element & add attribute
-					window.find(` .glyph[data-id="${hexCode}"]`).css({ "--bg": `url('~/cache/${name}')` });
+					window.find(`.glyph-list .glyph[data-id="${hexCode}"]`).css({ "--bg": `url('~/cache/${name}')` });
 					// draw next glyph
 					if (keys.length) parseNext();
+					else pEl.parent().removeClass("working");
 				});
 			};
-		parseNext();
+		// temp:
+		this._cached.push("0x41", "0x42", "0x43");
+		// parseNext();
 
 		// add font details to app blueprint
 		let xParent = window.bluePrint.selectSingleNode(`//Data/Files`),

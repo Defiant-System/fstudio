@@ -57,7 +57,8 @@
 
 				// look up HTML element & add attribute
 				FontFile._cached.map(hexCode =>
-					Self.els.body.find(`.glyph[data-id="${hexCode}"]`).css({ "--bg": `url('~/cache/${hexCode}.png')` }));
+					Self.els.body.find(`.glyph[data-id="${hexCode}"]`)
+						.css({ "--bg": `url('~/cache/${hexCode}.png')` }));
 				
 				// update glyph count in footer
 				value = Self.els.body.find(".glyph").length;
