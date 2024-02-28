@@ -3,6 +3,17 @@
 	display: flex;
 	overflow: hidden;
 
+	&:before1 {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-image: conic-gradient(#eee 0% 25%, #fff 25% 50%, #eee 50% 75%, #fff 75% 100%);
+		background-size: 20px 20px;
+	}
+
 	canvas.glyph-editor {
 		position: relative;
 		z-index: 2;
@@ -20,13 +31,13 @@
 
 		.ux-layer {
 			position: absolute;
-			border: 1px solid rgba(#333,.15);
-			// background-image: conic-gradient(#eee 0% 25%, #fff 25% 50%, #eee 50% 75%, #fff 75% 100%);
-			// background-size: 20px 20px;
+			box-shadow: inset 0 0 0 1px rgba(#333,.15);
+			// border: 1px solid rgba(#333,.15);
 
 			.anchor {
+				// background: rgba(#3a3,.25);
 				position: absolute;
-				margin: -8px 0 0 -7px;
+				margin: -7px 0 0 -7px;
 				width: 17px;
 				height: 17px;
 				border-radius: 50%;
@@ -35,6 +46,17 @@
 				cursor: none;
 
 				&:before {
+					content: "";
+					position: absolute;
+					top: 7px;
+					left: 7px;
+					width: 4px;
+					height: 4px;
+					border-radius: 50%;
+					background: rgba(#292,.5);
+				}
+
+				&:after {
 					content: "";
 					position: absolute;
 					top: -3px;
@@ -46,7 +68,8 @@
 					background: rgba(#3a3,.25);
 				}
 
-				&:hover:before {
+				&.selected:after,
+				&:hover:after {
 					animation: plop 160ms ease-in-out forwards;
 				}
 			}
@@ -56,7 +79,8 @@
 			position: absolute;
 			top: -999px;
 			left: -999px;
-			border: 1px solid #a3cbff;
+			box-shadow: inset 0 0 0 1px #a3cbff;
+			// border: 1px solid #a3cbff;
 		}
 	}
 

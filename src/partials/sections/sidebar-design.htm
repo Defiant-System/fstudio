@@ -10,6 +10,93 @@
 	<div class="sidebar-body active">
 		<div class="group-row">
 			<div class="flex-row">
+				<legend class="bold">Size</legend>
+				<div class="indent has-title" title="Width" data-suffix="px">
+					<input type="number" min="0" max="1e5" step="1" name="width"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="has-title" title="Height" data-suffix="px">
+					<input type="number" min="0" max="1e5" step="1" name="height"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row">
+			<div class="flex-row">
+				<legend class="bold">Position</legend>
+				<div class="indent has-title" title="X" data-suffix="px">
+					<input type="number" min="0" max="1e5" step="1" name="x"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="has-title" title="Y" data-suffix="px">
+					<input type="number" min="0" max="1e5" step="1" name="y"/>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row">
+			<div class="flex-row arrange">
+				<div class="w48">
+					<div class="option-buttons_ has-title_">
+						<span data-name="z-back" title="Back">
+							<span class="icon-arrange-back c13x19"></span>
+						</span>
+						<span data-name="z-front" title="Front">
+							<span class="icon-arrange-front c13x19"></span>
+						</span>
+					</div>
+				</div>
+
+				<div class="w48">
+					<div class="option-buttons_ has-title_">
+						<span data-name="z-backward" title="Backward">
+							<span class="icon-arrange-backward c13x19"></span>
+						</span>
+						<span data-name="z-forward" title="Forward">
+							<span class="icon-arrange-forward c13x19"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="group-row transformation">
+			<div class="flex-row1">
+				<legend class="bold">Transformations</legend>
+				<div>
+					<i class="icon-align-top"></i>
+					<i class="icon-align-bottom"></i>
+					<i class="icon-align-middle"></i>
+					<i class="icon-vertical-centers"></i>
+					<i class="icon-horizontal-centers"></i>
+				</div>
+				<div>
+					<i class="icon-align-left"></i>
+					<i class="icon-align-center"></i>
+					<i class="icon-align-right"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Guides body -->
+	<div class="sidebar-body">
+		<div class="group-row">
+			<div class="flex-row">
 				<legend class="bold">Rows</legend>
 				<div>
 					<input type="number" min="7" max="999" name="table-rows-num"/>
@@ -29,22 +116,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<i class="icon-align-top"></i>
-		<i class="icon-align-middle"></i>
-		<i class="icon-align-bottom"></i>
-		<i class="icon-vertical-centers"></i>
-		<i class="icon-align-left"></i>
-		<i class="icon-align-center"></i>
-		<i class="icon-align-right"></i>
-		<i class="icon-horizontal-centers"></i>
-	</div>
-
-	<!-- Guides body -->
-	<div class="sidebar-body">
-		<div class="group-row">
-			Guides
 		</div>
 	</div>
 

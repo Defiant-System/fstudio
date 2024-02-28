@@ -223,6 +223,13 @@ content {
 			margin: 5px;
 			opacity: .5;
 
+			&.c13x19 {
+				width: 19px;
+				height: 13px;
+				margin: 1px 0 0;
+				background-size: auto 19px;
+			}
+
 			&.icon-align-top          { background-image: url(~/icons/icon-align-top.png) }
 			&.icon-align-middle       { background-image: url(~/icons/icon-align-middle.png) }
 			&.icon-align-bottom       { background-image: url(~/icons/icon-align-bottom.png) }
@@ -231,6 +238,11 @@ content {
 			&.icon-align-center       { background-image: url(~/icons/icon-align-center.png) }
 			&.icon-align-right        { background-image: url(~/icons/icon-align-right.png) }
 			&.icon-horizontal-centers { background-image: url(~/icons/icon-horizontal-centers.png) }
+
+			&.icon-arrange-back         { background-image: url(~/icons/icon-arrange-back.png); }
+			&.icon-arrange-front        { background-image: url(~/icons/icon-arrange-front.png); }
+			&.icon-arrange-backward     { background-image: url(~/icons/icon-arrange-backward.png); }
+			&.icon-arrange-forward      { background-image: url(~/icons/icon-arrange-forward.png); }
 		}
 
 		.sidebar-head {
@@ -303,7 +315,7 @@ content {
 
 			.group-row {
 				position: relative;
-				padding: 13px 16px 7px;
+				padding: 13px 11px 7px;
 				margin-bottom: 1px;
 				
 				.flex-row {
@@ -319,6 +331,49 @@ content {
 
 					> div {
 						width: 30%;
+
+						&.w17 { width: 17%; }
+						&.w23 { width: 23%; }
+						&.w27 { width: 27%; }
+						&.w30 { width: 33%; }
+						&.w37 { width: 37%; }
+						&.w30 + .w63 { padding-top: 0; }
+						&.w48 { width: 48%; }
+						&.w60 { width: 60%; }
+						&.w63 { width: 63%; }
+						&.w65 { width: 65%; }
+						&.w73 { width: 73%; }
+
+						&.indent {
+							position: relative;
+							left: -11px;
+						}
+
+						&.w63 {
+							.form-checkbox_ {
+								margin-top: 3px;
+
+								& + label { top: 0; }
+							}
+
+							&.indent { left: -4px; }
+						}
+
+						&.has-title {
+							position: relative;
+							margin-bottom: 13px;
+
+							&:before {
+								content: attr(title);
+								position: absolute;
+								top: 100%;
+								left: 0;
+								right: 16px;
+								text-align: center;
+								margin-top: 5px;
+								font-size: 11px;
+							}
+						}
 					}
 				}
 			}

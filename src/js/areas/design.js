@@ -16,12 +16,12 @@
 		this.els.ctx = this.els.cvs[0].getContext("2d");
 
 		// bind event handlers
-		this.els.cvs.on("mousedown", this.viewPan);
+		this.els.cvs.on("mousedown", this.dispatch);
 
 		// view preferences
 		this.data = {
-			TAU: Math.PI * 2,
 			tool: "pan",
+			TAU: Math.PI * 2,
 			cvsDim: {
 				width: 0,
 				height: 0,
@@ -36,7 +36,7 @@
 					on: true,
 				},
 				anchor: {
-					on: true,
+					on: false,
 					size: 6,
 					fill: "#fff",
 					stroke: "#aaa",
@@ -51,10 +51,10 @@
 			fontSize: 370,
 			view: {
 				dZ: 1,
-				dX: 300,
-				dY: 380,
-				dW: 100,
-				dH: 100,
+				dX: 0,
+				dY: 0,
+				dW: 0,
+				dH: 0,
 			}
 		};
 	},
@@ -67,6 +67,19 @@
 			el;
 		// console.log(event);
 		switch (event.type) {
+			// native events
+			case "mousedown":
+				// prevent default behaviour
+				event.preventDefault();
+				// proxy event depending on active tool
+				switch(Self.data.tool) {
+					case "lasso": return Self.viewLasso(event);
+					case "rotate": return Self.viewRotate(event);
+					case "move": return Self.viewMove(event);
+					case "pan": return Self.viewPan(event);
+				}
+				break;
+			// system events
 			case "window.resize":
 				el = Self.els.cvs.parent();
 				Self.data.cvsDim = {
@@ -85,6 +98,7 @@
 
 				Self.draw.glyph(Self);
 				break;
+			// custom events
 			case "zoom-minus":
 			case "zoom-plus":
 				console.log(event);
@@ -133,7 +147,7 @@
 			}
 
 			// draw glyph base
-			path = glyph.getPath(Data.view.dX, Data.view.dY, Data.fontSize);
+			path = glyph.getPath(Data.view.dX-1, Data.view.dY, Data.fontSize);
 			this.path(ctx, path, Data);
 
 			// draw glyph path anchors + handles
@@ -157,20 +171,21 @@
 			if (Data.draw.handle.on) this.handles(ctx, handles, Data);
 			if (Data.draw.anchor.on) this.anchors(ctx, anchors, Data);
 
+
 			let half = Data.draw.anchor.size * .5,
 				style = {
-					top: 97,
-					left: 219,
-					width: 291,
-					height: 461,
+					top: Data.view.dY - (Font.tables.os2.sTypoAscender * Data.view.dZ),
+					left: Math.round(Data.view.dX),
+					width: Math.round(Data.view.dW) + 1,
+					height: Math.round(Data.view.dH) + 1,
 				},
 				str = anchors.map(a => {
 					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half);
 					return `<b class="anchor" style="top: ${top}px; left: ${left}px;"></b>`;
 				});
-
-			Self.els.uxLayer.css(style).html(str.join(""));
+			if (!Self.els.uxLayer[0].childNodes.length) Self.els.uxLayer.html(str.join(""))
+			if (style.top > 0) Self.els.uxLayer.css(style);
 		},
 		path(ctx, path, Data) {
 			var cmd, x1, y1, x2, y2;
@@ -260,14 +275,75 @@
 			ctx.restore();
 		}
 	},
+	viewRotate(event) {
+		let Self = fstudio.design,
+			Drag = Self.drag;
+		switch(event.type) {
+			case "mousedown":
+				let el = $(event.target),
+					doc = $(document),
+					offset = {
+						y: Self.data.view.dY,
+						x: Self.data.view.dX,
+					},
+					click = {
+						y: event.clientY,
+						x: event.clientX,
+					};
+				// drag object
+				Self.drag = { el, doc, click, offset };
+				// cover app body
+				Self.els.content.addClass("cover hide-cursor");
+				// bind events
+				Self.drag.doc.on("mousemove mouseup", Self.viewRotate);
+				break;
+			case "mousemove":
+				break;
+			case "mouseup":
+				// cover app body
+				Self.els.content.removeClass("cover hide-cursor");
+				// bind events
+				Drag.doc.off("mousemove mouseup", Self.viewRotate);
+				break;
+		}
+	},
+	viewMove(event) {
+		let Self = fstudio.design,
+			Drag = Self.drag;
+		switch(event.type) {
+			case "mousedown":
+				let el = $(event.target),
+					doc = $(document),
+					offset = {
+						y: Self.data.view.dY,
+						x: Self.data.view.dX,
+					},
+					click = {
+						y: event.clientY,
+						x: event.clientX,
+					};
+				// drag object
+				Self.drag = { el, doc, click, offset };
+				// cover app body
+				Self.els.content.addClass("cover hide-cursor");
+				// bind events
+				Self.drag.doc.on("mousemove mouseup", Self.viewMove);
+				break;
+			case "mousemove":
+				break;
+			case "mouseup":
+				// cover app body
+				Self.els.content.removeClass("cover hide-cursor");
+				// bind events
+				Drag.doc.off("mousemove mouseup", Self.viewMove);
+				break;
+		}
+	},
 	viewLasso(event) {
 		let Self = fstudio.design,
 			Drag = Self.drag;
 		switch(event.type) {
 			case "mousedown":
-				// prevent default behaviour
-				event.preventDefault();
-
 				let doc = $(document),
 					el = Self.els.lasso,
 					rect = el.parent()[0].getBoundingClientRect(),
@@ -279,9 +355,7 @@
 						y: event.clientY,
 						x: event.clientX,
 					};
-
 				Self.drag = { el, doc, click, offset };
-
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
@@ -292,17 +366,14 @@
 					left = Drag.offset.x,
 					height = event.clientY - Drag.click.y,
 					width = event.clientX - Drag.click.x;
-
 				if (height < 0) {
 					top += height;
 					height = Drag.click.y - event.clientY;
 				}
-
 				if (width < 0) {
 					left += width;
 					width = Drag.click.x - event.clientX;
 				}
-
 				Drag.el.css({ top, left, width, height });
 				break;
 			case "mouseup":
@@ -320,12 +391,6 @@
 			Drag = Self.drag;
 		switch(event.type) {
 			case "mousedown":
-				// prevent default behaviour
-				event.preventDefault();
-
-				// temp
-				return Self.viewLasso(event);
-
 				let el = $(event.target),
 					doc = $(document),
 					offset = {
@@ -336,9 +401,8 @@
 						y: event.clientY,
 						x: event.clientX,
 					};
-
+				// drag object
 				Self.drag = { el, doc, click, offset };
-
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
@@ -347,10 +411,8 @@
 			case "mousemove":
 				let dY = event.clientY - Drag.click.y + Drag.offset.y,
 					dX = event.clientX - Drag.click.x + Drag.offset.x;
-				
 				Self.data.view.dY = dY;
 				Self.data.view.dX = dX;
-
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
