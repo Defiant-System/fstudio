@@ -20,7 +20,7 @@
 			tool: "pan",
 			cvsDim: { width: 0, height: 0 },
 			draw: {
-				lines: "#cccccc",
+				lines: "#99999977",
 				fill: "#11111122",
 				stroke: "#66666677",
 				strokeWidth: 1.25,
@@ -30,9 +30,11 @@
 			},
 			fontSize: 350,
 			view: {
+				dZ: 1,
 				dX: 300,
 				dY: 380,
-				dZ: 1,
+				dW: 100,
+				dH: 100,
 			}
 		};
 	},
@@ -71,10 +73,11 @@
 				let glyph = Self.data.glyph,
 					os2 = FontFile.font.tables.os2,
 					dZ = 1 / glyph.path.unitsPerEm * Self.data.fontSize,
-					dX = (Self.data.cvsDim.width - (glyph.advanceWidth * dZ)) >> 1,
+					dW = glyph.advanceWidth * dZ,
+					dX = (Self.data.cvsDim.width - dW) >> 1,
 					dY = (os2.sTypoAscender - os2.sTypoDescender) * dZ;
 				
-				Self.data.view = { dX, dY, dZ };
+				Self.data.view = { dZ, dX, dY, dW, dH: dY };
 				// update canvas
 				Self.draw.glyph(Self);
 				break;
@@ -133,6 +136,15 @@
 
 			if (Data.draw.handles) this.handles(ctx, handles, Data.view);
 			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view);
+
+			let lW = 10,
+				w = Data.view.dW,
+				h = Data.view.dH,
+				x = Data.view.dX,
+				y = (Self.data.cvsDim.height - h + lW) >> 1;
+			ctx.strokeStyle = "#ff111110";
+			ctx.lineWidth = lW;
+			ctx.strokeRect(x, y, w, h);
 		},
 		path(ctx, path, Data) {
 			var cmd, x1, y1, x2, y2;
