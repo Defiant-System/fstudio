@@ -8,6 +8,7 @@
 			el: window.find(".view-design"),
 			cvs: window.find("canvas.glyph-editor"),
 			uxWrapper: window.find(".ux-wrapper"),
+			uxLayer: window.find(".ux-layer"),
 			lasso: window.find(".ux-lasso"),
 			content: window.find("content"),
 		};
@@ -19,16 +20,33 @@
 
 		// view preferences
 		this.data = {
+			TAU: Math.PI * 2,
 			tool: "pan",
-			cvsDim: { width: 0, height: 0 },
+			cvsDim: {
+				width: 0,
+				height: 0,
+			},
 			draw: {
 				lines: "#99999977",
 				fill: "#11111122",
 				stroke: "#66666677",
 				strokeWidth: 1.25,
-				anchors: true,
-				handles: false,
-				guides: true,
+				guides: {
+					stroke: "#66666644",
+					on: true,
+				},
+				anchor: {
+					on: true,
+					size: 6,
+					fill: "#fff",
+					stroke: "#aaa",
+				},
+				handle: {
+					on: false,
+					radius: 2.5,
+					fill: "#fff",
+					stroke: "#aaa",
+				}
 			},
 			fontSize: 370,
 			view: {
@@ -99,11 +117,9 @@
 			Data.view.dZ = 1 / glyph.path.unitsPerEm * Data.fontSize,
 			// reset canvas
 			Self.els.cvs.attr(Self.data.cvsDim);
-			// for sharper lines
-			ctx.translate(-.5, -.5);
 
-			if (Data.draw.guides) {
-				ctx.fillStyle = Data.draw.lines;
+			if (Data.draw.guides.on) {
+				ctx.fillStyle = Data.draw.guides.stroke;
 				this.hLine(ctx, "Baseline", Data, 0);
 				// this.hLine(ctx, "yMax", Data, Font.tables.head.yMax);
 				// this.hLine(ctx, "yMin", Data, Font.tables.head.yMin);
@@ -127,26 +143,34 @@
 					anchors.push({ x: cmd.x, y: -cmd.y });
 				}
 				if (cmd.x1 !== undefined) {
-					let anchor = anchors[anchors.length-2];
+					let anchor = anchors[anchors.length - 2];
 					handles.push({ ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
 				}
 				if (cmd.x2 !== undefined) {
-					let anchor = anchors[anchors.length-1];
+					let anchor = anchors[anchors.length - 1];
 					handles.push({ ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
 				}
 			}
 
-			if (Data.draw.handles) this.handles(ctx, handles, Data.view);
-			if (Data.draw.anchors) this.anchors(ctx, anchors, Data.view);
+			// for sharper lines
+			ctx.translate(-.5, -.5);
+			if (Data.draw.handle.on) this.handles(ctx, handles, Data);
+			if (Data.draw.anchor.on) this.anchors(ctx, anchors, Data);
 
-			// let lW = 10,
-			// 	w = Data.view.dW,
-			// 	h = Data.view.dH,
-			// 	x = Data.view.dX,
-			// 	y = (Self.data.cvsDim.height - h + lW) >> 1;
-			// ctx.strokeStyle = "#ff111110";
-			// ctx.lineWidth = lW;
-			// ctx.strokeRect(x, y, w, h);
+			let half = Data.draw.anchor.size * .5,
+				style = {
+					top: 97,
+					left: 219,
+					width: 291,
+					height: 461,
+				},
+				str = anchors.map(a => {
+					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
+						left = Math.round((a.x * Data.view.dZ) - half);
+					return `<b class="anchor" style="top: ${top}px; left: ${left}px;"></b>`;
+				});
+
+			Self.els.uxLayer.css(style).html(str.join(""));
 		},
 		path(ctx, path, Data) {
 			var cmd, x1, y1, x2, y2;
@@ -181,36 +205,37 @@
 			ctx.stroke();
 			ctx.restore();
 		},
-		anchors(ctx, l, view) {
-			let size = 6,
-				hS = size * .5;
-			ctx.fillStyle = "#fff";
-			ctx.strokeStyle = "#aaa";
+		anchors(ctx, l, Data) {
+			let size = Data.draw.anchor.size,
+				half = size * .5;
+			ctx.fillStyle = Data.draw.anchor.fill;
+			ctx.strokeStyle = Data.draw.anchor.stroke;
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				let rx = Math.round(view.dX + (l[j].x * view.dZ) - hS),
-					ry = Math.round(view.dY + (l[j].y * view.dZ) - hS);
+				let rx = Math.round(Data.view.dX + (l[j].x * Data.view.dZ) - half),
+					ry = Math.round(Data.view.dY + (l[j].y * Data.view.dZ) - half);
 				ctx.fillRect(rx, ry, size, size);
 				ctx.strokeRect(rx, ry, size, size);
 			}
 		},
-		handles(ctx, l, view) {
-			ctx.fillStyle = "#fff";
-			ctx.strokeStyle = "#aaa";
+		handles(ctx, l, Data) {
+			let radius = Data.draw.handle.radius;
+			ctx.fillStyle = Data.draw.handle.fill;
+			ctx.strokeStyle = Data.draw.handle.stroke;
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				ctx.moveTo(view.dX + (l[j].ox * view.dZ), view.dY + (l[j].oy * view.dZ));
-				ctx.lineTo(view.dX + (l[j].x * view.dZ), view.dY + (l[j].y * view.dZ));
+				ctx.moveTo(Data.view.dX + (l[j].ox * Data.view.dZ), Data.view.dY + (l[j].oy * Data.view.dZ));
+				ctx.lineTo(Data.view.dX + (l[j].x * Data.view.dZ), Data.view.dY + (l[j].y * Data.view.dZ));
 			}
 			ctx.closePath();
 			ctx.stroke();
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				let hx = Math.round(view.dX + (l[j].x * view.dZ)),
-					hy = Math.round(view.dY + (l[j].y * view.dZ));
+				let hx = Math.round(Data.view.dX + (l[j].x * Data.view.dZ)),
+					hy = Math.round(Data.view.dY + (l[j].y * Data.view.dZ));
 				ctx.moveTo(hx, hy);
-				ctx.arc(hx, hy, 2.5, 0, Math.PI * 2, false);
+				ctx.arc(hx, hy, radius, 0, Data.TAU, false);
 			}
 			ctx.closePath();
 			ctx.stroke();

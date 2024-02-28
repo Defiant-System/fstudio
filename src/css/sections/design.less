@@ -25,14 +25,30 @@
 			// background-size: 20px 20px;
 
 			.anchor {
-				background: rgba(#3a3,.25);
 				position: absolute;
-				margin: -8px 0 0 -8px;
+				margin: -8px 0 0 -7px;
 				width: 17px;
 				height: 17px;
 				border-radius: 50%;
-				cursor: crosshair;
 				pointer-events: all;
+				// cursor: crosshair;
+				cursor: none;
+
+				&:before {
+					content: "";
+					position: absolute;
+					top: -3px;
+					left: -3px;
+					right: -3px;
+					bottom: -3px;
+					opacity: 0;
+					border-radius: 50%;
+					background: rgba(#3a3,.25);
+				}
+
+				&:hover:before {
+					animation: plop 160ms ease-in-out forwards;
+				}
 			}
 		}
 
@@ -105,4 +121,11 @@
 			}
 		}
 	}
+}
+
+
+@keyframes plop {
+	0%   { transform: scale(.25); opacity: 0; }
+	91%  { transform: scale(1.1); opacity: 1; }
+	100% { transform: scale(1); opacity: 1; }
 }
