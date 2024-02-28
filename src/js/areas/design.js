@@ -7,6 +7,8 @@
 		this.els = {
 			el: window.find(".view-design"),
 			cvs: window.find("canvas.glyph-editor"),
+			uxWrapper: window.find(".ux-wrapper"),
+			lasso: window.find(".ux-lasso"),
 			content: window.find("content"),
 		};
 		// get reference to canvas
@@ -28,7 +30,7 @@
 				handles: false,
 				guides: true,
 			},
-			fontSize: 350,
+			fontSize: 370,
 			view: {
 				dZ: 1,
 				dX: 300,
@@ -234,7 +236,59 @@
 		}
 	},
 	viewLasso(event) {
+		let Self = glyphr.design,
+			Drag = Self.drag;
+		switch(event.type) {
+			case "mousedown":
+				// prevent default behaviour
+				event.preventDefault();
 
+				let doc = $(document),
+					el = Self.els.lasso,
+					rect = el.parent()[0].getBoundingClientRect(),
+					offset = {
+						y: event.clientY - rect.top,
+						x: event.clientX - rect.left,
+					},
+					click = {
+						y: event.clientY,
+						x: event.clientX,
+					};
+
+				Self.drag = { el, doc, click, offset };
+
+				// cover app body
+				Self.els.content.addClass("cover hide-cursor");
+				// bind events
+				Self.drag.doc.on("mousemove mouseup", Self.viewLasso);
+				break;
+			case "mousemove":
+				let top = Drag.offset.y,
+					left = Drag.offset.x,
+					height = event.clientY - Drag.click.y,
+					width = event.clientX - Drag.click.x;
+
+				if (height < 0) {
+					top += height;
+					height = Drag.click.y - event.clientY;
+				}
+
+				if (width < 0) {
+					left += width;
+					width = Drag.click.x - event.clientX;
+				}
+
+				Drag.el.css({ top, left, width, height });
+				break;
+			case "mouseup":
+				// reset lasso
+				Drag.el.css({ top: -999, left: -999, width: 0, height: 0 });
+				// cover app body
+				Self.els.content.removeClass("cover hide-cursor");
+				// bind events
+				Drag.doc.off("mousemove mouseup", Self.viewLasso);
+				break;
+		}
 	},
 	viewPan(event) {
 		let Self = glyphr.design,
@@ -243,6 +297,9 @@
 			case "mousedown":
 				// prevent default behaviour
 				event.preventDefault();
+
+				// temp
+				return Self.viewLasso(event);
 
 				let el = $(event.target),
 					doc = $(document),
