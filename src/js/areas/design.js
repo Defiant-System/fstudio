@@ -42,13 +42,13 @@
 					stroke: "#aaa",
 				},
 				handle: {
-					on: false,
+					on: true,
 					radius: 2.5,
 					fill: "#fff",
 					stroke: "#aaa",
 				}
 			},
-			fontSize: 370,
+			fontSize: 420,
 			view: {
 				dZ: 1,
 				dX: 0,
