@@ -16,7 +16,7 @@
 		this.els.ctx = this.els.cvs[0].getContext("2d");
 
 		// bind event handlers
-		this.els.cvs.on("mousedown", this.dispatch);
+		this.els.el.on("mousedown", this.dispatch);
 
 		// view preferences
 		this.data = {
@@ -42,7 +42,7 @@
 					stroke: "#aaa",
 				},
 				handle: {
-					on: true,
+					on: false,
 					radius: 2.5,
 					fill: "#fff",
 					stroke: "#aaa",
@@ -71,12 +71,16 @@
 			case "mousedown":
 				// prevent default behaviour
 				event.preventDefault();
+				el = $(event.target);
 				// proxy event depending on active tool
-				switch(Self.data.tool) {
-					case "lasso": return Self.viewLasso(event);
-					case "rotate": return Self.viewRotate(event);
-					case "move": return Self.viewMove(event);
-					case "pan": return Self.viewPan(event);
+				switch (true) {
+					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
+					case el.hasClass("zoom-value"): return Self.viewZoom(event);
+					case (Self.data.tool === "lasso"): return Self.viewLasso(event);
+					case (Self.data.tool === "lasso"): return Self.viewLasso(event);
+					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
+					case (Self.data.tool === "move"): return Self.viewMove(event);
+					case (Self.data.tool === "pan"): return Self.viewPan(event);
 				}
 				break;
 			// system events
@@ -273,6 +277,46 @@
 			ctx.globalAlpha = .5;
 			ctx.fillRect(0, ypx, w, 1);
 			ctx.restore();
+		}
+	},
+	viewZoom(event) {
+		let Self = fstudio.design,
+			Drag = Self.drag;
+		switch(event.type) {
+			case "mousedown":
+				let doc = $(document),
+					el = $(event.target).addClass("active"),
+					knob = el.parent().find(".inline-menubox .pan-knob"),
+					limit = {
+						min: -50,
+						max: 50,
+					},
+					click = {
+						x: event.clientX - +knob.data("value"),
+					};
+				// drag object
+				Self.drag = { el, knob, limit, doc, click };
+				// cover app body
+				Self.els.content.addClass("cover hide-cursor");
+				// bind events
+				Self.drag.doc.on("mousemove mouseup", Self.viewZoom);
+				break;
+			case "mousemove":
+				let value = Math.max(Math.min(event.clientX - Drag.click.x, Drag.limit.max), Drag.limit.min),
+					perc = ((value + 50) * 2) || 1;
+				// update knob
+				Drag.knob.data({ value });
+				// update zoom value
+				Drag.el.html(`${perc}%`);
+				break;
+			case "mouseup":
+				// reset "zoom-value" element
+				Drag.el.removeClass("active");
+				// cover app body
+				Self.els.content.removeClass("cover hide-cursor");
+				// bind events
+				Drag.doc.off("mousemove mouseup", Self.viewZoom);
+				break;
 		}
 	},
 	viewRotate(event) {
