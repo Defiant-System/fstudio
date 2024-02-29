@@ -1,6 +1,7 @@
 
 @import "./ext/opentypejs_1-3-1.js"
 @import "./classes/file.js"
+@import "./modules/color.js"
 @import "./modules/test.js"
 
 let FontFile;
@@ -71,6 +72,7 @@ const fstudio = {
 		}
 	},
 	blankView: @import "areas/blank-view.js",
+	popups: @import "modules/popups.js",
 	toolbar: @import "areas/toolbar.js",
 	head: @import "areas/head.js",
 	overview: @import "areas/overview.js",
