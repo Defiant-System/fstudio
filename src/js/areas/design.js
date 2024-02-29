@@ -40,11 +40,11 @@
 					size: 6,
 					fill: "#fff",
 					stroke: "#aaa",
-					selected: [12],
+					selected: [],
 				},
 				handle: {
 					on: false,
-					radius: 4,
+					radius: 3,
 					fill: "#fff",
 					stroke: "#aaa",
 				}
@@ -149,6 +149,7 @@
 			if (Data.draw.guides.on) {
 				ctx.fillStyle = Data.draw.guides.stroke;
 				this.hLine(ctx, "Baseline", Data, 0);
+				this.hLine(ctx, "xheight", Data, Font.tables.os2.sxHeight);
 				// this.hLine(ctx, "yMax", Data, Font.tables.head.yMax);
 				// this.hLine(ctx, "yMin", Data, Font.tables.head.yMin);
 				// this.hLine(ctx, "Ascender", Data, Font.tables.hhea.ascender);
@@ -190,11 +191,15 @@
 
 
 			let half = Data.draw.anchor.size * .5,
+				baseline = Font.tables.os2.sTypoAscender * Data.view.dZ,
+				xheight = baseline - Font.tables.os2.sxHeight * Data.view.dZ,
 				style = {
-					top: Data.view.dY - (Font.tables.os2.sTypoAscender * Data.view.dZ),
+					top: Data.view.dY - baseline,
 					left: Math.round(Data.view.dX),
 					width: Math.round(Data.view.dW) + 1,
 					height: Math.round(Data.view.dH) + 1,
+					"--xheight": `${xheight}px`,
+					"--baseline": `${baseline}px`,
 				},
 				str = anchors.map((a, i) => {
 					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),

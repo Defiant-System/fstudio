@@ -28,11 +28,26 @@
 		z-index: 3;
 		overflow: hidden;
 		pointer-events: none;
+		--xheight: -9999px;
+		--baseline: -9999px;
 
 		.ux-layer {
 			position: absolute;
 			box-shadow: inset 0 0 0 1px rgba(#333,.15);
-			// border: 1px solid rgba(#333,.15);
+
+			&:before,
+			&:after {
+				content: "";
+				position: absolute;
+				top: 90px;
+				left: 0;
+				right: 0;
+				height: 1px;
+				background: rgba(#333,.15);
+			}
+
+			&:before { top: var( --xheight ); }
+			&:after { top: var( --baseline ); }
 
 			.anchor {
 				// background: rgba(#3a3,.25);
