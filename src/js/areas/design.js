@@ -75,6 +75,7 @@
 				// proxy event depending on active tool
 				switch (true) {
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
+					case el.hasClass("anchor"): return Self.dispatch({ type: "select-anchor", el });
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
 					case (Self.data.tool === "lasso"): return Self.viewLasso(event);
 					case (Self.data.tool === "lasso"): return Self.viewLasso(event);
@@ -103,6 +104,10 @@
 				Self.draw.glyph(Self);
 				break;
 			// custom events
+			case "select-anchor":
+				Self.els.uxLayer.find(".selected").removeClass("selected");
+				event.el.addClass("selected");
+				break;
 			case "zoom-minus":
 			case "zoom-plus":
 				console.log(event);
@@ -128,6 +133,7 @@
 				ctx = Self.els.ctx,
 				glyph = Data.glyph,
 				commands = glyph.path.commands,
+				selected = [12],
 				anchors = [],
 				handles = [],
 				path;
@@ -175,6 +181,9 @@
 			if (Data.draw.handle.on) this.handles(ctx, handles, Data);
 			if (Data.draw.anchor.on) this.anchors(ctx, anchors, Data);
 
+			// selected anchor handles
+			this.selected(ctx, handles, selected, Data);
+
 
 			let half = Data.draw.anchor.size * .5,
 				style = {
@@ -183,10 +192,10 @@
 					width: Math.round(Data.view.dW) + 1,
 					height: Math.round(Data.view.dH) + 1,
 				},
-				str = anchors.map(a => {
+				str = anchors.map((a, i) => {
 					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half);
-					return `<b class="anchor" style="top: ${top}px; left: ${left}px;"></b>`;
+					return `<b class="anchor" data-i="${i}" style="top: ${top}px; left: ${left}px;"></b>`;
 				});
 			if (!Self.els.uxLayer[0].childNodes.length) Self.els.uxLayer.html(str.join(""))
 			if (style.top > 0) Self.els.uxLayer.css(style);
@@ -260,9 +269,33 @@
 			ctx.stroke();
 			ctx.fill();
 		},
+		selected(ctx, l, s, Data) {
+			let radius = Data.draw.handle.radius;
+			ctx.fillStyle = Data.draw.handle.fill;
+			ctx.strokeStyle = Data.draw.handle.stroke;
+
+			ctx.beginPath();
+			for (let j=0, jl=l.length; j<jl; j+=1) {
+				ctx.moveTo(Data.view.dX + (l[j].ox * Data.view.dZ), Data.view.dY + (l[j].oy * Data.view.dZ));
+				ctx.lineTo(Data.view.dX + (l[j].x * Data.view.dZ), Data.view.dY + (l[j].y * Data.view.dZ));
+			}
+			ctx.closePath();
+			ctx.stroke();
+
+			ctx.beginPath();
+			for (let j=0, jl=l.length; j<jl; j+=1) {
+				let hx = Math.round(Data.view.dX + (l[j].x * Data.view.dZ)),
+					hy = Math.round(Data.view.dY + (l[j].y * Data.view.dZ));
+				ctx.moveTo(hx, hy);
+				ctx.arc(hx, hy, radius, 0, Data.TAU, false);
+			}
+			ctx.closePath();
+			ctx.stroke();
+			ctx.fill();
+		},
 		vLine(ctx, text, Data, x) {
 			let xpx = Math.round(Data.view.dX + x * Data.view.dZ),
-				h = Data.cvsDim.height;
+				h = 35; //Data.cvsDim.height;
 			ctx.fillText(text, xpx + 3, 12);
 			ctx.save();
 			ctx.globalAlpha = .5;
@@ -271,7 +304,7 @@
 		},
 		hLine(ctx, text, Data, y) {
 			let ypx = Math.round(Data.view.dY - y * Data.view.dZ),
-				w = Data.cvsDim.width;
+				w = 65; //Data.cvsDim.width;
 			ctx.fillText(text, 2, ypx - 3);
 			ctx.save();
 			ctx.globalAlpha = .5;

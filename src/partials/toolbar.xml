@@ -17,6 +17,10 @@
 			<Tool symbol="icon-new-oval" state="disabled"/>
 			<Tool symbol="icon-new-path" state="disabled"/>
 		</Options>
+		<Options>
+			<Tool symbol="icon-filled" state1="disabled"/>
+			<Tool symbol="icon-outline" state="active"/>
+		</Options>
 	</Group>
 	<Group width="21%">
 		<Tool symbol="icon-sidebar" click="toggle-sidebar" state="disabled"/>
