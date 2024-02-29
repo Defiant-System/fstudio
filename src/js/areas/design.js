@@ -44,7 +44,7 @@
 				},
 				handle: {
 					on: false,
-					radius: 2.5,
+					radius: 4,
 					fill: "#fff",
 					stroke: "#aaa",
 				}
@@ -276,7 +276,7 @@
 		selected(ctx, l, Data) {
 			let radius = Data.draw.handle.radius;
 			ctx.fillStyle = "#fff";
-			ctx.strokeStyle = "#f00";
+			ctx.strokeStyle = "#888";
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
