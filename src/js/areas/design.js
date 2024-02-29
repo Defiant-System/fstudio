@@ -40,6 +40,7 @@
 					size: 6,
 					fill: "#fff",
 					stroke: "#aaa",
+					selected: [12],
 				},
 				handle: {
 					on: false,
@@ -107,6 +108,10 @@
 			case "select-anchor":
 				Self.els.uxLayer.find(".selected").removeClass("selected");
 				event.el.addClass("selected");
+
+				Self.data.draw.anchor.selected = [+event.el.data("i")];
+				// update canvas
+				Self.draw.glyph(Self);
 				break;
 			case "zoom-minus":
 			case "zoom-plus":
@@ -133,7 +138,6 @@
 				ctx = Self.els.ctx,
 				glyph = Data.glyph,
 				commands = glyph.path.commands,
-				selected = [12],
 				anchors = [],
 				handles = [],
 				path;
@@ -164,15 +168,15 @@
 			for (let i=0, il=commands.length; i<il; i += 1) {
 				let cmd = commands[i];
 				if (cmd.x !== undefined) {
-					anchors.push({ x: cmd.x, y: -cmd.y });
+					anchors.push({ i, x: cmd.x, y: -cmd.y });
 				}
 				if (cmd.x1 !== undefined) {
 					let anchor = anchors[anchors.length - 2];
-					handles.push({ ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
+					handles.push({ i: anchor.i, ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
 				}
 				if (cmd.x2 !== undefined) {
 					let anchor = anchors[anchors.length - 1];
-					handles.push({ ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
+					handles.push({ i: anchor.i, ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
 				}
 			}
 
@@ -182,7 +186,7 @@
 			if (Data.draw.anchor.on) this.anchors(ctx, anchors, Data);
 
 			// selected anchor handles
-			this.selected(ctx, handles, selected, Data);
+			this.selected(ctx, handles, Data);
 
 
 			let half = Data.draw.anchor.size * .5,
@@ -269,25 +273,29 @@
 			ctx.stroke();
 			ctx.fill();
 		},
-		selected(ctx, l, s, Data) {
+		selected(ctx, l, Data) {
 			let radius = Data.draw.handle.radius;
-			ctx.fillStyle = Data.draw.handle.fill;
-			ctx.strokeStyle = Data.draw.handle.stroke;
+			ctx.fillStyle = "#fff";
+			ctx.strokeStyle = "#f00";
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				ctx.moveTo(Data.view.dX + (l[j].ox * Data.view.dZ), Data.view.dY + (l[j].oy * Data.view.dZ));
-				ctx.lineTo(Data.view.dX + (l[j].x * Data.view.dZ), Data.view.dY + (l[j].y * Data.view.dZ));
+				if (Data.draw.anchor.selected.includes(l[j].i)) {
+					ctx.moveTo(Data.view.dX + (l[j].ox * Data.view.dZ), Data.view.dY + (l[j].oy * Data.view.dZ));
+					ctx.lineTo(Data.view.dX + (l[j].x * Data.view.dZ), Data.view.dY + (l[j].y * Data.view.dZ));
+				}
 			}
 			ctx.closePath();
 			ctx.stroke();
 
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				let hx = Math.round(Data.view.dX + (l[j].x * Data.view.dZ)),
-					hy = Math.round(Data.view.dY + (l[j].y * Data.view.dZ));
-				ctx.moveTo(hx, hy);
-				ctx.arc(hx, hy, radius, 0, Data.TAU, false);
+				if (Data.draw.anchor.selected.includes(l[j].i)) {
+					let hx = Math.round(Data.view.dX + (l[j].x * Data.view.dZ)),
+						hy = Math.round(Data.view.dY + (l[j].y * Data.view.dZ));
+					ctx.moveTo(hx, hy);
+					ctx.arc(hx, hy, radius, 0, Data.TAU, false);
+				}
 			}
 			ctx.closePath();
 			ctx.stroke();
