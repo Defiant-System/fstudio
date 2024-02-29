@@ -13,6 +13,8 @@
 					background: rgba(#000,.125);
 					border-bottom-color: rgba(#000,.35);
 					color: var( --content-fg );
+
+
 				}
 			}
 		}
@@ -45,23 +47,21 @@
 				border-bottom-color: rgba(#000,.35);
 				color: var( --content-fg );
 
-				> div {
-					.head-reel {
-						color: rgba(#fff,.5);
+				> div.head-reel {
+					color: rgba(#fff,.5);
 
-						span {
-							&.active {
-								background: rgba(#fff,.1);
-								color: #fff;
+					span {
+						&.active {
+							background: rgba(#fff,.1);
+							color: #fff;
 
-								u {
-									filter: invert(1) grayscale(1) drop-shadow(0 1px 0 rgba(#000,.2));
-								}
+							u {
+								filter: invert(1) grayscale(1) drop-shadow(0 1px 0 rgba(#000,.2));
 							}
-
-							&:hover:not(.active),
-							&:active:not(.active) { color: rgba(#fff,.75); }
 						}
+
+						&:hover:not(.active),
+						&:active:not(.active) { color: rgba(#fff,.75); }
 					}
 				}
 			}
