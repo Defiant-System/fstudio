@@ -5,4 +5,110 @@
 		color: #999;
 		text-shadow: 0 0 0;
 	}
+
+	&.win-body-focused_ {
+		content {
+			.main {
+				.head {
+					background: rgba(#000,.125);
+					border-bottom-color: rgba(#000,.35);
+					color: var( --content-fg );
+				}
+			}
+		}
+
+		.sidebar {
+			.wrapper:before {
+				content: "";
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				width: 1px;
+				opacity: .5;
+				background: linear-gradient(0deg, transparent 0%, #fff 50%, transparent 100%);
+				mix-blend-mode: overlay;
+			}
+		}
+	}
+
+	content {
+		&.show-sidebar {
+			.sidebar {
+				.wrapper { border-color: rgba(#000,.4); }
+			}
+		}
+
+		.main {
+			.head {
+				background: rgba(#000,.125);
+				border-bottom-color: rgba(#000,.35);
+				color: var( --content-fg );
+
+				> div {
+					.head-reel {
+						color: rgba(#fff,.5);
+
+						span {
+							&.active {
+								background: rgba(#fff,.1);
+								color: #fff;
+
+								u {
+									filter: invert(1) grayscale(1) drop-shadow(0 1px 0 rgba(#000,.2));
+								}
+							}
+
+							&:hover:not(.active),
+							&:active:not(.active) { color: rgba(#fff,.75); }
+						}
+					}
+				}
+			}
+		}
+
+		.sidebar {
+			.sidebar-head {
+				border-bottom-color: #530e61bf;
+				
+				span {
+					&:not(:first-child) {
+						border-left-color: transparent;
+					}
+
+					&.active {
+						background: transparent;
+						color: #fff;
+					}
+
+					&:hover:not(.active),
+					&:active:not(.active) { color: rgba(#fff,.75); }
+				}
+			}
+
+			.sidebar-body {
+				.group-row {
+					&:not(:last-child) {
+						&:before {
+							content: "";
+							position: absolute;
+							left: 17px;
+							right: 17px;
+							bottom: -1px;
+							height: 1px;
+							opacity: .35;
+							background: linear-gradient(90deg, transparent 0%, #fff 50%, transparent 100%);
+							mix-blend-mode: overlay;
+						}
+
+						&:after {
+							// background: var( --sidebar-border );
+							opacity: .3;
+							background: linear-gradient(90deg, transparent 0%, #000 50%, transparent 100%);
+						}
+					}
+				}
+			}
+		}
+	}
 }
