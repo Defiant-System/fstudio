@@ -202,7 +202,18 @@
 						left = Math.round((a.x * Data.view.dZ) - half);
 					return `<b class="anchor" data-i="${i}" style="top: ${top}px; left: ${left}px;"></b>`;
 				});
-			if (!Self.els.uxLayer[0].childNodes.length) Self.els.uxLayer.html(str.join(""))
+			if (!Self.els.uxLayer[0].childNodes.length) {
+				str.push(`<svg viewBox="0 0 50 50">
+							<path transform="translate(-.5,75.5) scale(0.1085, -0.1085)"
+								d="M0,0M423,357 C461,391,494,440,490,493 C486,541,469,575,444,605 C387,674,195,636,96,583 
+								C74,571,73,559,82,534 C88,519,96,502,103,489 C65,370,15,220,-8,121 C-17,82,-14,72,9,46 
+								C32,21,45,8,70,-11 C94,-30,107,-30,143,-19 C206,1,299,48,349,95 C384,127,403,158,402,205 
+								C401,244,382,283,351,303 C379,321,403,339,423,357Z M241,489 C313,525,367,523,370,501 
+								C375,472,303,396,194,356 C211,405,227,450,241,489Z M272,224 C276,188,208,137,113,107 
+								C125,148,139,190,152,232 C222,259,270,245,272,224Z " />
+						</svg>`);
+				Self.els.uxLayer.html(str.join(""));
+			}
 			if (style.top > 0) Self.els.uxLayer.css(style);
 		},
 		path(ctx, path, Data) {

@@ -49,6 +49,16 @@
 			&:before { top: var( --xheight ); }
 			&:after { top: var( --baseline ); }
 
+			svg {
+				overflow: visible;
+
+				path {
+					opacity: .15;
+					pointer-events: all;
+					cursor: pointer;
+				}
+			}
+
 			.anchor {
 				// background: rgba(#3a3,.25);
 				position: absolute;
