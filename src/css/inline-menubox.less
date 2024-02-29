@@ -1,12 +1,12 @@
 
 .inline-menubox {
-	background: rgba(#333,.1);
+	background: rgba(#444,.1);
 	position: absolute;
 	opacity: 0;
 	padding: 1px;
 	z-index: 101;
 	border-radius: 7px;
-	filter: drop-shadow(0 1px 3px rgba(#000,.5));
+	filter: drop-shadow(0 3px 5px rgba(#000,.35));
 	transform-origin: 50% 0;
 	animation: popup-bubble 120ms linear forwards;
 
@@ -23,14 +23,14 @@
 			top: auto;
 			bottom: -10px;
 			border-bottom: 0;
-			border-top: 11px solid rgba(#000,.125);
+			border-top: 11px solid rgba(#000,.1);
 		}
 
 		&:after {
 			top: auto;
 			bottom: -9px;
 			border-bottom: 0;
-			border-top: 10px solid #c1c1c1;
+			border-top: 10px solid #e5e5e5;
 		}
 	}
 
@@ -61,7 +61,7 @@
 	}
 
 	.inline-content {
-		background: linear-gradient(#e8e8e8 0%, #c1c1c1 100%);
+		background: linear-gradient(#f7f7f7 0%, #e5e5e5 100%);
 		position: relative;
 		padding: 7px 3px 6px;
 		border-radius: inherit;
