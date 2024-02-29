@@ -20,7 +20,7 @@
 
 		// view preferences
 		this.data = {
-			tool: "pan",
+			tool: "lasso",
 			TAU: Math.PI * 2,
 			cvsDim: {
 				width: 0,
@@ -78,7 +78,6 @@
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.dispatch({ type: "select-anchor", el });
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
-					case (Self.data.tool === "lasso"): return Self.viewLasso(event);
 					case (Self.data.tool === "lasso"): return Self.viewLasso(event);
 					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
 					case (Self.data.tool === "move"): return Self.viewMove(event);
@@ -148,15 +147,12 @@
 
 			if (Data.draw.guides.on) {
 				ctx.fillStyle = Data.draw.guides.stroke;
+				// horisontal lines
 				this.hLine(ctx, "Baseline", Data, 0);
 				this.hLine(ctx, "xheight", Data, Font.tables.os2.sxHeight);
-				// this.hLine(ctx, "yMax", Data, Font.tables.head.yMax);
-				// this.hLine(ctx, "yMin", Data, Font.tables.head.yMin);
-				// this.hLine(ctx, "Ascender", Data, Font.tables.hhea.ascender);
-				// this.hLine(ctx, "Descender", Data, Font.tables.hhea.descender);
 				this.hLine(ctx, "Ascent", Data, Font.tables.os2.sTypoAscender);
 				this.hLine(ctx, "Descent", Data, Font.tables.os2.sTypoDescender);
-				
+				// vertical lines
 				this.vLine(ctx, "Left side", Data, 0);
 				this.vLine(ctx, "Right side", Data, glyph.advanceWidth);
 			}
@@ -437,6 +433,18 @@
 				let doc = $(document),
 					el = Self.els.lasso,
 					rect = el.parent()[0].getBoundingClientRect(),
+					uxTop = +Self.els.uxLayer.prop("offsetTop"),
+					uxLeft = +Self.els.uxLayer.prop("offsetLeft"),
+					anchors = Self.els.uxLayer.find(".anchor").map(el => {
+						return {
+							el,
+							index: +el.getAttribute("data-i"),
+							y: el.offsetTop + uxTop,
+							x: el.offsetLeft + uxLeft,
+							w: el.offsetWidth,
+							h: el.offsetHeight,
+						};
+					}),
 					offset = {
 						y: event.clientY - rect.top,
 						x: event.clientX - rect.left,
@@ -445,7 +453,8 @@
 						y: event.clientY,
 						x: event.clientX,
 					};
-				Self.drag = { el, doc, click, offset };
+				Self.drag = { el, doc, click, offset, anchors };
+
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
@@ -455,7 +464,9 @@
 				let top = Drag.offset.y,
 					left = Drag.offset.x,
 					height = event.clientY - Drag.click.y,
-					width = event.clientX - Drag.click.x;
+					width = event.clientX - Drag.click.x,
+					selected = [];
+				
 				if (height < 0) {
 					top += height;
 					height = Drag.click.y - event.clientY;
@@ -465,6 +476,20 @@
 					width = Drag.click.x - event.clientX;
 				}
 				Drag.el.css({ top, left, width, height });
+
+				// UI update
+				Drag.anchors.map(anchor => {
+					let intersect = left <= anchor.x + anchor.w && anchor.x <= left + width && top <= anchor.y + anchor.h && anchor.y <= top + height;
+					if (intersect) {
+						anchor.el.classList.add("selected");
+						selected.push(anchor.index);
+					} else {
+						anchor.el.classList.remove("selected");
+					}
+				});
+				// update canvas
+				Self.data.draw.anchor.selected = selected;
+				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
 				// reset lasso
