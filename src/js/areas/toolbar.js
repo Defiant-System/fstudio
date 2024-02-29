@@ -15,6 +15,9 @@
 			el;
 		// console.log(event);
 		switch (event.type) {
+			case "select-design-tool":
+				APP.design.data.tool = event.arg;
+				return true;
 			case "toggle-sidebar":
 				// proxy event
 				return APP.sidebar.dispatch(event);

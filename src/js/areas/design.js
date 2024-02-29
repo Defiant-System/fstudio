@@ -20,7 +20,7 @@
 
 		// view preferences
 		this.data = {
-			tool: "lasso",
+			tool: "move",
 			TAU: Math.PI * 2,
 			cvsDim: {
 				width: 0,
@@ -78,10 +78,10 @@
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.dispatch({ type: "select-anchor", el });
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
-					case (Self.data.tool === "lasso"): return Self.viewLasso(event);
-					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
+					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
 					case (Self.data.tool === "move"): return Self.viewMove(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
+					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
 				}
 				break;
 			// system events

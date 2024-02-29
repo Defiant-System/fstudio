@@ -7,8 +7,8 @@
 	</Group>
 	<Group width="62%">
 		<Options>
-			<Tool symbol="icon-move" state="disabled"/>
-			<Tool symbol="icon-pan" state="disabled"/>
+			<Tool symbol="icon-move" click="select-design-tool" arg="move" state="active"/>
+			<Tool symbol="icon-pan" click="select-design-tool" arg="pan"/>
 			<Tool symbol="icon-pen" state="disabled"/>
 		</Options>
 		<Options>
