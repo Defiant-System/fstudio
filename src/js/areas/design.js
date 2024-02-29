@@ -78,8 +78,9 @@
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.dispatch({ type: "select-anchor", el });
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
+					case el.nodeName() === "path": return Self.viewMove(event);
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
-					case (Self.data.tool === "move"): return Self.viewMove(event);
+					// case (Self.data.tool === "move"): return Self.viewMove(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
 					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
 				}
