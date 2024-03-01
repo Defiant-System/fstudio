@@ -150,6 +150,7 @@
 				let bbox = Self.els.uxLayer.find("svg g")[0].getBBox(),
 					offset = Self.els.uxLayer.offset();
 				
+				console.log( offset );
 				console.log( bbox );
 				
 				top = offset.top; // 108

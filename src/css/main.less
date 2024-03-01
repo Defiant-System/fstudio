@@ -10,6 +10,8 @@
 @outline_color: #bbb;
 
 
+overflow: visible;
+
 
 &.win-body-focused_ {
 	.sidebar {
@@ -65,7 +67,7 @@ content {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			z-index: 9999;
+			z-index: 998;
 			background: transparent;
 		}
 
@@ -589,18 +591,6 @@ content {
 		&[data-value="48"], &[data-value="47"] { background-position: 0 -1666px; }
 		&[data-value="50"], &[data-value="49"] { background-position: 0 -1700px; }
 	}
-}
-
-
-@keyframes popup-bubble {
-	0%   { transform: scale(.25); opacity: 0; }
-	91%  { transform: scale(1.1); opacity: 1; }
-	100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes popup-hide {
-	0%   { transform: scale(1); opacity: 1; }
-	100% { transform: scale(.25); opacity: 0; }
 }
 
 

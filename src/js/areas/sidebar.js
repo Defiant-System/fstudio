@@ -32,6 +32,13 @@
 					pEl.find(`.sidebar-body`).get(el.index()).addClass("active");
 				}
 				break;
+			// forward popup events
+			case "popup-color-ring":
+			case "popup-color-palette-1":
+			case "popup-color-palette-2":
+			case "popup-color-palette-3":
+				APP.popups.dispatch(event);
+				break;
 		}
 	}
 }

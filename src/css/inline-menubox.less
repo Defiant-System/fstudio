@@ -8,10 +8,13 @@
 	border-radius: 7px;
 	filter: drop-shadow(0 3px 5px rgba(#000,.35));
 	transform-origin: 50% 0;
-	animation: popup-bubble 120ms linear forwards;
+	
+	&.pop-show {
+		animation: tiny-pop 120ms linear forwards;
+	}
 
 	&.pop-hide {
-		animation: popup-hide 120ms linear forwards;
+		animation: tiny-pop-hide 120ms linear forwards;
 	}
 
 	&.arrow-below {
@@ -67,4 +70,16 @@
 		border-radius: inherit;
 		z-index: 2;
 	}
+}
+
+
+@keyframes tiny-pop {
+	0%   { transform: scale(.25); opacity: 0; }
+	91%  { transform: scale(1.1); opacity: 1; }
+	100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes tiny-pop-hide {
+	0%   { transform: scale(1); opacity: 1; }
+	100% { transform: scale(.25); opacity: 0; }
 }
