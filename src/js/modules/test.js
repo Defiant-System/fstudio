@@ -7,6 +7,7 @@ let Test = {
 		// setTimeout(() => window.find(`.head span[data-view="design"]`).trigger("click"), 100);
 		// setTimeout(() => APP.toolbar.els.btnSidebar.trigger("click"), 100);
 		setTimeout(() => APP.content.find(`.glyph-list .glyph:nth(1)`).trigger("click"), 500);
-		setTimeout(() => APP.content.find(`span[data-click="zoom-fit"] i`).trigger("click"), 700);
+		setTimeout(() => APP.content.find(`span[data-click="zoom-fit"] i`).trigger("click"), 600);
+		// setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="preview"]`).trigger("click"), 700);
 	}
 };

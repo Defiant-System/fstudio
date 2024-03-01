@@ -22,12 +22,14 @@
 		// view preferences
 		this.data = {
 			tool: "move",
+			mode: "outline",
 			TAU: Math.PI * 2,
 			cvsDim: {
 				width: 0,
 				height: 0,
 			},
 			draw: {
+				preview: "#000000",
 				lines: "#99999977",
 				fill: "#11111122",
 				stroke: "#66666677",
@@ -134,6 +136,12 @@
 				// update canvas
 				Self.draw.glyph(Self);
 				break;
+			case "set-design-mode":
+				Self.data.mode = event.arg;
+				Self.els.uxLayer.data({ mode: event.arg });
+				// update canvas
+				Self.draw.glyph(Self);
+				return true;
 		}
 	},
 	draw: {
@@ -230,7 +238,8 @@
 			}
 		},
 		path(ctx, path, Data) {
-			var cmd, x1, y1, x2, y2;
+			let isOutline = Data.mode === "outline",
+				cmd, x1, y1, x2, y2;
 			ctx.beginPath();
 			for (let i=0, il=path.commands.length; i<il; i += 1) {
 				cmd = path.commands[i];
@@ -255,10 +264,10 @@
 				y2 = cmd.y;
 			}
 			ctx.save();
-			ctx.fillStyle = Data.draw.fill;
+			ctx.fillStyle = isOutline ? Data.draw.fill : Data.draw.preview;
+			ctx.strokeStyle = isOutline ? Data.draw.stroke : "";
+			ctx.lineWidth = isOutline ? Data.draw.strokeWidth : 0;
 			ctx.fill();
-			ctx.strokeStyle = Data.draw.stroke;
-			ctx.lineWidth = Data.draw.strokeWidth;
 			ctx.stroke();
 			ctx.restore();
 		},
@@ -373,7 +382,6 @@
 					};
 				// drag object
 				Self.drag = { el, doc, click };
-
 				// console.log( path );
 
 				// update selected anchor list + update canvas

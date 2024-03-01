@@ -18,8 +18,8 @@
 			<Tool symbol="icon-new-path" state="disabled"/>
 		</Options>
 		<Options>
-			<Tool symbol="icon-filled" state1="disabled"/>
-			<Tool symbol="icon-outline" state="active"/>
+			<Tool symbol="icon-filled" click="set-design-mode" arg="preview"/>
+			<Tool symbol="icon-outline" click="set-design-mode" arg="outline" state="active"/>
 		</Options>
 	</Group>
 	<Group width="21%">
