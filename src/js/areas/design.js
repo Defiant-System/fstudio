@@ -68,6 +68,8 @@
 		let APP = fstudio,
 			Self = APP.design,
 			Font = FontFile.font,
+			top,
+			left,
 			width,
 			height,
 			el;
@@ -85,8 +87,10 @@
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.viewAnchor(event);
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
-					case el.nodeName() === "path": return Self.viewBox(event);
+					case el.nodeName() === "path": return Self.dispatch({ type: "show-handle-box" });
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
+					case el.hasClass("rotator"): return Self.viewRotate(event);
+					case el.hasClass("handle"): return Self.viewZoom(event);
 					case (Self.data.tool === "move"): return Self.viewMove(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
 					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
@@ -142,6 +146,20 @@
 				// update canvas
 				Self.draw.glyph(Self);
 				return true;
+			case "show-handle-box":
+				let bbox = Self.els.uxLayer.find("svg g")[0].getBBox(),
+					offset = Self.els.uxLayer.offset();
+				
+				console.log( bbox );
+				
+				top = offset.top; // 108
+				left = offset.left; // 260
+				width = Math.round(bbox.width * Self.data.view.dZ);
+				height = Math.round(bbox.height * Self.data.view.dZ);
+
+				// console.log( top, left, width, height );
+				Self.els.hBox.addClass("show").css({ top, left, width, height });
+				break;
 		}
 	},
 	draw: {
@@ -490,12 +508,13 @@
 		switch(event.type) {
 			case "mousedown":
 				let doc = $(document),
-					hBox = Self.els.hBox.addClass("show"),
+					hBox = Self.els.hBox,
 					el = $(event.target),
 					click = {
 						y: event.clientY - +hBox.prop("offsetTop"),
 						x: event.clientX - +hBox.prop("offsetLeft"),
 					};
+
 				// drag object
 				Self.drag = { el, hBox, doc, click };
 				// cover app body

@@ -1,3 +1,4 @@
+
 // body layout
 .view-design {
 	display: flex;
@@ -127,19 +128,20 @@
 			position: absolute;
 			top: -999px;
 			left: -999px;
-			box-shadow: inset 0 0 0 1px #a3cbff;
+			box-shadow: inset 0 0 0 1px var( --toolLine );
 			// border: 1px solid #a3cbff;
 		}
 
 		.handle-box {
 			display: none;
 			position: absolute;
+			background: transparent;
+			pointer-events: all;
 			z-index: 99;
-			pointer-events: none;
-			top: 108px;
-			left: 260px;
-			width: 213px;
-			height: 281px;
+			// top: 108px;
+			// left: 260px;
+			// width: 213px;
+			// height: 281px;
 
 			&:before {
 				content: "";
@@ -148,7 +150,7 @@
 				left: -1px;
 				right: -1px;
 				bottom: -1px;
-				box-shadow: 0 0 0 1px #86b8f0,
+				box-shadow: 0 0 0 1px var( --toolLine ),
 							0 0 0 2px rgba(#fff, .35),
 							inset 0 0 0 1px rgba(#fff, .35);
 			}
@@ -163,7 +165,7 @@
 				height: 9px;
 				z-index: 2;
 				background: #fff;
-				border: 1px solid #86b8f0;
+				border: 1px solid var( --toolLine );
 				pointer-events: all;
 
 				&.n    { cursor: ns-resize; top: -10px; left: 50%; transform: translateX(-4px); }
@@ -175,8 +177,8 @@
 				&.e    { cursor: ew-resize; top: 50%; left: -10px; transform: translateY(-4px); }
 				&.ne   { cursor: nwse-resize; top: -10px; left: -10px; }
 
-				&.rot {
-					top: -29px;
+				&.rotator {
+					top: -37px;
 					left: 50%;
 					border-radius: 50%;
 					transform: translateX(-4px);
@@ -187,9 +189,9 @@
 						position: absolute;
 						top: 7px;
 						left: 3px;
-						height: 21px;
+						height: 19px;
 						width: 1px;
-						background: #86b8f0;
+						background: var( --toolLine );
 					}
 				}
 			}
