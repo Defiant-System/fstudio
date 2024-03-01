@@ -48,7 +48,9 @@
 					radius: 3,
 					fill: "#fff",
 					stroke: "#aaa",
-				}
+				},
+				// calculate ghost transform
+				ghost: true,
 			},
 			fontSize: 420,
 			view: {
@@ -210,15 +212,19 @@
 				str.push(`<svg><g fill="#f00"><path /></g></svg>`);
 				Self.els.uxLayer.html(str.join(""));
 			}
-			if (style.top > 0) {
+			if (Data.draw.ghost) {
 				let bbox = glyph.path.getBoundingBox(),
 					tY = bbox.y2 - bbox.y1 - Data.view.dH + 2,
-					transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`,
-					d = glyph.path.toSVG().slice(9, -3),
 					// svg element "scale"
-					g = Self.els.uxLayer.find("svg g").attr({ transform });
+					transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
+				Self.els.uxLayer.find("svg g").attr({ transform });
+				// don't recalculate ghost transform
+				if (style.top > 0) Data.draw.ghost = false;
+			}
+			if (style.top > 0) {
 				// set path of svg
-				g.find("path").attr({ d });
+				let d = glyph.path.toSVG().slice(9, -3);
+				Self.els.uxLayer.find("svg path").attr({ d });
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
 			}
