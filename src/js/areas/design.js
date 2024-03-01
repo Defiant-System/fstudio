@@ -77,7 +77,7 @@
 				// auto-hide handle box
 				Self.els.hBox.removeClass("show");
 
-				Self.dispatch({ type: "clear-selected-anchors" });
+				// Self.dispatch({ type: "clear-selected-anchors" });
 
 				// proxy event depending on active tool
 				switch (true) {
@@ -345,24 +345,26 @@
 		switch(event.type) {
 			case "mousedown":
 				let doc = $(document),
-					el = $(event.target).addClass("selected"),
 					path = Self.data.glyph.path,
-					anchor = new Anchor(path, +el.data("i")),
-					offset = {
-						y: +el.prop("offsetTop") + 7,
- 						x: +el.prop("offsetLeft") + 7,
-					},
+					// include all selected anchors for movement
+					el = Self.els.uxLayer.find(".selected").map(elem => ({
+						el: $(elem),
+						oY: elem.offsetTop + 7,
+						oX: elem.offsetLeft + 7,
+						anchor: new Anchor(path, +elem.getAttribute("data-i")),
+					})),
 					click = {
 						y: event.clientY,
 						x: event.clientX,
 					};
 				// drag object
-				Self.drag = { el, doc, anchor, click, offset };
+				Self.drag = { el, doc, click };
 
 				// console.log( path );
+				// return console.log( Self.data.draw.anchor.selected );
 
 				// update canvas
-				Self.data.draw.anchor.selected = [anchor.index];
+				// Self.data.draw.anchor.selected = [anchor.index];
 				Self.draw.glyph(Self);
 
 				// cover app body
@@ -372,15 +374,14 @@
 				break;
 			case "mousemove":
 				let dY = event.clientY - Drag.click.y,
-					dX = event.clientX - Drag.click.x,
-					top = dY + Drag.offset.y,
-					left = dX + Drag.offset.x;
-				
-				// move anchor (HTML element)
-				Drag.el.css({ top, left });
-
-				// update anchor + handles
-				Drag.anchor.move({ y: -dY / Self.data.view.dZ, x: dX / Self.data.view.dZ });
+					dX = event.clientX - Drag.click.x;
+				// move anchors (HTML elements)
+				Drag.el.map(item => {
+					item.el.css({ top: dY + item.oY, left: dX + item.oX });
+					// update anchor + handles
+					item.anchor.move({ y: -dY / Self.data.view.dZ, x: dX / Self.data.view.dZ });
+				});
+				// update canvas
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
