@@ -76,10 +76,13 @@
 				el = $(event.target);
 				// auto-hide handle box
 				Self.els.hBox.removeClass("show");
+
+				Self.dispatch({ type: "clear-selected-anchors" });
+
 				// proxy event depending on active tool
 				switch (true) {
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
-					case el.hasClass("anchor"): return Self.dispatch({ type: "select-anchor", el });
+					case el.hasClass("anchor"): return Self.viewAnchor(event);
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
 					case el.nodeName() === "path": return Self.viewBox(event);
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
@@ -108,12 +111,11 @@
 				Self.draw.glyph(Self);
 				break;
 			// custom events
-			case "select-anchor":
+			case "clear-selected-anchors":
+				// auto-clear selected anchors (temp)
 				Self.els.uxLayer.find(".selected").removeClass("selected");
-				event.el.addClass("selected");
-
-				Self.data.draw.anchor.selected = [+event.el.data("i")];
 				// update canvas
+				Self.data.draw.anchor.selected = [];
 				Self.draw.glyph(Self);
 				break;
 			case "zoom-minus":
@@ -334,6 +336,42 @@
 			ctx.globalAlpha = .5;
 			ctx.fillRect(0, ypx, w, 1);
 			ctx.restore();
+		}
+	},
+	viewAnchor(event) {
+		let Self = fstudio.design,
+			Drag = Self.drag;
+		switch(event.type) {
+			case "mousedown":
+				let doc = $(document),
+					el = $(event.target).addClass("selected"),
+					click = {
+						y: event.clientY - event.offsetY - +el.prop("offsetTop"),
+						x: event.clientX - event.offsetX - +el.prop("offsetLeft"),
+					};
+				// drag object
+				Self.drag = { el, doc, click };
+
+				// update canvas
+				Self.data.draw.anchor.selected = [+el.data("i")];
+				Self.draw.glyph(Self);
+
+				// cover app body
+				Self.els.content.addClass("cover hide-cursor");
+				// bind events
+				Self.drag.doc.on("mousemove mouseup", Self.viewAnchor);
+				break;
+			case "mousemove":
+				let top = event.clientY - Drag.click.y,
+					left = event.clientX - Drag.click.x;
+				Drag.el.css({ top, left });
+				break;
+			case "mouseup":
+				// cover app body
+				Self.els.content.removeClass("cover hide-cursor");
+				// bind events
+				Drag.doc.off("mousemove mouseup", Self.viewAnchor);
+				break;
 		}
 	},
 	viewZoom(event) {
