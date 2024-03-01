@@ -9,6 +9,7 @@
 			cvs: window.find("canvas.glyph-editor"),
 			uxWrapper: window.find(".ux-wrapper"),
 			uxLayer: window.find(".ux-layer"),
+			hBox: window.find(".handle-box"),
 			lasso: window.find(".ux-lasso"),
 			content: window.find("content"),
 		};
@@ -73,14 +74,16 @@
 				// prevent default behaviour
 				event.preventDefault();
 				el = $(event.target);
+				// auto-hide handle box
+				Self.els.hBox.removeClass("show");
 				// proxy event depending on active tool
 				switch (true) {
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.dispatch({ type: "select-anchor", el });
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
-					case el.nodeName() === "path": return Self.viewMove(event);
+					case el.nodeName() === "path": return Self.viewBox(event);
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
-					// case (Self.data.tool === "move"): return Self.viewMove(event);
+					case (Self.data.tool === "move"): return Self.viewMove(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
 					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
 				}
@@ -186,7 +189,7 @@
 			// selected anchor handles
 			this.selected(ctx, handles, Data);
 
-
+			// puts SVG "ghost" & HTML anchors
 			let half = Data.draw.anchor.size * .5,
 				baseline = Font.tables.os2.sTypoAscender * Data.view.dZ,
 				xheight = baseline - Font.tables.os2.sxHeight * Data.view.dZ,
@@ -290,7 +293,7 @@
 			let radius = Data.draw.handle.radius;
 			ctx.fillStyle = "#fff";
 			ctx.strokeStyle = "#888";
-
+			// handle arms
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
 				if (Data.draw.anchor.selected.includes(l[j].i)) {
@@ -300,7 +303,7 @@
 			}
 			ctx.closePath();
 			ctx.stroke();
-
+			// handle circles
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
 				if (Data.draw.anchor.selected.includes(l[j].i)) {
@@ -316,7 +319,7 @@
 		},
 		vLine(ctx, text, Data, x) {
 			let xpx = Math.round(Data.view.dX + x * Data.view.dZ),
-				h = 35; //Data.cvsDim.height;
+				h = 25; //Data.cvsDim.height;
 			ctx.fillText(text, xpx + 3, 12);
 			ctx.save();
 			ctx.globalAlpha = .5;
@@ -325,7 +328,7 @@
 		},
 		hLine(ctx, text, Data, y) {
 			let ypx = Math.round(Data.view.dY - y * Data.view.dZ),
-				w = 65; //Data.cvsDim.width;
+				w = 50; //Data.cvsDim.width;
 			ctx.fillText(text, 2, ypx - 3);
 			ctx.save();
 			ctx.globalAlpha = .5;
@@ -402,6 +405,38 @@
 				Self.els.content.removeClass("cover hide-cursor");
 				// bind events
 				Drag.doc.off("mousemove mouseup", Self.viewRotate);
+				break;
+		}
+	},
+	viewBox(event) {
+		let Self = fstudio.design,
+			Drag = Self.drag;
+		switch(event.type) {
+			case "mousedown":
+				let doc = $(document),
+					hBox = Self.els.hBox.addClass("show"),
+					el = $(event.target),
+					click = {
+						y: event.clientY - +hBox.prop("offsetTop"),
+						x: event.clientX - +hBox.prop("offsetLeft"),
+					};
+				// drag object
+				Self.drag = { el, hBox, doc, click };
+				// cover app body
+				Self.els.content.addClass("cover hide-cursor");
+				// bind events
+				Self.drag.doc.on("mousemove mouseup", Self.viewBox);
+				break;
+			case "mousemove":
+				let top = event.clientY - Drag.click.y,
+					left = event.clientX - Drag.click.x;
+				Drag.hBox.css({ top, left });
+				break;
+			case "mouseup":
+				// cover app body
+				Self.els.content.removeClass("cover hide-cursor");
+				// bind events
+				Drag.doc.off("mousemove mouseup", Self.viewBox);
 				break;
 		}
 	},
