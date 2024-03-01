@@ -376,10 +376,9 @@
 
 				// console.log( path );
 
-				// update canvas
-				// Self.data.draw.anchor.selected = [anchor.index];
+				// update selected anchor list + update canvas
+				Self.data.draw.anchor.selected = sel.map(elem => +elem.getAttribute("data-i"));
 				Self.draw.glyph(Self);
-
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
