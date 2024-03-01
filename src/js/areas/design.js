@@ -107,6 +107,7 @@
 				Self.data.glyph = FontFile.getGlyphByUnicode(event.id);
 
 				// console.log( FontFile.font );
+				// console.log( Self.data.glyph.path.commands[1] );
 
 				Self.draw.glyph(Self);
 				break;
@@ -345,15 +346,22 @@
 			case "mousedown":
 				let doc = $(document),
 					el = $(event.target).addClass("selected"),
+					anchor = new Anchor(Self.data.glyph.path, +el.data("i")),
+					offset = {
+						y: +el.prop("offsetTop") + 7,
+ 						x: +el.prop("offsetLeft") + 7,
+					},
 					click = {
-						y: event.clientY - event.offsetY - +el.prop("offsetTop"),
-						x: event.clientX - event.offsetX - +el.prop("offsetLeft"),
+						y: event.clientY,
+						x: event.clientX,
 					};
 				// drag object
-				Self.drag = { el, doc, click };
+				Self.drag = { el, doc, anchor, click, offset };
+
+				console.log( { ...Self.data.glyph.path.commands[+el.data("i")] } );
 
 				// update canvas
-				Self.data.draw.anchor.selected = [+el.data("i")];
+				Self.data.draw.anchor.selected = [anchor.index];
 				Self.draw.glyph(Self);
 
 				// cover app body
@@ -362,9 +370,17 @@
 				Self.drag.doc.on("mousemove mouseup", Self.viewAnchor);
 				break;
 			case "mousemove":
-				let top = event.clientY - Drag.click.y,
-					left = event.clientX - Drag.click.x;
+				let dY = event.clientY - Drag.click.y,
+					dX = event.clientX - Drag.click.x,
+					top = dY + Drag.offset.y,
+					left = dX + Drag.offset.x;
+				
+				// move anchor (HTML element)
 				Drag.el.css({ top, left });
+
+				// update anchor + handles
+				Drag.anchor.move({ y: -dY / Self.data.view.dZ, x: dX / Self.data.view.dZ });
+				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
 				// cover app body
