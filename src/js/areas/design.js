@@ -76,9 +76,6 @@
 				el = $(event.target);
 				// auto-hide handle box
 				Self.els.hBox.removeClass("show");
-
-				// Self.dispatch({ type: "clear-selected-anchors" });
-
 				// proxy event depending on active tool
 				switch (true) {
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
@@ -172,7 +169,7 @@
 			for (let i=0, il=commands.length; i<il; i += 1) {
 				let cmd = commands[i];
 				if (cmd.x !== undefined) {
-					anchors.push({ i, x: cmd.x, y: -cmd.y });
+					anchors.push({ i, type: cmd.type, x: cmd.x, y: -cmd.y });
 				}
 				if (cmd.x1 !== undefined) {
 					let anchor = anchors[anchors.length - 2];
@@ -204,21 +201,24 @@
 					"--xheight": `${xheight}px`,
 					"--baseline": `${baseline}px`,
 				},
-				str = anchors.map((a, i) => {
+				str = anchors.filter(a => a.type !== "M").map(a => {
 					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half);
-					return `<b class="anchor" data-i="${i}" style="top: ${top}px; left: ${left}px;"></b>`;
+					return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;"></b>`;
 				});
 			if (!Self.els.uxLayer[0].childNodes.length) {
-				str.push(`<svg><g fill="#f00">${glyph.path.toSVG()}</g></svg>`);
+				str.push(`<svg><g fill="#f00"><path /></g></svg>`);
 				Self.els.uxLayer.html(str.join(""));
 			}
 			if (style.top > 0) {
 				let bbox = glyph.path.getBoundingBox(),
 					tY = bbox.y2 - bbox.y1 - Data.view.dH + 2,
-					transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
-				// svg element "scale"
-				Self.els.uxLayer.find("svg g").attr({ transform });
+					transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`,
+					d = glyph.path.toSVG().slice(9, -3),
+					// svg element "scale"
+					g = Self.els.uxLayer.find("svg g").attr({ transform });
+				// set path of svg
+				g.find("path").attr({ d });
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
 			}
@@ -344,10 +344,18 @@
 			Drag = Self.drag;
 		switch(event.type) {
 			case "mousedown":
+				let sel = Self.els.uxLayer.find(".selected"),
+					tgt = $(event.target);
+				if (tgt.hasClass("anchor") && !tgt.hasClass("selected")) {
+					sel.removeClass("selected");
+					sel = Self.els.uxLayer.find(".selected");
+				}
+				if (!sel.length) sel = tgt.addClass("selected");
+
 				let doc = $(document),
 					path = Self.data.glyph.path,
 					// include all selected anchors for movement
-					el = Self.els.uxLayer.find(".selected").map(elem => ({
+					el = sel.map(elem => ({
 						el: $(elem),
 						oY: elem.offsetTop + 7,
 						oX: elem.offsetLeft + 7,
@@ -361,7 +369,6 @@
 				Self.drag = { el, doc, click };
 
 				// console.log( path );
-				// return console.log( Self.data.draw.anchor.selected );
 
 				// update canvas
 				// Self.data.draw.anchor.selected = [anchor.index];
@@ -533,6 +540,9 @@
 			Drag = Self.drag;
 		switch(event.type) {
 			case "mousedown":
+				// clear selected anchors
+				Self.dispatch({ type: "clear-selected-anchors" });
+
 				let doc = $(document),
 					el = Self.els.lasso,
 					rect = el.parent()[0].getBoundingClientRect(),
