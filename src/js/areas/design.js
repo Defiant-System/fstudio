@@ -176,11 +176,11 @@
 				}
 				if (cmd.x1 !== undefined) {
 					let anchor = anchors[anchors.length - 2];
-					handles.push({ i: anchor.i, ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
+					if (anchor) handles.push({ i: anchor.i, ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
 				}
 				if (cmd.x2 !== undefined) {
 					let anchor = anchors[anchors.length - 1];
-					handles.push({ i: anchor.i, ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
+					if (anchor) handles.push({ i: anchor.i, ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
 				}
 			}
 
@@ -210,7 +210,7 @@
 					return `<b class="anchor" data-i="${i}" style="top: ${top}px; left: ${left}px;"></b>`;
 				});
 			if (!Self.els.uxLayer[0].childNodes.length) {
-				str.push(`<svg><g>${glyph.path.toSVG()}</g></svg>`);
+				str.push(`<svg><g fill="#f00">${glyph.path.toSVG()}</g></svg>`);
 				Self.els.uxLayer.html(str.join(""));
 			}
 			if (style.top > 0) {
@@ -346,7 +346,8 @@
 			case "mousedown":
 				let doc = $(document),
 					el = $(event.target).addClass("selected"),
-					anchor = new Anchor(Self.data.glyph.path, +el.data("i")),
+					path = Self.data.glyph.path,
+					anchor = new Anchor(path, +el.data("i")),
 					offset = {
 						y: +el.prop("offsetTop") + 7,
  						x: +el.prop("offsetLeft") + 7,
@@ -358,7 +359,7 @@
 				// drag object
 				Self.drag = { el, doc, anchor, click, offset };
 
-				console.log( { ...Self.data.glyph.path.commands[+el.data("i")] } );
+				// console.log( path );
 
 				// update canvas
 				Self.data.draw.anchor.selected = [anchor.index];
