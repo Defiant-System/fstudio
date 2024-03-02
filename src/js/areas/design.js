@@ -80,8 +80,10 @@
 				// prevent default behaviour
 				event.preventDefault();
 				el = $(event.target);
-				// auto-hide handle box
-				Self.els.hBox.removeClass("show");
+				if (!el.hasClass("handle-box") && !el.hasClass("handle") && !el.hasClass("rotator")) {
+					// auto-hide handle box
+					Self.els.hBox.removeClass("show");
+				}
 				// proxy event depending on active tool
 				switch (true) {
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
@@ -90,8 +92,8 @@
 					case el.nodeName() === "path": return Self.dispatch({ type: "show-handle-box" });
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
 					case el.hasClass("rotator"): return Self.viewRotate(event);
-					case el.hasClass("handle"): return Self.viewZoom(event);
-					case (Self.data.tool === "move"): return Self.viewMove(event);
+					case el.hasClass("handle"): return Self.viewResize(event);
+					case el.hasClass("handle-box"): return Self.viewMove(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
 					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
 				}
@@ -503,7 +505,7 @@
 				break;
 		}
 	},
-	viewBox(event) {
+	viewResize(event) {
 		let Self = fstudio.design,
 			Drag = Self.drag;
 		switch(event.type) {
@@ -511,28 +513,57 @@
 				let doc = $(document),
 					hBox = Self.els.hBox,
 					el = $(event.target),
+					type = el.prop("className").split(" ")[1],
+					offset = {
+						y: +hBox.prop("offsetTop"),
+						x: +hBox.prop("offsetLeft"),
+						w: +hBox.prop("offsetWidth"),
+						h: +hBox.prop("offsetHeight"),
+					},
 					click = {
-						y: event.clientY - +hBox.prop("offsetTop"),
-						x: event.clientX - +hBox.prop("offsetLeft"),
+						y: event.clientY,
+						x: event.clientX,
 					};
 
 				// drag object
-				Self.drag = { el, hBox, doc, click };
+				Self.drag = { el, type, hBox, doc, offset, click };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
-				Self.drag.doc.on("mousemove mouseup", Self.viewBox);
+				Self.drag.doc.on("mousemove mouseup", Self.viewResize);
 				break;
 			case "mousemove":
-				let top = event.clientY - Drag.click.y,
-					left = event.clientX - Drag.click.x;
-				Drag.hBox.css({ top, left });
+				let dim = {
+						top: Drag.offset.y,
+						left: Drag.offset.x,
+						width: Drag.offset.w,
+						height: Drag.offset.h,
+					};
+				// movement: east
+				if (Drag.type.includes("e")) {
+					dim.left = event.clientX - Drag.click.x + Drag.offset.x;
+					dim.width = Drag.offset.w + Drag.click.x - event.clientX;
+				}
+				// movement: west
+				if (Drag.type.includes("w")) {
+					dim.width = event.clientX - Drag.click.x + Drag.offset.w;
+				}
+				// movement: north
+				if (Drag.type.includes("n")) {
+					dim.top = event.clientY - Drag.click.y + Drag.offset.y;
+					dim.height = Drag.offset.h + Drag.click.y - event.clientY;
+				}
+				// movement: south
+				if (Drag.type.includes("s")) {
+					dim.height = event.clientY - Drag.click.y + Drag.offset.h;
+				}
+				Drag.hBox.css(dim);
 				break;
 			case "mouseup":
 				// cover app body
 				Self.els.content.removeClass("cover hide-cursor");
 				// bind events
-				Drag.doc.off("mousemove mouseup", Self.viewBox);
+				Drag.doc.off("mousemove mouseup", Self.viewResize);
 				break;
 		}
 	},
@@ -543,22 +574,21 @@
 			case "mousedown":
 				let el = $(event.target),
 					doc = $(document),
-					offset = {
-						y: Self.data.view.dY,
-						x: Self.data.view.dX,
-					},
 					click = {
-						y: event.clientY,
-						x: event.clientX,
+						y: event.clientY - +el.prop("offsetTop"),
+						x: event.clientX - +el.prop("offsetLeft"),
 					};
 				// drag object
-				Self.drag = { el, doc, click, offset };
+				Self.drag = { el, doc, click };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
 				Self.drag.doc.on("mousemove mouseup", Self.viewMove);
 				break;
 			case "mousemove":
+				let top = event.clientY - Drag.click.y,
+					left = event.clientX - Drag.click.x;
+				Drag.el.css({ top, left });
 				break;
 			case "mouseup":
 				// cover app body
