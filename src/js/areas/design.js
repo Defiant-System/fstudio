@@ -372,19 +372,22 @@
 				cY = Data.draw.rotation.cY,
 				cX = Data.draw.rotation.cX,
 				radius = Data.draw.rotation.radius,
-				radians = Data.draw.rotation.radians,
 				rStart = -Math.PI * .5,
+				radians = Data.draw.rotation.radians - rStart,
 				rEnd = rStart + radians,
 				nY = cY + radius * Math.cos(Math.PI - radians),
 				nX = cX + radius * Math.sin(Math.PI - radians),
-				angle = (radians * (180 / Math.PI)).toFixed(1);
+				angle = radians * (180 / Math.PI);
+
+			angle = (angle + 360) % 360;
+			if (angle > 180) angle -= 360;
 
 			ctx.fillStyle = `${color}44`;
 			ctx.strokeStyle = `${color}aa`;
 
 			ctx.beginPath();
 			ctx.moveTo(cX, cY);
-			ctx.arc(cX, cY, radius, rStart, rEnd, false);
+			ctx.arc(cX, cY, radius, rStart, rEnd, angle < 0);
 			ctx.closePath();
 			ctx.fill();
 
@@ -397,7 +400,7 @@
 			ctx.font = "16px Roboto";
 			ctx.textAlign = "center";
 			ctx.fillStyle = color;
-			ctx.fillText(`${angle}°`, cX, cY - radius - 7);
+			ctx.fillText(`${angle | 0}°`, cX, cY - radius - 11);
 		},
 		vLine(ctx, text, Data, x) {
 			let xpx = Math.round(Data.view.dX + x * Data.view.dZ),
@@ -552,18 +555,14 @@
 			case "mousemove":
 				let dY = event.clientY - Drag.click.y,
 					dX = event.clientX - Drag.click.x;
-				
-				Drag.rotation.radians = Math.atan2(dY, dX) + (Math.PI * .5);
+				Drag.rotation.radians = Math.atan2(dY, dX);
 				// update canvas
 				Self.draw.glyph(Self);
-
-				// Self.els.ctx.fillStyle = "red";
-				// Self.els.ctx.fillRect(Drag.click.x-1, Drag.click.y-1, 2, 2);
 				break;
 			case "mouseup":
 				// stop drawing rotation
 				Drag.rotation.on = false;
-				// Self.draw.glyph(Self);
+				Self.draw.glyph(Self);
 				// show handle box
 				Self.els.hBox.addClass("show");
 				// cover app body
