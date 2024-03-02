@@ -38,6 +38,14 @@
 					stroke: "#66666644",
 					on: true,
 				},
+				rotation: {
+					on: true,
+					cY: 260,
+					cX: 350,
+					radius: 190,
+					color: "#489bf7",
+					radians: Math.PI * .175,
+				},
 				anchor: {
 					on: false,
 					size: 6,
@@ -94,7 +102,6 @@
 					case el.hasClass("handle"): return Self.viewResize(event);
 					case el.hasClass("handle-box"): return Self.viewMove(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
-					case (Self.data.tool === "rotate"): return Self.viewRotate(event);
 				}
 				break;
 			// system events
@@ -155,8 +162,8 @@
 				let bbox = Self.els.uxLayer.find("svg g")[0].getBBox(),
 					offset = Self.els.uxLayer.offset();
 				
-				console.log( offset );
-				console.log( bbox );
+				// console.log( offset );
+				// console.log( bbox );
 				
 				top = offset.top; // 108
 				left = offset.left; // 260
@@ -219,6 +226,7 @@
 			ctx.translate(-.5, -.5);
 			if (Data.draw.handle.on) this.handles(ctx, handles, Data);
 			if (Data.draw.anchor.on) this.anchors(ctx, anchors, Data);
+			if (Data.draw.rotation.on) this.rotation(ctx, Data);
 
 			// selected anchor handles
 			this.selected(ctx, handles, Data);
@@ -333,8 +341,8 @@
 		},
 		selected(ctx, l, Data) {
 			let radius = Data.draw.handle.radius;
-			ctx.fillStyle = "#fff";
-			ctx.strokeStyle = "#888";
+			ctx.fillStyle = Data.draw.handle.fill;
+			ctx.strokeStyle = Data.draw.handle.stroke;
 			// handle arms
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
@@ -358,6 +366,38 @@
 			ctx.closePath();
 			ctx.stroke();
 			ctx.fill();
+		},
+		rotation(ctx, Data) {
+			let color = Data.draw.rotation.color,
+				cY = Data.draw.rotation.cY,
+				cX = Data.draw.rotation.cX,
+				radius = Data.draw.rotation.radius,
+				radians = Data.draw.rotation.radians,
+				rStart = -Math.PI * .5,
+				rEnd = rStart + radians,
+				nY = cY + radius * Math.cos(Math.PI - radians),
+				nX = cX + radius * Math.sin(Math.PI - radians),
+				angle = (radians * (180 / Math.PI)).toFixed(1);
+
+			ctx.fillStyle = `${color}44`;
+			ctx.strokeStyle = `${color}aa`;
+
+			ctx.beginPath();
+			ctx.moveTo(cX, cY);
+			ctx.arc(cX, cY, radius, rStart, rEnd, false);
+			ctx.closePath();
+			ctx.fill();
+
+			ctx.beginPath();
+			ctx.moveTo(cX, cY);
+			ctx.lineTo(nX, nY);
+			ctx.closePath();
+			ctx.stroke();
+
+			ctx.font = "16px Roboto";
+			ctx.textAlign = "center";
+			ctx.fillStyle = "#489bf7";
+			ctx.fillText(`${angle}°`, cX, cY - radius - 7);
 		},
 		vLine(ctx, text, Data, x) {
 			let xpx = Math.round(Data.view.dX + x * Data.view.dZ),
@@ -493,16 +533,20 @@
 					};
 				// drag object
 				Self.drag = { el, doc, click, offset };
+				// hide handle box
+				Self.els.hBox.removeClass("show");
 				// cover app body
-				Self.els.content.addClass("cover hide-cursor");
+				Self.els.content.addClass("cover");
 				// bind events
 				Self.drag.doc.on("mousemove mouseup", Self.viewRotate);
 				break;
 			case "mousemove":
 				break;
 			case "mouseup":
+				// show handle box
+				Self.els.hBox.addClass("show");
 				// cover app body
-				Self.els.content.removeClass("cover hide-cursor");
+				Self.els.content.removeClass("cover");
 				// bind events
 				Drag.doc.off("mousemove mouseup", Self.viewRotate);
 				break;
