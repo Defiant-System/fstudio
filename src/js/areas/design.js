@@ -81,8 +81,7 @@
 				event.preventDefault();
 				el = $(event.target);
 				if (!el.hasClass("handle-box") && !el.hasClass("handle") && !el.hasClass("rotator")) {
-					// auto-hide handle box
-					Self.els.hBox.removeClass("show");
+					Self.dispatch({ type: "hide-handle-box" });
 				}
 				// proxy event depending on active tool
 				switch (true) {
@@ -148,6 +147,10 @@
 				// update canvas
 				Self.draw.glyph(Self);
 				return true;
+			case "hide-handle-box":
+				// auto-hide handle box
+				Self.els.hBox.removeClass("show");
+				break;
 			case "show-handle-box":
 				let bbox = Self.els.uxLayer.find("svg g")[0].getBBox(),
 					offset = Self.els.uxLayer.offset();
