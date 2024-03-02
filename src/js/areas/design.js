@@ -39,12 +39,12 @@
 					on: true,
 				},
 				rotation: {
-					on: true,
-					cY: 260,
-					cX: 350,
-					radius: 190,
 					color: "#489bf7",
-					radians: Math.PI * .175,
+					on: false,
+					cY: 0,
+					cX: 0,
+					radius: 0,
+					radians: 0,
 				},
 				anchor: {
 					on: false,
@@ -396,7 +396,7 @@
 
 			ctx.font = "16px Roboto";
 			ctx.textAlign = "center";
-			ctx.fillStyle = "#489bf7";
+			ctx.fillStyle = color;
 			ctx.fillText(`${angle}°`, cX, cY - radius - 7);
 		},
 		vLine(ctx, text, Data, x) {
@@ -521,18 +521,27 @@
 			Drag = Self.drag;
 		switch(event.type) {
 			case "mousedown":
-				let el = $(event.target),
-					doc = $(document),
-					offset = {
-						y: Self.data.view.dY,
-						x: Self.data.view.dX,
-					},
+				let doc = $(document),
+					el = $(event.target),
+					bY = +el.parent().prop("offsetTop"),
+					bX = +el.parent().prop("offsetLeft"),
+					bW = +el.parent().prop("offsetWidth"),
+					bH = +el.parent().prop("offsetHeight"),
+					rotation = Self.data.draw.rotation,
 					click = {
-						y: event.clientY,
-						x: event.clientX,
+						y: event.clientY + (bH >> 1) + 29,
+						x: event.clientX - event.offsetX,
 					};
 				// drag object
-				Self.drag = { el, doc, click, offset };
+				Self.drag = { el, doc, click, rotation };
+
+				// start drawing rotation
+				Self.drag.rotation.on = true;
+				Self.drag.rotation.cY = bY + (bH >> 1);
+				Self.drag.rotation.cX = bX + (bW >> 1);
+				Self.drag.rotation.radius = (Math.max(bW, bH) + 7) >> 1;
+				// trigger mousemove event to "draw"
+				Self.viewRotate({ type: "mousemove", clientY: event.clientY, clientX: event.clientX });
 				// hide handle box
 				Self.els.hBox.removeClass("show");
 				// cover app body
@@ -541,8 +550,20 @@
 				Self.drag.doc.on("mousemove mouseup", Self.viewRotate);
 				break;
 			case "mousemove":
+				let dY = event.clientY - Drag.click.y,
+					dX = event.clientX - Drag.click.x;
+				
+				Drag.rotation.radians = Math.atan2(dY, dX) + (Math.PI * .5);
+				// update canvas
+				Self.draw.glyph(Self);
+
+				// Self.els.ctx.fillStyle = "red";
+				// Self.els.ctx.fillRect(Drag.click.x-1, Drag.click.y-1, 2, 2);
 				break;
 			case "mouseup":
+				// stop drawing rotation
+				Drag.rotation.on = false;
+				// Self.draw.glyph(Self);
 				// show handle box
 				Self.els.hBox.addClass("show");
 				// cover app body
