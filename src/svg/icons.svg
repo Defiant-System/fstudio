@@ -264,8 +264,8 @@
 
 	<svg id="icon-path-union" viewBox="0 0 17 17">
 		<style type="text/css">
-			.st0{opacity:0.4;fill:#333333;enable-background:new;}
-			.st1{fill:#333333;}
+			.st0{opacity:0.4;fill:#333;enable-background:new;}
+			.st1{fill:#333;}
 		</style>
 		<polygon class="st0" points="12.5,6.5 12.5,1.5 1.5,1.5 1.5,11.5 5.5,11.5 5.5,15.5 15.5,15.5 15.5,6.5 "/>
 		<path class="st1" d="M16,16H5v-4H1V1h12v5h3V16z M15,15V7h-3V2H2v9h4l0,4H15z"/>
@@ -273,8 +273,8 @@
 
 	<svg id="icon-path-subtract" viewBox="0 0 17 17">
 		<style type="text/css">
-			.st0{opacity:0.4;fill:#333333;enable-background:new;}
-			.st1{fill:#333333;}
+			.st0{opacity:0.4;fill:#333;enable-background:new;}
+			.st1{fill:#333;}
 		</style>
 		<polygon class="st0" points="4.5,6.5 12.5,6.5 12.5,1.5 1.4,1.5 1.4,11.5 4.5,11.5 "/>
 		<path class="st1" d="M13,6V1H1l0,11l3,0v4l12,0V6H13z M2,11l0-9l10,0v4L4,6v5C4,11,2,11,2,11z M12,7v4l-7,0V7L12,7z M15,15L5,15v-3
@@ -283,8 +283,8 @@
 
 	<svg id="icon-path-intersect" viewBox="0 0 17 17">
 		<style type="text/css">
-			.st0{opacity:0.4;fill:#333333;enable-background:new;}
-			.st1{fill:#333333;}
+			.st0{opacity:0.4;fill:#333;enable-background:new;}
+			.st1{fill:#333;}
 		</style>
 		<rect x="5.4" y="6.5" class="st0" width="7" height="5"/>
 		<path class="st1" d="M13,6l0-5H1v11l4,0v4l11,0l0-10H13z M2,11V2h10l0,4L5,6l0,5C5,11,2,11,2,11z M12,7v4H6V7H12z M15,15l-9,0v-3h7
