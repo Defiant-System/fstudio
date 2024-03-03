@@ -391,7 +391,7 @@
 	<svg id="icon-anchor-sym" viewBox="0 0 19 13">
 		<style type="text/css">
 			.st0{fill:none;stroke:#333;stroke-miterlimit:10;}
-			.st1{fill:#fff;stroke:#333;stroke-miterlimit:10;}
+			.st1{fill:#bbb;stroke:#333;stroke-miterlimit:10;}
 		</style>
 		<line class="st0" x1="1.5" y1="1.5" x2="17.5" y2="11.5"/>
 		<circle cx="1.5" cy="1.5" r="1.5"/>
@@ -402,7 +402,7 @@
 	<svg id="icon-anchor-flat" viewBox="0 0 19 13">
 		<style type="text/css">
 			.st0{fill:none;stroke:#333;stroke-miterlimit:10;}
-			.st1{fill:#fff;stroke:#333;stroke-miterlimit:10;}
+			.st1{fill:#bbb;stroke:#333;stroke-miterlimit:10;}
 		</style>
 		<line class="st0" x1="1.5" y1="1.5" x2="17.5" y2="11.5"/>
 		<circle cx="1.5" cy="1.5" r="1.5"/>
@@ -413,7 +413,7 @@
 	<svg id="icon-anchor-corner" viewBox="0 0 19 13">
 		<style type="text/css">
 			.st0{fill:none;stroke:#333;stroke-miterlimit:10;}
-			.st1{fill:#fff;stroke:#333;stroke-miterlimit:10;}
+			.st1{fill:#bbb;stroke:#333;stroke-miterlimit:10;}
 		</style>
 		<line class="st0" x1="6.3" y1="11.5" x2="15.5" y2="6.5"/>
 		<line class="st0" x1="3" y1="1.5" x2="15.5" y2="6.5"/>

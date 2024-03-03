@@ -12,6 +12,7 @@
 			hBox: window.find(".handle-box"),
 			lasso: window.find(".ux-lasso"),
 			content: window.find("content"),
+			zoomTools: window.find(".zoom-tools"),
 		};
 		// get reference to canvas
 		this.els.ctx = this.els.cvs[0].getContext("2d");
@@ -80,6 +81,8 @@
 			left,
 			width,
 			height,
+			value,
+			perc,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -122,7 +125,7 @@
 				// console.log( FontFile.font );
 				// console.log( Self.data.glyph.path.commands[1] );
 
-				Self.draw.glyph(Self);
+				Self.dispatch({ type: "zoom-fit" });
 				break;
 			// custom events
 			case "clear-selected-anchors":
@@ -134,7 +137,20 @@
 				break;
 			case "zoom-minus":
 			case "zoom-plus":
-				console.log(event);
+				el = Self.els.zoomTools.find(".zoom-value");
+				value = parseInt(el.text(), 10);
+				value -= value % 10;
+				value += event.type === "zoom-plus" ? 10 : -10;
+				value = Math.min(200, value);
+				// update integers
+				el.html(`${value}%`);
+				// update canvas
+				perc = value / 200;
+				Self.data.fontSize = Math.lerp(30, 830, perc);
+				Self.draw.glyph(Self);
+				// update zoom knob
+				value = (perc * 100) - 50 | 0;
+				Self.els.zoomTools.find(`.inline-menubox .pan-knob`).data({ value });
 				break;
 			case "zoom-fit":
 				let glyph = Self.data.glyph,
@@ -240,13 +256,13 @@
 					height: Math.round(Data.view.dH) + 1,
 					"--xheight": `${xheight}px`,
 					"--baseline": `${baseline}px`,
-				},
-				str = anchors.filter(a => a.type !== "M").map(a => {
+				};
+			if (!Self.els.uxLayer[0].childNodes.length) {
+				let str = anchors.filter(a => a.type !== "M").map(a => {
 					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half);
 					return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;"></b>`;
-				});
-			if (!Self.els.uxLayer[0].childNodes.length) {
+				})
 				str.push(`<svg><g fill="#f00"><path /></g></svg>`);
 				Self.els.uxLayer.html(str.join(""));
 			}
