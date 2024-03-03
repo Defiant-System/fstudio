@@ -62,7 +62,7 @@
 				// calculate ghost transform
 				ghost: true,
 			},
-			fontSize: 420,
+			fontSize: 430,
 			view: {
 				dZ: 1,
 				dX: 0,
@@ -257,7 +257,7 @@
 					transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
 				Self.els.uxLayer.find("svg g").attr({ transform });
 				// don't recalculate ghost transform
-				if (style.top > 0) Data.draw.ghost = false;
+				// if (style.top > 0) Data.draw.ghost = false;
 			}
 			if (style.top > 0) {
 				// set path of svg
@@ -485,6 +485,9 @@
 				let doc = $(document),
 					el = $(event.target).addClass("active"),
 					knob = el.parent().find(".inline-menubox .pan-knob"),
+					size = {
+						value: Self.data.fontSize,
+					},
 					limit = {
 						min: -50,
 						max: 50,
@@ -493,7 +496,7 @@
 						x: event.clientX - +knob.data("value"),
 					};
 				// drag object
-				Self.drag = { el, knob, limit, doc, click };
+				Self.drag = { el, knob, limit, size, doc, click };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
@@ -504,6 +507,9 @@
 					perc = ((value + 50) * 2) || 1;
 				// update knob
 				Drag.knob.data({ value });
+				// update canvas
+				Self.data.fontSize = Math.lerp(30, 830, perc / 200);
+				Self.draw.glyph(Self);
 				// update zoom value
 				Drag.el.html(`${perc}%`);
 				break;
