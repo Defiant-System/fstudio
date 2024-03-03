@@ -160,16 +160,14 @@
 				break;
 			case "show-handle-box":
 				let bbox = Self.els.uxLayer.find("svg g")[0].getBBox(),
-					offset = Self.els.uxLayer.offset();
+					offset = Self.els.uxLayer.offset(),
+					baseline = FontFile.font.tables.os2.sTypoAscender * Self.data.view.dZ;
 				
-				// console.log( offset );
-				// console.log( bbox );
-				
-				top = offset.top; // 108
-				left = offset.left; // 260
 				width = Math.round(bbox.width * Self.data.view.dZ);
 				height = Math.round(bbox.height * Self.data.view.dZ);
-
+				top = Math.round(offset.top + baseline - height - (bbox.y * Self.data.view.dZ));
+				left = Math.round(offset.left + (bbox.x * Self.data.view.dZ)) - 1;
+				
 				// console.log( top, left, width, height );
 				Self.els.hBox.addClass("show").css({ top, left, width, height });
 				break;
