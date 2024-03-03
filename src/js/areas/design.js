@@ -5,6 +5,7 @@
 	init() {
 		// fast references
 		this.els = {
+			_anchors: [],
 			el: window.find(".view-design"),
 			cvs: window.find("canvas.glyph-editor"),
 			uxWrapper: window.find(".ux-wrapper"),
@@ -60,8 +61,6 @@
 					fill: "#fff",
 					stroke: "#aaa",
 				},
-				// calculate ghost transform
-				ghost: true,
 			},
 			fontSize: 430,
 			view: {
@@ -265,23 +264,34 @@
 				})
 				str.push(`<svg><g fill="#f00"><path /></g></svg>`);
 				Self.els.uxLayer.html(str.join(""));
+			} else if (!Self.els._anchors.length) {
+				Self.els._anchors = Self.els.uxLayer.find(".anchor").map(elem => {
+					let el = $(elem),
+						top = elem.offsetTop,
+						left = elem.offsetLeft,
+						i = +elem.getAttribute("data-i");
+					return { i, el, top, left };
+				});
 			}
-			if (Data.draw.ghost) {
-				let bbox = glyph.path.getBoundingBox(),
-					tY = bbox.y2 - bbox.y1 - Data.view.dH + 2,
-					// svg element "scale"
-					transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
-				Self.els.uxLayer.find("svg g").attr({ transform });
-				// don't recalculate ghost transform
-				// if (style.top > 0) Data.draw.ghost = false;
-			}
-			if (style.top > 0) {
-				// set path of svg
-				let d = glyph.path.toSVG().slice(9, -3);
-				Self.els.uxLayer.find("svg path").attr({ d });
-				// ux-layer dimensions
-				Self.els.uxLayer.css(style);
-			}
+
+			let bbox = glyph.path.getBoundingBox(),
+				tY = bbox.y2 - bbox.y1 - Data.view.dH + 2,
+				// svg element "scale"
+				transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
+			Self.els.uxLayer.find("svg g").attr({ transform });
+
+			// set path of svg
+			let d = glyph.path.toSVG().slice(9, -3);
+			Self.els.uxLayer.find("svg path").attr({ d });
+			// ux-layer dimensions
+			Self.els.uxLayer.css(style);
+
+			Self.els._anchors.map(item => {
+				let a = anchors[item.i],
+					top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
+					left = Math.round((a.x * Data.view.dZ) - half);
+				item.el.css({ top, left });
+			});
 		},
 		path(ctx, path, Data) {
 			let isOutline = Data.mode === "outline",
