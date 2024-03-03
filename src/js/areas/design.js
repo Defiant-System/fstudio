@@ -154,12 +154,17 @@
 			case "zoom-fit":
 				let glyph = Self.data.glyph,
 					os2 = FontFile.font.tables.os2,
-					dZ = 1 / glyph.path.unitsPerEm * Self.data.fontSize,
+					fontSize = 430,
+					dZ = 1 / glyph.path.unitsPerEm * fontSize,
 					dW = glyph.advanceWidth * dZ,
 					dX = (Self.data.cvsDim.width - dW) >> 1,
 					dY = (os2.sTypoAscender - os2.sTypoDescender) * dZ;
 				
 				Self.data.view = { dZ, dX, dY, dW, dH: dY };
+				Self.data.fontSize = fontSize;
+				// reset zoom tools
+				Self.els.zoomTools.find(".zoom-value").html("100%");
+				Self.els.zoomTools.find(".inline-menubox .pan-knob").data({ value: 0 });
 				// update canvas
 				Self.draw.glyph(Self);
 				break;
@@ -192,6 +197,7 @@
 		glyph(Self) {
 			let Font = FontFile.font,
 				Data = Self.data,
+				os2 = Font.tables.os2,
 				ctx = Self.els.ctx,
 				glyph = Data.glyph,
 				commands = glyph.path.commands,
@@ -199,7 +205,10 @@
 				handles = [],
 				path;
 			// set zoom / scale
-			Data.view.dZ = 1 / glyph.path.unitsPerEm * Data.fontSize,
+			Data.view.dZ = 1 / glyph.path.unitsPerEm * Data.fontSize;
+			Data.view.dW = glyph.advanceWidth * Data.view.dZ;
+			Data.view.dH = (os2.sTypoAscender - os2.sTypoDescender) * Data.view.dZ;
+			
 			// reset canvas
 			Self.els.cvs.attr(Self.data.cvsDim);
 
@@ -207,9 +216,9 @@
 				ctx.fillStyle = Data.draw.guides.stroke;
 				// horisontal lines
 				this.hLine(ctx, "Baseline", Data, 0);
-				this.hLine(ctx, "xheight", Data, Font.tables.os2.sxHeight);
-				this.hLine(ctx, "Ascent", Data, Font.tables.os2.sTypoAscender);
-				this.hLine(ctx, "Descent", Data, Font.tables.os2.sTypoDescender);
+				this.hLine(ctx, "xheight", Data, os2.sxHeight);
+				this.hLine(ctx, "Ascent", Data, os2.sTypoAscender);
+				this.hLine(ctx, "Descent", Data, os2.sTypoDescender);
 				// vertical lines
 				this.vLine(ctx, "Left side", Data, 0);
 				this.vLine(ctx, "Right side", Data, glyph.advanceWidth);
@@ -246,8 +255,8 @@
 
 			// puts SVG "ghost" & HTML anchors
 			let half = Data.draw.anchor.size * .5,
-				baseline = Font.tables.os2.sTypoAscender * Data.view.dZ,
-				xheight = baseline - Font.tables.os2.sxHeight * Data.view.dZ,
+				baseline = os2.sTypoAscender * Data.view.dZ,
+				xheight = baseline - os2.sxHeight * Data.view.dZ,
 				style = {
 					top: Data.view.dY - baseline,
 					left: Math.round(Data.view.dX),
@@ -287,8 +296,9 @@
 			Self.els.uxLayer.css(style);
 
 			Self.els._anchors.map(item => {
-				let a = anchors[item.i],
-					top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
+				let a = anchors[item.i];
+				if (!a) return;
+				let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
 					left = Math.round((a.x * Data.view.dZ) - half);
 				item.el.css({ top, left });
 			});
