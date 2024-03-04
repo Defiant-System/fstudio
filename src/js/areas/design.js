@@ -831,30 +831,38 @@
 	viewPath(event) {
 		let Self = fstudio.design,
 			Drag = Self.drag,
-			x, y;
+			x, y, dx, dy;
 		switch(event.type) {
 			case "mousedown":
 				if (!Drag) {
 					let doc = $(document),
 						el = $(event.target),
-						offset = {
+						start = {
 							y: event.offsetY,
 							x: event.offsetX,
 						},
 						click = {
-							y: event.clientY - offset.y,
-							x: event.clientX - offset.x,
+							y: event.clientY - start.y,
+							x: event.clientX - start.x,
 						},
-						path = new Path(offset.x, offset.y);
+						path = new Path(start.x, start.y);
 
 					// drag object
-					Self.drag = { el, doc, path, click, downState: true };
+					Self.drag = { el, doc, path, click, start, downState: true };
 					// bind events
 					Self.drag.doc.on("mousemove mouseup", Self.viewPath);
 				} else {
 					x = event.offsetX;
 					y = event.offsetY;
-					Drag.path.addAnchor(x, y);
+					dx = Drag.start.x - x;
+					dy = Drag.start.y - y;
+
+					if (Math.sqrt(dx * dx + dy * dy) < 3) {
+						Drag.path.closeLoop(x, y);
+					} else {
+						Drag.path.addAnchor(x, y);
+					}
+
 					// down state
 					Drag.downState = true;
 				}
@@ -869,6 +877,12 @@
 				// Self.draw.glyph(Self);
 				if (Drag.downState) Drag.path.moveHandle(x, y);
 				else Drag.path.moveAnchor(x, y);
+
+
+				dx = Drag.start.x - x;
+				dy = Drag.start.y - y;
+				let cursor = Math.sqrt(dx * dx + dy * dy) < 3 ? "tool-pen-loop" : "tool-pen"
+				Self.els.el.data({ cursor });
 
 				// Self.draw.path(Self.els.ctx, Drag.path._path, Self.data);
 				Drag.path.draw(Self.els.ctx);

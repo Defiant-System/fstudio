@@ -7,9 +7,6 @@ class Path {
 		this._down = true;
 		this.anchors = [{ x, y }];
 		this.handles = [{ x, y, aX: x, aY: y }];
-
-		// this._path.bezierCurveTo(x, y, x, y, x, y);
-		// this._path.lineTo(x, y);
 	}
 
 	moveHandle(x, y) {
@@ -79,6 +76,10 @@ class Path {
 		this.anchors[len].x = x;
 		this.anchors[len].y = y;
 		this._down = true;
+	}
+
+	closeLoop(x, y) {
+		
 	}
 
 	draw(ctx) {
