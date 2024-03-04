@@ -834,11 +834,7 @@
 			x, y;
 		switch(event.type) {
 			case "mousedown":
-				if (Drag) {
-					x = event.offsetX;
-					y = event.offsetY;
-					Drag.path.addAnchor(x, y);
-				} else {
+				if (!Drag) {
 					let doc = $(document),
 						el = $(event.target),
 						offset = {
@@ -846,27 +842,29 @@
 							x: event.offsetX,
 						},
 						click = {
-							y: event.clientY,
-							x: event.clientX,
+							y: event.clientY - offset.y,
+							x: event.clientX - offset.x,
 						},
 						path = new Path(offset.x, offset.y);
 
 					// drag object
-					Self.drag = { el, doc, path, click, offset };
+					Self.drag = { el, doc, path, click, downState: true };
 					// bind events
 					Self.drag.doc.on("mousemove mouseup", Self.viewPath);
+				} else {
+					x = event.offsetX;
+					y = event.offsetY;
+					Drag.path.addAnchor(x, y);
+					// down state
+					Drag.downState = true;
 				}
-
-				// down state
-				Self.drag.downState = true;
-
 				break;
 			case "mousemove":
 				// TEMP reset canvas
 				Self.els.cvs.attr(Self.data.cvsDim);
 
-				y = event.clientY - Drag.click.y + Drag.offset.y;
-				x = event.clientX - Drag.click.x + Drag.offset.x;
+				y = event.clientY - Drag.click.y;
+				x = event.clientX - Drag.click.x;
 
 				// Self.draw.glyph(Self);
 				if (Drag.downState) Drag.path.moveHandle(x, y);
@@ -876,8 +874,8 @@
 				Drag.path.draw(Self.els.ctx);
 				break;
 			case "mouseup":
-				y = event.clientY - Drag.click.y + Drag.offset.y;
-				x = event.clientX - Drag.click.x + Drag.offset.x;
+				y = event.clientY - Drag.click.y;
+				x = event.clientX - Drag.click.x;
 				Drag.path.releaseHandle(x, y);
 
 				// down state
