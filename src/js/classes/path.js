@@ -22,11 +22,17 @@ class Path {
 				dY = this.anchors[len].y - y;
 			p1.x2 = this.anchors[len].x + dX;
 			p1.y2 = this.anchors[len].y + dY;
+
+			// mirror
+			len = this.handles.length-2;
+			this.handles[len].x = p1.x2;
+			this.handles[len].y = p1.y2;
 		}
 
 		len = this.handles.length-1;
 		this.handles[len].x = x;
 		this.handles[len].y = y;
+
 		this._down = true;
 	}
 
@@ -54,13 +60,20 @@ class Path {
 		p1.x = x;
 		p1.y = y;
 
+		// add handle
+		this.handles.push({ x, y });
+		len = this.handles.length-1;
+		this.handles[len].aX = x;
+		this.handles[len].aY = y;
 
+		// mirror
 		this.handles.push({ x, y });
 		len = this.handles.length-1;
 		this.handles[len].aX = x;
 		this.handles[len].aY = y;
 
 
+		// add anchor
 		this.anchors.push({ x, y });
 		len = this.anchors.length-1;
 		this.anchors[len].x = x;
