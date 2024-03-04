@@ -167,7 +167,7 @@
 				Self.els.zoomTools.find(".zoom-value").html("100%");
 				Self.els.zoomTools.find(".inline-menubox .pan-knob").data({ value: 0 });
 				// update canvas
-				Self.draw.glyph(Self);
+				// TEMP Self.draw.glyph(Self);
 				break;
 			case "set-design-mode":
 				Self.data.mode = event.arg;
@@ -513,9 +513,9 @@
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
-				// uncover app body
+				// cover app body
 				Self.els.content.removeClass("cover hide-cursor");
-				// unbind events
+				// bind events
 				Drag.doc.off("mousemove mouseup", Self.viewAnchor);
 				break;
 		}
@@ -559,9 +559,9 @@
 			case "mouseup":
 				// reset "zoom-value" element
 				Drag.el.removeClass("active");
-				// uncover app body
+				// cover app body
 				Self.els.content.removeClass("cover hide-cursor");
-				// unbind events
+				// bind events
 				Drag.doc.off("mousemove mouseup", Self.viewZoom);
 				break;
 		}
@@ -834,29 +834,43 @@
 			x, y;
 		switch(event.type) {
 			case "mousedown":
-				let doc = $(document),
-					el = $(event.target),
-					offset = {
-						y: event.offsetY,
-						x: event.offsetX,
-					},
-					click = {
-						y: event.clientY,
-						x: event.clientX,
-					},
-					path = new Path(offset.x, offset.y);
+				if (Drag) {
+					x = event.offsetX;
+					y = event.offsetY;
+					Drag.path.addAnchor(x, y);
+				} else {
+					let doc = $(document),
+						el = $(event.target),
+						offset = {
+							y: event.offsetY,
+							x: event.offsetX,
+						},
+						click = {
+							y: event.clientY,
+							x: event.clientX,
+						},
+						path = new Path(offset.x, offset.y);
 
-				// drag object
-				Self.drag = { el, doc, path, click, offset };
-				// bind events
-				Self.drag.doc.on("mousemove mouseup", Self.viewPath);
+					// drag object
+					Self.drag = { el, doc, path, click, offset };
+					// bind events
+					Self.drag.doc.on("mousemove mouseup", Self.viewPath);
+				}
+
+				// down state
+				Self.drag.downState = true;
+
 				break;
 			case "mousemove":
+				// TEMP reset canvas
+				Self.els.cvs.attr(Self.data.cvsDim);
+
 				y = event.clientY - Drag.click.y + Drag.offset.y;
 				x = event.clientX - Drag.click.x + Drag.offset.x;
 
-				Self.draw.glyph(Self);
-				Drag.path.move(x, y);
+				// Self.draw.glyph(Self);
+				if (Drag.downState) Drag.path.moveHandle(x, y);
+				else Drag.path.moveAnchor(x, y);
 
 				// Self.draw.path(Self.els.ctx, Drag.path._path, Self.data);
 				Drag.path.draw(Self.els.ctx);
@@ -864,9 +878,14 @@
 			case "mouseup":
 				y = event.clientY - Drag.click.y + Drag.offset.y;
 				x = event.clientX - Drag.click.x + Drag.offset.x;
-				Drag.path.add(x, y);
+				Drag.path.releaseHandle(x, y);
+
+				// down state
+				Self.drag.downState = false;
 
 				if (event.button === 2) {
+					// reset path
+					delete Self.drag;
 					// unbind events
 					Drag.doc.off("mousemove mouseup", Self.viewPath);
 				}

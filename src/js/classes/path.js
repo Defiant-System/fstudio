@@ -7,30 +7,37 @@ class Path {
 		// this._path.lineTo(x, y);
 	}
 
-	move(x, y) {
-		let last = this._path.commands[this._path.commands.length-1];
-		last.x = x;
-		last.y = y;
+	moveHandle(x, y) {
+		let len = this._path.commands.length,
+			p2 = this._path.commands[len-1];
+		p2.x2 = x;
+		p2.y2 = y;
 	}
 
-	add(x, y) {
-		let last = this._path.commands[this._path.commands.length-1];
-		last.x1 = x;
-		last.y1 = y;
-		last.x2 = x;
-		last.y2 = y;
+	releaseHandle(x, y) {
 
-		// this._path.bezierCurveTo(x, y, x, y, x, y);
+	}
+
+	moveAnchor(x, y) {
+		let len = this._path.commands.length,
+			p2 = this._path.commands[len-1];
+		p2.x = x;
+		p2.y = y;
+	}
+
+	addAnchor(x, y) {
+		this._path.bezierCurveTo(x, y, x, y, x, y);
 	}
 
 	draw(ctx) {
 		let path = this._path,
+			len = path.commands.length,
 			cmd, x1, y1, x2, y2;
 		
 		// path
 		ctx.save();
 		ctx.beginPath();
-		for (let i=0, il=path.commands.length; i<il; i += 1) {
+		for (let i=0, il=len; i<il; i += 1) {
 			cmd = path.commands[i];
 			switch (cmd.type) {
 				case "M":
@@ -59,27 +66,31 @@ class Path {
 			y2 = cmd.y;
 		}
 		ctx.save();
-		ctx.strokeStyle = "#333";
-		ctx.lineWidth = 5;
-		ctx.fill();
+		ctx.strokeStyle = "#33333377";
+		ctx.lineWidth = 2;
 		ctx.stroke();
 		ctx.restore();
 
 
 		// handles
-		let p1 = path.commands[path.commands.length-2],
-			p2 = path.commands[path.commands.length-1];
+		let p1 = path.commands[len-2],
+			p2 = path.commands[len-1];
+		
+		x1 = p1.x;
+		y1 = p1.y;
+		x2 = p2.x2 || p2.x;
+		y2 = p2.y2 || p2.y;
+		
 		ctx.strokeStyle = "#f00";
 		ctx.lineWidth = 1;
-		// ctx.strokeRect(100, 200, 4, 4);
 
 		ctx.beginPath();
-		ctx.moveTo(p1.x, p1.y);
-		ctx.lineTo(p2.x, p2.y);
+		ctx.moveTo(x1, y1);
+		ctx.lineTo(x2, y2);
 		ctx.stroke();
 		ctx.closePath();
 
-		// ctx.strokeRect(150, 100, 4, 4);
-
+		ctx.strokeRect(x1-2, y1-2, 4, 4);
+		ctx.strokeRect(x2-2, y2-2, 4, 4);
 	}
 }
