@@ -9,7 +9,7 @@
 		<Options>
 			<Tool symbol="icon-move" click="select-design-tool" arg="move" state="active"/>
 			<Tool symbol="icon-pan" click="select-design-tool" arg="pan"/>
-			<Tool symbol="icon-pen" click="select-design-tool" arg="path"/>
+			<Tool symbol="icon-pen" click="select-design-tool" arg="pen"/>
 		</Options>
 		<Options>
 			<Tool symbol="icon-path-add" click="select-design-tool" arg="anchor-add"/>

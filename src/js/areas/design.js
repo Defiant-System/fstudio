@@ -175,6 +175,10 @@
 				// update canvas
 				Self.draw.glyph(Self);
 				return true;
+			case "select-design-tool":
+				Self.data.tool = event.arg;
+				Self.els.el.data({ cursor: `tool-${event.arg}` });
+				return true;
 			case "hide-handle-box":
 				// auto-hide handle box
 				Self.els.hBox.removeClass("show");
@@ -285,7 +289,8 @@
 			}
 
 			let bbox = glyph.path.getBoundingBox(),
-				tY = bbox.y2 - bbox.y1 - Data.view.dH + 2,
+				// tY = Data.view.dH + (bbox.y1 * Data.view.dZ),
+				tY = 300,
 				// svg element "scale"
 				transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
 			Self.els.uxLayer.find("svg g").attr({ transform });
