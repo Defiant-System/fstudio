@@ -13,18 +13,20 @@ class Path {
 	}
 
 	moveHandle(x, y) {
-		let len = this._path.commands.length,
-			p1 = this._path.commands[len-1];
+		let len = this._path.commands.length-1,
+			p1 = this._path.commands[len];
 
 		if (p1.type === "C") {
-			let dX = this.anchors[0].x - x,
-				dY = this.anchors[0].y - y;
-			p1.x2 = this.anchors[0].x + dX;
-			p1.y2 = this.anchors[0].y + dY;
+			len = this.anchors.length-1;
+			let dX = this.anchors[len].x - x,
+				dY = this.anchors[len].y - y;
+			p1.x2 = this.anchors[len].x + dX;
+			p1.y2 = this.anchors[len].y + dY;
 		}
 
-		this.handles[0].x = x;
-		this.handles[0].y = y;
+		len = this.handles.length-1;
+		this.handles[len].x = x;
+		this.handles[len].y = y;
 		this._down = true;
 	}
 
@@ -46,13 +48,16 @@ class Path {
 	}
 
 	addAnchor(x, y) {
-		let len = this._path.commands.length,
-			p1 = this._path.commands[len-1];
+		let len = this._path.commands.length-1,
+			p1 = this._path.commands[len];
 		p1.x = x;
 		p1.y = y;
 
-		this.anchors[0].x = x;
-		this.anchors[0].y = y;
+		this.anchors.push({ x, y });
+
+		len = this.anchors.length-1;
+		this.anchors[len].x = x;
+		this.anchors[len].y = y;
 		this._down = true;
 	}
 
@@ -100,10 +105,13 @@ class Path {
 
 
 		// handles
-		x1 = this.anchors[0].x;
-		y1 = this.anchors[0].y;
-		x2 = this.handles[0].x;
-		y2 = this.handles[0].y;
+		len = this.anchors.length-1;
+		x1 = this.anchors[len].x;
+		y1 = this.anchors[len].y;
+		
+		len = this.handles.length-1;
+		x2 = this.handles[len].x;
+		y2 = this.handles[len].y;
 		
 		ctx.strokeStyle = "#090";
 		ctx.beginPath();
