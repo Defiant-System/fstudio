@@ -8,8 +8,8 @@ let Test = {
 		// setTimeout(() => APP.toolbar.els.btnSidebar.trigger("click"), 100);
 		setTimeout(() => APP.content.find(`.glyph-list .glyph:nth(1)`).trigger("click"), 500);
 
-		setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="path"]`).trigger("click"), 700);
-		
+		setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pen"]`).trigger("click"), 700);
+
 		// setTimeout(() => {
 		// 	APP.content.find(".zoom-value").html("90%");
 		// 	APP.content.find(`span[data-click="zoom-minus"] i`).trigger("click");

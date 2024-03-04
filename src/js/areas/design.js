@@ -103,7 +103,7 @@
 					case el.hasClass("rotator"): return Self.viewRotate(event);
 					case el.hasClass("handle"): return Self.viewResize(event);
 					case el.hasClass("handle-box"): return Self.viewMove(event);
-					case (Self.data.tool === "path"): return Self.viewPath(event);
+					case (Self.data.tool === "pen"): return Self.viewPath(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
 				}
 				break;
@@ -199,7 +199,7 @@
 		}
 	},
 	draw: {
-		glyph(Self) {
+		glyph(Self, newPath) {
 			let Font = FontFile.font,
 				Data = Self.data,
 				os2 = Font.tables.os2,
@@ -232,6 +232,7 @@
 			// draw glyph base
 			path = glyph.getPath(Data.view.dX-1, Data.view.dY, Data.fontSize);
 			this.path(ctx, path, Data);
+			if (newPath) this.path(ctx, newPath, Data);
 
 			// draw glyph path anchors + handles
 			for (let i=0, il=commands.length; i<il; i += 1) {
@@ -835,21 +836,31 @@
 				let doc = $(document),
 					el = $(event.target),
 					offset = {
-						y: Self.data.view.dY,
-						x: Self.data.view.dX,
+						y: event.offsetY,
+						x: event.offsetX,
 					},
 					click = {
 						y: event.clientY,
 						x: event.clientX,
-					};
+					},
+					path = new Path(offset.x, offset.y);
+
 				// drag object
-				Self.drag = { el, doc, click, offset };
+				Self.drag = { el, doc, path, click, offset };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
 				Self.drag.doc.on("mousemove mouseup", Self.viewPath);
 				break;
 			case "mousemove":
+				let y = event.clientY - Drag.click.y + Drag.offset.y,
+					x = event.clientX - Drag.click.x + Drag.offset.x;
+
+				Self.draw.glyph(Self);
+				Drag.path.move(x, y);
+
+				// Self.draw.path(Self.els.ctx, Drag.path._path, Self.data);
+				Drag.path.draw(Self.els.ctx);
 				break;
 			case "mouseup":
 				// cover app body

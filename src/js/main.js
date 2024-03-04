@@ -2,6 +2,7 @@
 @import "./ext/opentypejs_1-3-1.js"
 
 @import "./classes/file.js"
+@import "./classes/path.js"
 @import "./classes/anchor.js"
 
 @import "./modules/color.js"
