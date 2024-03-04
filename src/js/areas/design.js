@@ -103,6 +103,7 @@
 					case el.hasClass("rotator"): return Self.viewRotate(event);
 					case el.hasClass("handle"): return Self.viewResize(event);
 					case el.hasClass("handle-box"): return Self.viewMove(event);
+					case (Self.data.tool === "path"): return Self.viewPath(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
 				}
 				break;
@@ -818,6 +819,38 @@
 				Self.els.content.removeClass("cover hide-cursor");
 				// bind events
 				Drag.doc.off("mousemove mouseup", Self.viewPan);
+				break;
+		}
+	},
+	viewPath(event) {
+		let Self = fstudio.design,
+			Drag = Self.drag;
+		switch(event.type) {
+			case "mousedown":
+				let doc = $(document),
+					el = $(event.target),
+					offset = {
+						y: Self.data.view.dY,
+						x: Self.data.view.dX,
+					},
+					click = {
+						y: event.clientY,
+						x: event.clientX,
+					};
+				// drag object
+				Self.drag = { el, doc, click, offset };
+				// cover app body
+				Self.els.content.addClass("cover hide-cursor");
+				// bind events
+				Self.drag.doc.on("mousemove mouseup", Self.viewPath);
+				break;
+			case "mousemove":
+				break;
+			case "mouseup":
+				// cover app body
+				Self.els.content.removeClass("cover hide-cursor");
+				// bind events
+				Drag.doc.off("mousemove mouseup", Self.viewPath);
 				break;
 		}
 	}
