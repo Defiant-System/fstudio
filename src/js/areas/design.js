@@ -513,9 +513,9 @@
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
-				// cover app body
+				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
-				// bind events
+				// unbind events
 				Drag.doc.off("mousemove mouseup", Self.viewAnchor);
 				break;
 		}
@@ -559,9 +559,9 @@
 			case "mouseup":
 				// reset "zoom-value" element
 				Drag.el.removeClass("active");
-				// cover app body
+				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
-				// bind events
+				// unbind events
 				Drag.doc.off("mousemove mouseup", Self.viewZoom);
 				break;
 		}
@@ -612,9 +612,9 @@
 				Self.draw.glyph(Self);
 				// show handle box
 				Self.els.hBox.addClass("show");
-				// cover app body
+				// uncover app body
 				Self.els.content.removeClass("cover");
-				// bind events
+				// unbind events
 				Drag.doc.off("mousemove mouseup", Self.viewRotate);
 				break;
 		}
@@ -674,9 +674,9 @@
 				Drag.hBox.css(dim);
 				break;
 			case "mouseup":
-				// cover app body
+				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
-				// bind events
+				// unbind events
 				Drag.doc.off("mousemove mouseup", Self.viewResize);
 				break;
 		}
@@ -705,9 +705,9 @@
 				Drag.el.css({ top, left });
 				break;
 			case "mouseup":
-				// cover app body
+				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
-				// bind events
+				// unbind events
 				Drag.doc.off("mousemove mouseup", Self.viewMove);
 				break;
 		}
@@ -784,9 +784,9 @@
 			case "mouseup":
 				// reset lasso
 				Drag.el.css({ top: -999, left: -999, width: 0, height: 0 });
-				// cover app body
+				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
-				// bind events
+				// unbind events
 				Drag.doc.off("mousemove mouseup", Self.viewLasso);
 				break;
 		}
@@ -821,16 +821,17 @@
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
-				// cover app body
+				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
-				// bind events
+				// unbind events
 				Drag.doc.off("mousemove mouseup", Self.viewPan);
 				break;
 		}
 	},
 	viewPath(event) {
 		let Self = fstudio.design,
-			Drag = Self.drag;
+			Drag = Self.drag,
+			x, y;
 		switch(event.type) {
 			case "mousedown":
 				let doc = $(document),
@@ -847,14 +848,12 @@
 
 				// drag object
 				Self.drag = { el, doc, path, click, offset };
-				// cover app body
-				Self.els.content.addClass("cover hide-cursor");
 				// bind events
 				Self.drag.doc.on("mousemove mouseup", Self.viewPath);
 				break;
 			case "mousemove":
-				let y = event.clientY - Drag.click.y + Drag.offset.y,
-					x = event.clientX - Drag.click.x + Drag.offset.x;
+				y = event.clientY - Drag.click.y + Drag.offset.y;
+				x = event.clientX - Drag.click.x + Drag.offset.x;
 
 				Self.draw.glyph(Self);
 				Drag.path.move(x, y);
@@ -863,10 +862,14 @@
 				Drag.path.draw(Self.els.ctx);
 				break;
 			case "mouseup":
-				// cover app body
-				Self.els.content.removeClass("cover hide-cursor");
-				// bind events
-				Drag.doc.off("mousemove mouseup", Self.viewPath);
+				y = event.clientY - Drag.click.y + Drag.offset.y;
+				x = event.clientX - Drag.click.x + Drag.offset.x;
+				Drag.path.add(x, y);
+
+				if (event.button === 2) {
+					// unbind events
+					Drag.doc.off("mousemove mouseup", Self.viewPath);
+				}
 				break;
 		}
 	}
