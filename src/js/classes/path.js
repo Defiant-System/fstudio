@@ -5,6 +5,7 @@ class Path {
 		this._path.moveTo(x, y);
 
 		this.anchor = { x, y };
+		this._down = true;
 
 		// this._path.bezierCurveTo(x, y, x, y, x, y);
 		// this._path.lineTo(x, y);
@@ -41,8 +42,16 @@ class Path {
 	}
 
 	addAnchor(x, y) {
+		let len = this._path.commands.length,
+			p1 = this._path.commands[len-1];
+
+		p1.x = x;
+		p1.y = y;
+
+		// this._path.bezierCurveTo(x, y, x, y, x, y);
+
 		this.anchor = { x, y };
-		this._path.bezierCurveTo(x, y, x, y, x, y);
+		this._down = true;
 	}
 
 	draw(ctx) {
