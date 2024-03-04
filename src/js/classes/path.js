@@ -6,7 +6,7 @@ class Path {
 
 		this._down = true;
 		this.anchors = [{ x, y }];
-		this.handles = [{ x, y }];
+		this.handles = [{ x, y, aX: x, aY: y }];
 
 		// this._path.bezierCurveTo(x, y, x, y, x, y);
 		// this._path.lineTo(x, y);
@@ -33,8 +33,9 @@ class Path {
 	releaseHandle(x, y) {
 		this._path.bezierCurveTo(x, y, x, y, x, y);
 
-		this.handles[0].x = x;
-		this.handles[0].y = y;
+		let len = this.handles.length-1;
+		this.handles[len].x = x;
+		this.handles[len].y = y;
 		this._down = false;
 	}
 
@@ -53,8 +54,14 @@ class Path {
 		p1.x = x;
 		p1.y = y;
 
-		this.anchors.push({ x, y });
 
+		this.handles.push({ x, y });
+		len = this.handles.length-1;
+		this.handles[len].aX = x;
+		this.handles[len].aY = y;
+
+
+		this.anchors.push({ x, y });
 		len = this.anchors.length-1;
 		this.anchors[len].x = x;
 		this.anchors[len].y = y;
@@ -105,29 +112,24 @@ class Path {
 
 
 		// handles
-		len = this.anchors.length-1;
-		x1 = this.anchors[len].x;
-		y1 = this.anchors[len].y;
-		
-		len = this.handles.length-1;
-		x2 = this.handles[len].x;
-		y2 = this.handles[len].y;
-		
 		ctx.strokeStyle = "#090";
 		ctx.beginPath();
-		ctx.moveTo(x1, y1);
-		ctx.lineTo(x2, y2);
+		this.handles.map(h => {
+			ctx.moveTo(h.aX, h.aY);
+			ctx.lineTo(h.x, h.y);
+		});
 		ctx.stroke();
 		ctx.closePath();
+
+		ctx.strokeStyle = "#00f";
+		this.handles.map(h => {
+			ctx.strokeRect(h.x-3, h.y-3, 6, 6);
+		});
+
 
 		ctx.strokeStyle = "#f00";
 		this.anchors.map(a => {
 			ctx.strokeRect(a.x-2, a.y-2, 4, 4);
-		});
-
-		ctx.strokeStyle = "#00f";
-		this.handles.map(h => {
-			ctx.strokeRect(h.x-2, h.y-2, 4, 4);
 		});
 	}
 }
