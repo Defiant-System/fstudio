@@ -16,8 +16,10 @@ class Path {
 			p1 = this._path.commands[len-1];
 
 		if (p1.type === "C") {
-			p1.x2 = x;
-			p1.y2 = y;
+			let dX = this.anchor.x - x,
+				dY = this.anchor.y - y;
+			p1.x2 = this.anchor.x + dX;
+			p1.y2 = this.anchor.y + dY;
 		}
 
 		this.handle = { x, y };
@@ -44,11 +46,8 @@ class Path {
 	addAnchor(x, y) {
 		let len = this._path.commands.length,
 			p1 = this._path.commands[len-1];
-
 		p1.x = x;
 		p1.y = y;
-
-		// this._path.bezierCurveTo(x, y, x, y, x, y);
 
 		this.anchor = { x, y };
 		this._down = true;
