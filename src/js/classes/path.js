@@ -30,13 +30,12 @@ class Path {
 			this.handles[len].x = p1.x2;
 			this.handles[len].y = p1.y2;
 		} else if (p1.type === "Z") {
-			
-			let pl = this._path.commands.length-2,
-				pE = this._path.commands[pl],
-				pS = this._path.commands[0];
 
-			pE.x2 = x;
-			pE.y2 = y;
+			len = this._path.commands.length-2;
+			p1 = this._path.commands[len];
+
+			p1.x2 = x;
+			p1.y2 = y;
 			
 			return;
 		}
@@ -61,7 +60,7 @@ class Path {
 		let len = this._path.commands.length,
 			p2 = this._path.commands[len-1];
 
-		if (p2.t=== "C") {
+		if (p2.type === "C") {
 			p2.x = x;
 			p2.y = y;
 			p2.x2 = x;
@@ -141,7 +140,7 @@ class Path {
 		}
 		ctx.save();
 		ctx.strokeStyle = "#33333377";
-		ctx.lineWidth = 2;
+		ctx.lineWidth = 5;
 		ctx.stroke();
 		ctx.restore();
 
