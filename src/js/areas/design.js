@@ -831,7 +831,8 @@
 	viewPath(event) {
 		let Self = fstudio.design,
 			Drag = Self.drag,
-			x, y, dx, dy;
+			x, y, dx, dy,
+			cursor;
 		switch(event.type) {
 			case "mousedown":
 				if (!Drag) {
@@ -845,10 +846,11 @@
 							y: event.clientY - start.y,
 							x: event.clientX - start.x,
 						},
-						path = new Path(start.x, start.y);
+						path = new Path(start.x, start.y),
+						cursor = "tool-pen";
 
 					// drag object
-					Self.drag = { el, doc, path, click, start, downState: true };
+					Self.drag = { el, doc, path, click, start, cursor, downState: true };
 					// bind events
 					Self.drag.doc.on("mousemove mouseup", Self.viewPath);
 				} else {
@@ -857,7 +859,7 @@
 					dx = Drag.start.x - x;
 					dy = Drag.start.y - y;
 
-					if (Math.sqrt(dx * dx + dy * dy) < 3) {
+					if (Math.sqrt(dx * dx + dy * dy) < Drag.path._loop) {
 						Drag.path.closeLoop(x, y);
 					} else {
 						Drag.path.addAnchor(x, y);
@@ -878,11 +880,15 @@
 				if (Drag.downState) Drag.path.moveHandle(x, y);
 				else Drag.path.moveAnchor(x, y);
 
-
+				// changes cursor
 				dx = Drag.start.x - x;
 				dy = Drag.start.y - y;
-				let cursor = Math.sqrt(dx * dx + dy * dy) < 3 ? "tool-pen-loop" : "tool-pen"
-				Self.els.el.data({ cursor });
+				cursor = Math.sqrt(dx * dx + dy * dy) < Drag.path._loop ? "tool-pen-loop" : "tool-pen"
+				if (cursor !== Drag.cursor) {
+					// make sure DOM is not "bothered" if not needed
+					Self.els.el.data({ cursor });
+					Drag.cursor = cursor;
+				}
 
 				// Self.draw.path(Self.els.ctx, Drag.path._path, Self.data);
 				Drag.path.draw(Self.els.ctx);

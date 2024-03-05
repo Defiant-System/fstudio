@@ -4,6 +4,7 @@ class Path {
 		this._path = new OpenType.Path();
 		this._path.moveTo(x, y);
 
+		this._loop = 4;
 		this._closed = false;
 		this._down = true;
 		this.anchors = [{ x, y }];
@@ -32,6 +33,16 @@ class Path {
 		} else if (p1.type === "Z") {
 			len = this._path.commands.length-2;
 			p1 = this._path.commands[len];
+
+			// let pS = this._path.commands[1];
+			// pS.x1 = x;
+			// pS.y1 = y;
+
+			let dX = p1.x - x,
+				dY = p1.y - y;
+			x = p1.x + dX;
+			y = p1.y + dY;
+			
 			p1.x2 = x;
 			p1.y2 = y;
 		}
@@ -142,13 +153,19 @@ class Path {
 
 		ctx.strokeStyle = "#00f";
 		this.handles.map(h => {
-			ctx.strokeRect(h.x-3, h.y-3, 6, 6);
+			ctx.beginPath();
+			ctx.arc(h.x, h.y, 5, 0, Math.PI * 2);
+			ctx.stroke();
+			ctx.closePath();
 		});
 
 
 		ctx.strokeStyle = "#f00";
 		this.anchors.map(a => {
-			ctx.strokeRect(a.x-2, a.y-2, 4, 4);
+			ctx.beginPath();
+			ctx.arc(a.x, a.y, 5, 0, Math.PI * 2);
+			ctx.stroke();
+			ctx.closePath();
 		});
 	}
 }
