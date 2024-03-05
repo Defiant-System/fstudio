@@ -19,12 +19,13 @@ class Path {
 
 	moveHandle(x, y) {
 		let len = this._path.commands.length-1,
-			p1 = this._path.commands[len];
+			p1 = this._path.commands[len],
+			dX, dY;
 
 		if (p1.type === "C") {
 			len = this.anchors.length-1;
-			let dX = this.anchors[len].x - x,
-				dY = this.anchors[len].y - y;
+			dX = this.anchors[len].x - x;
+			dY = this.anchors[len].y - y;
 			p1.x2 = this.anchors[len].x + dX;
 			p1.y2 = this.anchors[len].y + dY;
 
@@ -36,19 +37,23 @@ class Path {
 			len = this._path.commands.length-2;
 			p1 = this._path.commands[len];
 
-			this.handles[0].x = x;
-			this.handles[0].y = y;
-
 			let pS = this._path.commands[1],
 				cX = pS.x1 - x,
 				cY = pS.y1 - y,
 				radius = Math.sqrt(cX * cX + cY * cY),
-				rad = 0;
+				rad = Math.atan2(cY, cX),
+				sX = this._start.x + radius * Math.cos(rad),
+				sY = this._start.y + radius * Math.sin(rad);
+
+
+			this.handles[0].x = x;
+			this.handles[0].y = y;
+
 			pS.x1 = x;
 			pS.y1 = y;
 
-			let dX = p1.x - x,
-				dY = p1.y - y;
+			dX = p1.x - x;
+			dY = p1.y - y;
 			x = p1.x + dX;
 			y = p1.y + dY;
 
