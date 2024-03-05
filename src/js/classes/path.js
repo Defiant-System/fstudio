@@ -20,7 +20,7 @@ class Path {
 	moveHandle(x, y) {
 		let len = this._path.commands.length-1,
 			p1 = this._path.commands[len],
-			dX, dY;
+			p2, dX, dY;
 
 		if (p1.type === "C") {
 			len = this.anchors.length-1;
@@ -36,24 +36,26 @@ class Path {
 		} else if (p1.type === "Z") {
 			len = this._path.commands.length-2;
 			p1 = this._path.commands[len];
+			p2 = this._path.commands[1];
 
-			let pS = this._path.commands[1],
-				cX = pS.x1 - x,
-				cY = pS.y1 - y,
-				radius = Math.sqrt(cX * cX + cY * cY),
-				rad = Math.atan2(cY, cX),
-				sX = this._start.x + radius * Math.cos(rad),
-				sY = this._start.y + radius * Math.sin(rad);
-
-
-			this.handles[0].x = x;
-			this.handles[0].y = y;
-
-			pS.x1 = x;
-			pS.y1 = y;
+			if (!this._start.radius) {
+				let cX = p2.x1 - this._start.x,
+					cY = p2.y1 - this._start.y;
+				this._start.radius = Math.sqrt(cX * cX + cY * cY);
+			}
 
 			dX = p1.x - x;
 			dY = p1.y - y;
+
+			let rad = Math.atan2(dY, dX) + Math.PI,
+				sX = this._start.x + this._start.radius * Math.cos(rad),
+				sY = this._start.y + this._start.radius * Math.sin(rad);
+
+			this.handles[0].x = sX;
+			this.handles[0].y = sY;
+			p2.x1 = sX;
+			p2.y1 = sY;
+
 			x = p1.x + dX;
 			y = p1.y + dY;
 
