@@ -888,19 +888,21 @@
 				Drag.path.draw(Self.els.ctx);
 				break;
 			case "mouseup":
-				y = event.clientY - Drag.click.y;
-				x = event.clientX - Drag.click.x;
-				Drag.path.releaseHandle(x, y);
+				if (!Drag.path.closed) {
+					y = event.clientY - Drag.click.y;
+					x = event.clientX - Drag.click.x;
+					Drag.path.releaseHandle(x, y);
+				}
 
-				// down state
-				Self.drag.downState = false;
-
-				if (event.button === 2) {
+				if (Drag.path.closed && !Self.drag.downState) {
 					// reset path
 					delete Self.drag;
 					// unbind events
 					Drag.doc.off("mousemove mouseup", Self.viewPath);
 				}
+
+				// down state
+				Self.drag.downState = false;
 				break;
 		}
 	}

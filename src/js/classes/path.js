@@ -4,9 +4,14 @@ class Path {
 		this._path = new OpenType.Path();
 		this._path.moveTo(x, y);
 
+		this._closed = false;
 		this._down = true;
 		this.anchors = [{ x, y }];
 		this.handles = [{ x, y, aX: x, aY: y }];
+	}
+
+	get closed() {
+		return this._closed;
 	}
 
 	moveHandle(x, y) {
@@ -24,6 +29,16 @@ class Path {
 			len = this.handles.length-2;
 			this.handles[len].x = p1.x2;
 			this.handles[len].y = p1.y2;
+		} else if (p1.type === "Z") {
+			
+			let pl = this._path.commands.length-2,
+				pE = this._path.commands[pl],
+				pS = this._path.commands[0];
+
+			pE.x2 = x;
+			pE.y2 = y;
+			
+			return;
 		}
 
 		len = this.handles.length-1;
@@ -45,10 +60,13 @@ class Path {
 	moveAnchor(x, y) {
 		let len = this._path.commands.length,
 			p2 = this._path.commands[len-1];
-		p2.x = x;
-		p2.y = y;
-		p2.x2 = x;
-		p2.y2 = y;
+
+		if (p2.t=== "C") {
+			p2.x = x;
+			p2.y = y;
+			p2.x2 = x;
+			p2.y2 = y;
+		}
 
 		this._down = false;
 	}
@@ -81,7 +99,8 @@ class Path {
 	}
 
 	closeLoop(x, y) {
-		
+		this._path.close();
+		this._closed = true;
 	}
 
 	draw(ctx) {
