@@ -4,7 +4,9 @@ class Path {
 		this._path = new OpenType.Path();
 		this._path.moveTo(x, y);
 
-		this._loop = 4;
+		this._start = { x, y };
+		this._snap = 4;
+
 		this._closed = false;
 		this._down = true;
 		this.anchors = [{ x, y }];
@@ -34,15 +36,22 @@ class Path {
 			len = this._path.commands.length-2;
 			p1 = this._path.commands[len];
 
-			// let pS = this._path.commands[1];
-			// pS.x1 = x;
-			// pS.y1 = y;
+			this.handles[0].x = x;
+			this.handles[0].y = y;
+
+			let pS = this._path.commands[1],
+				cX = pS.x1 - x,
+				cY = pS.y1 - y,
+				radius = Math.sqrt(cX * cX + cY * cY),
+				rad = 0;
+			pS.x1 = x;
+			pS.y1 = y;
 
 			let dX = p1.x - x,
 				dY = p1.y - y;
 			x = p1.x + dX;
 			y = p1.y + dY;
-			
+
 			p1.x2 = x;
 			p1.y2 = y;
 		}
@@ -65,7 +74,18 @@ class Path {
 
 	moveAnchor(x, y) {
 		let len = this._path.commands.length,
-			p2 = this._path.commands[len-1];
+			p2 = this._path.commands[len-1],
+			dx = this._start.x - x,
+			dy = this._start.y - y;
+
+		// is path closable
+		this._loop = Math.sqrt(dx * dx + dy * dy) < this._snap;
+
+		if (this._loop) {
+			x = this._start.x;
+			y = this._start.y;
+		}
+
 		if (p2.type === "C") {
 			p2.x = x;
 			p2.y = y;

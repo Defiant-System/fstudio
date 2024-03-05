@@ -856,10 +856,8 @@
 				} else {
 					x = event.offsetX;
 					y = event.offsetY;
-					dx = Drag.start.x - x;
-					dy = Drag.start.y - y;
-
-					if (Math.sqrt(dx * dx + dy * dy) < Drag.path._loop) {
+					
+					if (Drag.path._loop) {
 						Drag.path.closeLoop(x, y);
 					} else {
 						Drag.path.addAnchor(x, y);
@@ -881,9 +879,7 @@
 				else Drag.path.moveAnchor(x, y);
 
 				// changes cursor
-				dx = Drag.start.x - x;
-				dy = Drag.start.y - y;
-				cursor = Math.sqrt(dx * dx + dy * dy) < Drag.path._loop ? "tool-pen-loop" : "tool-pen"
+				cursor = Drag.path._loop ? "tool-pen-loop" : "tool-pen"
 				if (cursor !== Drag.cursor) {
 					// make sure DOM is not "bothered" if not needed
 					Self.els.el.data({ cursor });
