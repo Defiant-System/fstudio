@@ -897,7 +897,6 @@
 				Self.drag.downState = false;
 
 				if (Drag.path.closed) {
-					console.log( "off" );
 					// reset path
 					delete Self.drag;
 					// unbind events

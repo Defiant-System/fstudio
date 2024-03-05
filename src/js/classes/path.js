@@ -30,14 +30,10 @@ class Path {
 			this.handles[len].x = p1.x2;
 			this.handles[len].y = p1.y2;
 		} else if (p1.type === "Z") {
-
 			len = this._path.commands.length-2;
 			p1 = this._path.commands[len];
-
 			p1.x2 = x;
 			p1.y2 = y;
-			
-			return;
 		}
 
 		len = this.handles.length-1;
@@ -59,14 +55,12 @@ class Path {
 	moveAnchor(x, y) {
 		let len = this._path.commands.length,
 			p2 = this._path.commands[len-1];
-
 		if (p2.type === "C") {
 			p2.x = x;
 			p2.y = y;
 			p2.x2 = x;
 			p2.y2 = y;
 		}
-
 		this._down = false;
 	}
 
@@ -77,29 +71,20 @@ class Path {
 		p1.y = y;
 
 		// add handle
-		this.handles.push({ x, y });
-		len = this.handles.length-1;
-		this.handles[len].aX = x;
-		this.handles[len].aY = y;
-
+		this.handles.push({ x, y, aX: x, aY: y });
 		// mirror
-		this.handles.push({ x, y });
-		len = this.handles.length-1;
-		this.handles[len].aX = x;
-		this.handles[len].aY = y;
-
-
+		this.handles.push({ x, y, aX: x, aY: y });
 		// add anchor
 		this.anchors.push({ x, y });
-		len = this.anchors.length-1;
-		this.anchors[len].x = x;
-		this.anchors[len].y = y;
+
 		this._down = true;
 	}
 
 	closeLoop(x, y) {
 		this._path.close();
 		this._closed = true;
+		// add handle
+		this.handles.push({ x, y, aX: x, aY: y });
 	}
 
 	draw(ctx) {
