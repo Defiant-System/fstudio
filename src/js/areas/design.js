@@ -830,12 +830,12 @@
 	},
 	viewPath(event) {
 		let Self = fstudio.design,
-			Drag = Self.drag,
+			Drag = Self.drag || {},
 			x, y, dx, dy,
 			cursor;
 		switch(event.type) {
 			case "mousedown":
-				if (!Drag) {
+				if (!Drag.path) {
 					let doc = $(document),
 						el = $(event.target),
 						start = {
@@ -856,13 +856,9 @@
 				} else {
 					x = event.offsetX;
 					y = event.offsetY;
-					
-					if (Drag.path._loop) {
-						Drag.path.closeLoop(x, y);
-					} else {
-						Drag.path.addAnchor(x, y);
-					}
-
+					// path actions
+					if (Drag.path._loop) Drag.path.closeLoop(x, y);
+					else Drag.path.addAnchor(x, y);
 					// down state
 					Drag.downState = true;
 				}
@@ -900,7 +896,7 @@
 
 				if (Drag.path.closed) {
 					// reset path
-					delete Self.drag;
+					delete Drag.path;
 					// unbind events
 					Drag.doc.off("mousemove mouseup", Self.viewPath);
 				}
