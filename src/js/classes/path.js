@@ -47,6 +47,8 @@ class Path {
 			p2 = this._path.commands[len-1];
 		p2.x = x;
 		p2.y = y;
+		p2.x2 = x;
+		p2.y2 = y;
 
 		this._down = false;
 	}
