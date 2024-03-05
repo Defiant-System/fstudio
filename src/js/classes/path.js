@@ -39,9 +39,9 @@ class Path {
 			p2 = this._path.commands[1];
 
 			if (!this._start.radius) {
-				let cX = p2.x1 - this._start.x,
-					cY = p2.y1 - this._start.y;
-				this._start.radius = Math.sqrt(cX * cX + cY * cY);
+				dX = p2.x1 - this._start.x;
+				dY = p2.y1 - this._start.y;
+				this._start.radius = Math.sqrt(dX * dX + dY * dY);
 			}
 
 			dX = p1.x - x;

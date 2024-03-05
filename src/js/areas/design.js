@@ -850,7 +850,12 @@
 						cursor = "tool-pen";
 
 					// drag object
-					Self.drag = { el, doc, path, click, start, cursor, downState: true };
+					Self.drag = { el, doc, path, click, start, cursor, debug: false, downState: true };
+
+					if (Self.drag.debug) {
+						Self.els.uxWrapper.css({ display: "none" });
+					}
+
 					// bind events
 					Self.drag.doc.on("mousemove mouseup", Self.viewPath);
 				} else {
@@ -864,8 +869,8 @@
 				}
 				break;
 			case "mousemove":
-				// TEMP reset canvas
-				// Self.els.cvs.attr(Self.data.cvsDim);
+				// reset canvas
+				if (Drag.debug) Self.els.cvs.attr(Self.data.cvsDim);
 
 				y = event.clientY - Drag.click.y;
 				x = event.clientX - Drag.click.x;
@@ -875,16 +880,15 @@
 				else Drag.path.moveAnchor(x, y);
 
 				// changes cursor
-				cursor = Drag.path._loop ? "tool-pen-loop" : "tool-pen"
+				cursor = Drag.path._loop ? "tool-pen-loop" : "tool-pen";
 				if (cursor !== Drag.cursor) {
 					// make sure DOM is not "bothered" if not needed
 					Self.els.el.data({ cursor });
 					Drag.cursor = cursor;
 				}
 
-				// Self.draw.path(Self.els.ctx, Drag.path._path, Self.data);
-				Self.draw.glyph(Self, Drag.path._path);
-				// Drag.path.draw(Self.els.ctx);
+				if (Drag.debug) Drag.path.draw(Self.els.ctx);
+				else Self.draw.glyph(Self, Drag.path._path);
 				break;
 			case "mouseup":
 				if (!Drag.path.closed) {
@@ -896,6 +900,8 @@
 				Self.drag.downState = false;
 
 				if (Drag.path.closed) {
+					// reset cursor
+					Self.els.el.data({ cursor: "tool-pen" });
 					// reset path
 					delete Drag.path;
 					// unbind events
