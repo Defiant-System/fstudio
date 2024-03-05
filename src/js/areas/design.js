@@ -167,7 +167,7 @@
 				Self.els.zoomTools.find(".zoom-value").html("100%");
 				Self.els.zoomTools.find(".inline-menubox .pan-knob").data({ value: 0 });
 				// update canvas
-				// TEMP Self.draw.glyph(Self);
+				Self.draw.glyph(Self);
 				break;
 			case "set-design-mode":
 				Self.data.mode = event.arg;
@@ -865,7 +865,7 @@
 				break;
 			case "mousemove":
 				// TEMP reset canvas
-				Self.els.cvs.attr(Self.data.cvsDim);
+				// Self.els.cvs.attr(Self.data.cvsDim);
 
 				y = event.clientY - Drag.click.y;
 				x = event.clientX - Drag.click.x;
@@ -883,7 +883,8 @@
 				}
 
 				// Self.draw.path(Self.els.ctx, Drag.path._path, Self.data);
-				Drag.path.draw(Self.els.ctx);
+				Self.draw.glyph(Self, Drag.path._path);
+				// Drag.path.draw(Self.els.ctx);
 				break;
 			case "mouseup":
 				if (!Drag.path.closed) {
