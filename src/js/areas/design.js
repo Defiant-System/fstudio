@@ -893,16 +893,16 @@
 					x = event.clientX - Drag.click.x;
 					Drag.path.releaseHandle(x, y);
 				}
+				// down state
+				Self.drag.downState = false;
 
-				if (Drag.path.closed && !Self.drag.downState) {
+				if (Drag.path.closed) {
+					console.log( "off" );
 					// reset path
 					delete Self.drag;
 					// unbind events
 					Drag.doc.off("mousemove mouseup", Self.viewPath);
 				}
-
-				// down state
-				Self.drag.downState = false;
 				break;
 		}
 	}
