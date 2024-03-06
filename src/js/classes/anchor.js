@@ -7,7 +7,22 @@ class Anchor {
 		// console.log( index, this.path.commands.length );
 
 		let p1 = path.commands[index],
-			p2 = path.commands[index+1];
+			p2 = path.commands[index+1],
+			d1Y = p1.y - p1.y2,
+			d1X = p1.x - p1.x2,
+			d2Y = p1.y - p2.y1,
+			d2X = p1.x - p2.x1,
+			aDiff = Math.abs((Math.abs(Math.atan2(d1Y, d1X)) + Math.abs(Math.atan2(d2Y, d2X))) - Math.PI).toFixed(2),
+			radius1 = Math.abs(Math.sqrt(d1X * d1X + d1Y * d1Y)),
+			radius2 = Math.abs(Math.sqrt(d2X * d2X + d2Y * d2Y)),
+			rDiff = (Math.abs(radius1 - radius2) / (radius1 + radius2)).toFixed(2);
+		// "guessing" type of anchor
+		switch (true) {
+			case (aDiff > 0.01): this.type = "corner"; break;
+			case (rDiff >= 0.1): this.type = "flat"; break;
+			default: this.type = "symmetric";
+		}
+		// console.log( rDiff );
 
 		// handle 1
 		this.h1 = {

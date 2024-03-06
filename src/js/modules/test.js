@@ -9,17 +9,20 @@ let Test = {
 		setTimeout(() => APP.content.find(`.glyph-list .glyph:nth(1)`).trigger("click"), 500);
 
 		// setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pen"]`).trigger("click"), 700);
-		setTimeout(() => {
-			let Self = APP.design,
-				anchors = window.find(".anchor")
-								.filter(e => e.getAttribute("data-i") >= 11 && e.getAttribute("data-i") <= 11)
-								.map(e => {
-									e.classList.add("selected");
-									return +e.getAttribute("data-i");
-								});
-			Self.data.draw.anchor.selected = anchors;
-			Self.draw.glyph(Self);
-		}, 500);
+
+		setTimeout(() => APP.content.find(`.anchor:nth(11)`).trigger("mousedown").trigger("mouseup"), 600);
+
+		// setTimeout(() => {
+		// 	let Self = APP.design,
+		// 		anchors = window.find(".anchor")
+		// 						.filter(e => e.getAttribute("data-i") >= 11 && e.getAttribute("data-i") <= 11)
+		// 						.map(e => {
+		// 							e.classList.add("selected");
+		// 							return +e.getAttribute("data-i");
+		// 						});
+		// 	Self.data.draw.anchor.selected = anchors;
+		// 	Self.draw.glyph(Self);
+		// }, 500);
 
 
 		// { type: "M", x: 171, y: 228 }

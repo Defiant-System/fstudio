@@ -143,6 +143,14 @@
 				Self.data.draw.anchor.selected = [];
 				Self.draw.glyph(Self);
 				break;
+			case "anchors-selected":
+				if (event.anchors.length === 1) {
+					let type = event.anchors[0].anchor.type,
+						opt = Self.els.content.find(`.design-sidebar .anchor-type .option-buttons_ span[data-name="${type}"]`);
+					opt.parent().find(".active_").removeClass("active_");
+					opt.addClass("active_");
+				}
+				break;
 			case "zoom-minus":
 			case "zoom-plus":
 				el = Self.els.zoomTools.find(".zoom-value");
@@ -521,6 +529,8 @@
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
+				// do appropriate stuff when anchor(s) are selected
+				Self.dispatch({ type: "anchors-selected", anchors: Drag.el });
 				// cover app body
 				Self.els.content.removeClass("cover hide-cursor");
 				// bind events
