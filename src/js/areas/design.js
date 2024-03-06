@@ -95,6 +95,9 @@
 				}
 				// proxy event depending on active tool
 				switch (true) {
+					case (Self.data.tool === "pen"): return Self.viewPath(event);
+					case (Self.data.tool === "pan"): return Self.viewPan(event);
+					case !!Self.drag?.path: /* prevent further checks; creatin new path */ break;
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.viewAnchor(event);
 					case el.hasClass("handle"): return Self.viewHandle(event);
@@ -111,8 +114,6 @@
 							clientX: event.clientX,
 							clientY: event.clientY,
 						});
-					case (Self.data.tool === "pen"): return Self.viewPath(event);
-					case (Self.data.tool === "pan"): return Self.viewPan(event);
 				}
 				break;
 			// system events
@@ -176,7 +177,9 @@
 					dW = glyph.advanceWidth * dZ,
 					dX = (Self.data.cvsDim.width - dW) >> 1,
 					dY = (os2.sTypoAscender - os2.sTypoDescender) * dZ;
-				
+				// temp
+				dX += 150;
+
 				Self.data.view = { dZ, dX, dY, dW, dH: dY };
 				Self.data.fontSize = fontSize;
 				// reset zoom tools
@@ -251,9 +254,8 @@
 			// draw glyph base
 			path = glyph.getPath(Data.view.dX-1, Data.view.dY, Data.fontSize);
 			this.path(ctx, path, Data);
-			if (newPath) this.path(ctx, newPath, Data);
 
-			// draw glyph path anchors + handles
+			// glyph path info; anchors + handles
 			for (let i=0, il=commands.length; i<il; i += 1) {
 				let cmd = commands[i];
 				if (cmd.x !== undefined) {
@@ -274,68 +276,74 @@
 			if (Data.draw.handle.on) this.handles(ctx, handles, Data);
 			if (Data.draw.anchor.on) this.anchors(ctx, anchors, Data);
 			if (Data.draw.rotation.on) this.rotation(ctx, Data);
-
 			// selected anchor handles
-			this.selected(ctx, handles, Data);
+			if (Data.draw.anchor.selected.length) this.selected(ctx, handles, Data);
 
-			// puts SVG "ghost" & HTML anchors
-			let half = Data.draw.anchor.size * .5,
-				baseline = os2.sTypoAscender * Data.view.dZ,
-				xheight = baseline - os2.sxHeight * Data.view.dZ,
-				style = {
-					top: Data.view.dY - baseline,
-					left: Math.round(Data.view.dX),
-					width: Math.round(Data.view.dW) + 1,
-					height: Math.round(Data.view.dH) + 1,
-					"--xheight": `${xheight}px`,
-					"--baseline": `${baseline}px`,
-				};
-			if (!Self.els.uxLayer[0].childNodes.length) {
-				let str = anchors.filter(a => a.type !== "M").map(a => {
-					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
-						left = Math.round((a.x * Data.view.dZ) - half),
-						aHandles = [];
-					for (let i=0, il=handles.length; i<il; i++) {
-						if (handles[i].i === a.i) {
-							let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,  // TODO: fix this
-								hx = ((handles[i].x - a.x) * Data.view.dZ) + 10; // TODO: fix this
-							aHandles.push(`<u class="handle" data-i="${handles[i].i}" data-h="${handles[i].h}" style="top: ${hy}px; left: ${hx}px;"></u>`);
+			if (newPath) {
+				// draw svg path as it is
+				this.path(ctx, newPath._path, Data);
+				// draw new path with anchors & handles
+				newPath.draw(ctx, Data, Self);
+			} else {
+				// puts SVG "ghost" & HTML anchors
+				let half = Data.draw.anchor.size * .5,
+					baseline = os2.sTypoAscender * Data.view.dZ,
+					xheight = baseline - os2.sxHeight * Data.view.dZ,
+					style = {
+						top: Data.view.dY - baseline,
+						left: Math.round(Data.view.dX),
+						width: Math.round(Data.view.dW) + 1,
+						height: Math.round(Data.view.dH) + 1,
+						"--xheight": `${xheight}px`,
+						"--baseline": `${baseline}px`,
+					};
+				if (!Self.els.uxLayer[0].childNodes.length) {
+					let str = anchors.filter(a => a.type !== "M").map(a => {
+						let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
+							left = Math.round((a.x * Data.view.dZ) - half),
+							aHandles = [];
+						for (let i=0, il=handles.length; i<il; i++) {
+							if (handles[i].i === a.i) {
+								let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,  // TODO: fix this
+									hx = ((handles[i].x - a.x) * Data.view.dZ) + 10; // TODO: fix this
+								aHandles.push(`<u class="handle" data-i="${handles[i].i}" data-h="${handles[i].h}" style="top: ${hy}px; left: ${hx}px;"></u>`);
+							}
 						}
-					}
-					return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
-				})
-				str.push(`<svg><g fill="#f00"><path /></g></svg>`);
-				Self.els.uxLayer.html(str.join(""));
-			} else if (!Self.els._anchors.length) {
-				Self.els._anchors = Self.els.uxLayer.find(".anchor").map(elem => {
-					let el = $(elem),
-						top = elem.offsetTop,
-						left = elem.offsetLeft,
-						i = +elem.getAttribute("data-i");
-					return { i, el, top, left };
+						return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
+					});
+					str.push(`<svg><g fill="#f00"><path /></g></svg>`);
+					Self.els.uxLayer.html(str.join(""));
+				} else if (!Self.els._anchors.length) {
+					Self.els._anchors = Self.els.uxLayer.find(".anchor").map(elem => {
+						let el = $(elem),
+							top = elem.offsetTop,
+							left = elem.offsetLeft,
+							i = +elem.getAttribute("data-i");
+						return { i, el, top, left };
+					});
+				}
+
+				let bbox = glyph.path.getBoundingBox(),
+					// tY = Data.view.dH + (bbox.y1 * Data.view.dZ),
+					tY = 300,
+					// svg element "scale"
+					transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
+				Self.els.uxLayer.find("svg g").attr({ transform });
+
+				// set path of svg
+				let d = glyph.path.toSVG().slice(9, -3);
+				Self.els.uxLayer.find("svg path").attr({ d });
+				// ux-layer dimensions
+				Self.els.uxLayer.css(style);
+
+				Self.els._anchors.map(item => {
+					let a = anchors[item.i];
+					if (!a) return;
+					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
+						left = Math.round((a.x * Data.view.dZ) - half);
+					item.el.css({ top, left });
 				});
 			}
-
-			let bbox = glyph.path.getBoundingBox(),
-				// tY = Data.view.dH + (bbox.y1 * Data.view.dZ),
-				tY = 300,
-				// svg element "scale"
-				transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
-			Self.els.uxLayer.find("svg g").attr({ transform });
-
-			// set path of svg
-			let d = glyph.path.toSVG().slice(9, -3);
-			Self.els.uxLayer.find("svg path").attr({ d });
-			// ux-layer dimensions
-			Self.els.uxLayer.css(style);
-
-			Self.els._anchors.map(item => {
-				let a = anchors[item.i];
-				if (!a) return;
-				let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
-					left = Math.round((a.x * Data.view.dZ) - half);
-				item.el.css({ top, left });
-			});
 		},
 		path(ctx, path, Data) {
 			let isOutline = Data.mode === "outline",
@@ -922,12 +930,9 @@
 						cursor = "tool-pen";
 
 					// drag object
-					Self.drag = { el, doc, path, click, start, cursor, debug: false, downState: true };
-
-					if (Self.drag.debug) {
-						Self.els.uxWrapper.css({ display: "none" });
-					}
-
+					Self.drag = { el, doc, path, click, start, cursor, downState: true };
+					// empty UX layer
+					Self.els.uxLayer.html("");
 					// bind events
 					Self.drag.doc.on("mousemove mouseup", Self.viewPath);
 				} else {
@@ -941,13 +946,8 @@
 				}
 				break;
 			case "mousemove":
-				// reset canvas
-				if (Drag.debug) Self.els.cvs.attr(Self.data.cvsDim);
-
 				y = event.clientY - Drag.click.y;
 				x = event.clientX - Drag.click.x;
-
-				// Self.draw.glyph(Self);
 				if (Drag.downState) Drag.path.moveHandle(x, y);
 				else Drag.path.moveAnchor(x, y);
 
@@ -958,9 +958,8 @@
 					Self.els.el.data({ cursor });
 					Drag.cursor = cursor;
 				}
-
-				if (Drag.debug) Drag.path.draw(Self.els.ctx);
-				else Self.draw.glyph(Self, Drag.path._path);
+				// update canvas with new path
+				Self.draw.glyph(Self, Drag.path);
 				break;
 			case "mouseup":
 				if (!Drag.path.closed) {

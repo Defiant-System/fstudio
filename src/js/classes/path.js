@@ -105,6 +105,10 @@ class Path {
 	addAnchor(x, y) {
 		let len = this._path.commands.length-1,
 			p1 = this._path.commands[len];
+
+		x += this._start.x;
+		y += this._start.y;
+
 		p1.x = x;
 		p1.y = y;
 
@@ -125,7 +129,48 @@ class Path {
 		this.handles.push({ x, y, aX: x, aY: y });
 	}
 
-	draw(ctx) {
+	draw(ctx, Data, Self) {
+		let half = Data.draw.anchor.size * .5,
+			baseline = FontFile.font.tables.os2.sTypoAscender * Data.view.dZ,
+			commands = this._path.commands,
+			anchors = [],
+			handles = [];
+
+		// glyph path info; anchors + handles
+		for (let i=0, il=commands.length; i<il; i += 1) {
+			let cmd = commands[i];
+			if (cmd.x !== undefined) {
+				anchors.push({ i, type: cmd.type, x: cmd.x, y: -cmd.y });
+			}
+			if (cmd.x1 !== undefined) {
+				let anchor = anchors[anchors.length - 2];
+				if (anchor) handles.push({ i: anchor.i, h: 1, ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
+			}
+			if (cmd.x2 !== undefined) {
+				let anchor = anchors[anchors.length - 1];
+				if (anchor) handles.push({ i: anchor.i, h: 2, ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
+			}
+		}
+
+		anchors.map(a => {
+			let el = Self.els.uxLayer.find(`.anchor[data-i="${a.i}"]`),
+				top = - a.y - 86,
+				left = a.x - Data.view.dX,
+				// top = Math.round(Data.view.dH - Data.view.dY - baseline + (a.y * Data.view.dZ) - half),
+				// left = Math.round((a.x * Data.view.dZ) - half),
+				aHandles = [];
+			if (el.length) {
+				el.css({ top, left });
+			} else {
+				Self.els.uxLayer.append(`<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`)
+			}
+		});
+
+		// add new anchors to DOM
+		// Self.els.uxLayer.html(str.join(""));
+	}
+
+	draw_(ctx) {
 		let path = this._path,
 			len = path.commands.length,
 			cmd, x1, y1, x2, y2;
