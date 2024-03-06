@@ -918,6 +918,7 @@
 				if (!Drag.path) {
 					let doc = $(document),
 						el = $(event.target),
+						ux = Self.els.uxLayer.offset(),
 						start = {
 							y: event.offsetY,
 							x: event.offsetX,
@@ -926,13 +927,14 @@
 							y: event.clientY - start.y,
 							x: event.clientX - start.x,
 						},
-						path = new Path(start.x, start.y),
+						path = new Path(start, ux),
 						cursor = "tool-pen";
 
 					// drag object
 					Self.drag = { el, doc, path, click, start, cursor, downState: true };
 					// empty UX layer
 					Self.els.uxLayer.html("");
+					Self.data.draw.anchor.selected = [];
 					// bind events
 					Self.drag.doc.on("mousemove mouseup", Self.viewPath);
 				} else {
