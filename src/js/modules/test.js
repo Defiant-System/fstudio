@@ -12,7 +12,7 @@ let Test = {
 		setTimeout(() => {
 			let Self = APP.design,
 				anchors = window.find(".anchor")
-								.filter(e => e.getAttribute("data-i") == 12)
+								.filter(e => e.getAttribute("data-i") >= 11 && e.getAttribute("data-i") <= 12)
 								.map(e => {
 									e.classList.add("selected");
 									return +e.getAttribute("data-i");

@@ -98,11 +98,18 @@
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.viewAnchor(event);
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
-					case el.nodeName() === "path": return Self.dispatch({ type: "show-handle-box" });
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
 					case el.hasClass("rotator"): return Self.viewRotate(event);
 					case el.hasClass("handle"): return Self.viewResize(event);
 					case el.hasClass("handle-box"): return Self.viewMove(event);
+					case el.nodeName() === "path":
+						Self.dispatch({ type: "show-handle-box" });
+						return Self.viewMove({
+							type: "mousedown",
+							target: Self.els.hBox[0],
+							clientX: event.clientX,
+							clientY: event.clientY,
+						});
 					case (Self.data.tool === "pen"): return Self.viewPath(event);
 					case (Self.data.tool === "pan"): return Self.viewPan(event);
 				}
@@ -257,7 +264,7 @@
 			if (Data.draw.rotation.on) this.rotation(ctx, Data);
 
 			// selected anchor handles
-			this.selected(ctx, handles, Data, Self);
+			this.selected(ctx, handles, Data);
 
 			// puts SVG "ghost" & HTML anchors
 			let half = Data.draw.anchor.size * .5,
@@ -274,8 +281,14 @@
 			if (!Self.els.uxLayer[0].childNodes.length) {
 				let str = anchors.filter(a => a.type !== "M").map(a => {
 					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
-						left = Math.round((a.x * Data.view.dZ) - half);
-					return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;"></b>`;
+						left = Math.round((a.x * Data.view.dZ) - half),
+						aHandles = handles.filter(h => h.i === a.i);
+					aHandles = aHandles.map(h => {
+						let hy = (a.y - h.y) * Data.view.dZ,
+							hx = (a.x - h.x) * Data.view.dZ;
+						return `<u class="handle" data-i="${h.i}" style="top: ${hy}px; left: ${hx}px;"></u>`;
+					});
+					return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
 				})
 				str.push(`<svg><g fill="#f00"><path /></g></svg>`);
 				Self.els.uxLayer.html(str.join(""));
@@ -380,12 +393,10 @@
 			ctx.stroke();
 			ctx.fill();
 		},
-		selected(ctx, l, Data, Self) {
-			let radius = Data.draw.handle.radius,
-				selected = Data.draw.anchor.selected;
-			
+		selected(ctx, l, Data) {
+			let selected = Data.draw.anchor.selected;
 			ctx.strokeStyle = "#5aa";
-			ctx.lineWidth = .75;
+			ctx.lineWidth = .5;
 			
 			// handle arms
 			ctx.beginPath();
@@ -397,19 +408,6 @@
 			}
 			ctx.closePath();
 			ctx.stroke();
-
-			let dX = 0,
-				dY = 301,
-				str = [];
-			for (let j=0, jl=l.length; j<jl; j+=1) {
-				if (selected.includes(l[j].i)) {
-					let hx = dX + Math.round(l[j].x * Data.view.dZ),
-						hy = dY + Math.round(l[j].y * Data.view.dZ);
-					str.push(`<u class="handle" data-i="${l[j].i}" style="top: ${hy}px; left: ${hx}px;"></u>`);
-				}
-			}
-			Self.els.uxLayer.find(".handle").remove();
-			Self.els.uxLayer.append(str.join(""));
 		},
 		rotation(ctx, Data) {
 			let color = Data.draw.rotation.color,
