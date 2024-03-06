@@ -383,8 +383,10 @@
 		selected(ctx, l, Data, Self) {
 			let radius = Data.draw.handle.radius,
 				selected = Data.draw.anchor.selected;
-			ctx.fillStyle = Data.draw.handle.fill;
-			ctx.strokeStyle = "#5aa"; //Data.draw.handle.stroke;
+			
+			ctx.strokeStyle = "#5aa";
+			ctx.lineWidth = .75;
+			
 			// handle arms
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
@@ -408,21 +410,6 @@
 			}
 			Self.els.uxLayer.find(".handle").remove();
 			Self.els.uxLayer.append(str.join(""));
-			/*
-			// handle circles
-			ctx.beginPath();
-			for (let j=0, jl=l.length; j<jl; j+=1) {
-				if (selected.includes(l[j].i)) {
-					let hx = Math.round(Data.view.dX + (l[j].x * Data.view.dZ)),
-						hy = Math.round(Data.view.dY + (l[j].y * Data.view.dZ));
-					ctx.moveTo(hx, hy);
-					ctx.arc(hx, hy, radius, 0, Data.TAU, false);
-				}
-			}
-			ctx.closePath();
-			ctx.stroke();
-			ctx.fill();
-			*/
 		},
 		rotation(ctx, Data) {
 			let color = Data.draw.rotation.color,
