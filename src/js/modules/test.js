@@ -8,7 +8,28 @@ let Test = {
 		// setTimeout(() => APP.toolbar.els.btnSidebar.trigger("click"), 100);
 		setTimeout(() => APP.content.find(`.glyph-list .glyph:nth(1)`).trigger("click"), 500);
 
-		setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pen"]`).trigger("click"), 700);
+		// setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pen"]`).trigger("click"), 700);
+		setTimeout(() => {
+			let Self = APP.design,
+				anchors = window.find(".anchor")
+								.filter(e => e.getAttribute("data-i") == 12)
+								.map(e => {
+									e.classList.add("selected");
+									return +e.getAttribute("data-i");
+								});
+			Self.data.draw.anchor.selected = anchors;
+			Self.draw.glyph(Self);
+		}, 500);
+
+
+		// { type: "M", x: 171, y: 228 }
+		// { type: "C", x: 241, x1: 135, x2: 244, y: 178, y1: 175, y2: 93 }
+		// { type: "C", x: 171, x1: 238, x2: 206, y: 228, y1: 263, y2: 279 }
+		// { type: "Z" }
+
+
+
+
 
 		// setTimeout(() => {
 		// 	APP.content.find(".zoom-value").html("90%");

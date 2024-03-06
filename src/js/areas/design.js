@@ -257,7 +257,7 @@
 			if (Data.draw.rotation.on) this.rotation(ctx, Data);
 
 			// selected anchor handles
-			this.selected(ctx, handles, Data);
+			this.selected(ctx, handles, Data, Self);
 
 			// puts SVG "ghost" & HTML anchors
 			let half = Data.draw.anchor.size * .5,
@@ -380,24 +380,39 @@
 			ctx.stroke();
 			ctx.fill();
 		},
-		selected(ctx, l, Data) {
-			let radius = Data.draw.handle.radius;
+		selected(ctx, l, Data, Self) {
+			let radius = Data.draw.handle.radius,
+				selected = Data.draw.anchor.selected;
 			ctx.fillStyle = Data.draw.handle.fill;
-			ctx.strokeStyle = Data.draw.handle.stroke;
+			ctx.strokeStyle = "#5aa"; //Data.draw.handle.stroke;
 			// handle arms
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				if (Data.draw.anchor.selected.includes(l[j].i)) {
+				if (selected.includes(l[j].i)) {
 					ctx.moveTo(Data.view.dX + (l[j].ox * Data.view.dZ), Data.view.dY + (l[j].oy * Data.view.dZ));
 					ctx.lineTo(Data.view.dX + (l[j].x * Data.view.dZ), Data.view.dY + (l[j].y * Data.view.dZ));
 				}
 			}
 			ctx.closePath();
 			ctx.stroke();
+
+			let dX = 0,
+				dY = 301,
+				str = [];
+			for (let j=0, jl=l.length; j<jl; j+=1) {
+				if (selected.includes(l[j].i)) {
+					let hx = dX + Math.round(l[j].x * Data.view.dZ),
+						hy = dY + Math.round(l[j].y * Data.view.dZ);
+					str.push(`<u class="handle" data-i="${l[j].i}" style="top: ${hy}px; left: ${hx}px;"></u>`);
+				}
+			}
+			Self.els.uxLayer.find(".handle").remove();
+			Self.els.uxLayer.append(str.join(""));
+			/*
 			// handle circles
 			ctx.beginPath();
 			for (let j=0, jl=l.length; j<jl; j+=1) {
-				if (Data.draw.anchor.selected.includes(l[j].i)) {
+				if (selected.includes(l[j].i)) {
 					let hx = Math.round(Data.view.dX + (l[j].x * Data.view.dZ)),
 						hy = Math.round(Data.view.dY + (l[j].y * Data.view.dZ));
 					ctx.moveTo(hx, hy);
@@ -407,6 +422,7 @@
 			ctx.closePath();
 			ctx.stroke();
 			ctx.fill();
+			*/
 		},
 		rotation(ctx, Data) {
 			let color = Data.draw.rotation.color,
