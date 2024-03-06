@@ -97,6 +97,7 @@
 				switch (true) {
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.viewAnchor(event);
+					case el.hasClass("handle"): return Self.viewHandle(event);
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
 					case el.hasClass("rotator"): return Self.viewRotate(event);
@@ -288,8 +289,8 @@
 						aHandles = [];
 					for (let i=0, il=handles.length; i<il; i++) {
 						if (handles[i].i === a.i) {
-							let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,
-								hx = ((handles[i].x - a.x) * Data.view.dZ) + 10;
+							let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,  // TODO: fix this
+								hx = ((handles[i].x - a.x) * Data.view.dZ) + 10; // TODO: fix this
 							aHandles.push(`<u class="handle" data-i="${handles[i].i}" style="top: ${hy}px; left: ${hx}px;"></u>`);
 						}
 					}
@@ -401,7 +402,7 @@
 		selected(ctx, l, Data) {
 			let selected = Data.draw.anchor.selected;
 			ctx.strokeStyle = "#5aa";
-			ctx.lineWidth = .5;
+			ctx.lineWidth = .75;
 			
 			// handle arms
 			ctx.beginPath();
@@ -484,12 +485,13 @@
 				let doc = $(document),
 					path = Self.data.glyph.path,
 					// include all selected anchors for movement
-					el = sel.map(elem => ({
-						el: $(elem),
-						oY: elem.offsetTop + 7,
-						oX: elem.offsetLeft + 7,
-						anchor: new Anchor(path, +elem.getAttribute("data-i")),
-					})),
+					el = sel.map(elem => {
+						let el = $(elem),
+							oY = elem.offsetTop + parseInt(el.css("margin-top"), 10),
+							oX = elem.offsetLeft + parseInt(el.css("margin-left"), 10),
+							anchor = new Anchor(path, +elem.getAttribute("data-i"));
+						return { el, oY, oX, anchor };
+					}),
 					click = {
 						y: event.clientY,
 						x: event.clientX,
@@ -523,6 +525,57 @@
 				Self.els.content.removeClass("cover hide-cursor");
 				// bind events
 				Drag.doc.off("mousemove mouseup", Self.viewAnchor);
+				break;
+		}
+	},
+	viewHandle(event) {
+		let Self = fstudio.design,
+			Drag = Self.drag;
+		switch(event.type) {
+			case "mousedown":
+				let doc = $(document),
+					el = $(event.target),
+					pEl = el.parent(),
+					command = Self.data.glyph.path.commands[12],
+					key = {
+						nY: "y1",
+						nX: "x1",
+					},
+					offset = {
+						y: +el.prop("offsetTop") - parseInt(el.css("margin-top"), 10),
+						x: +el.prop("offsetLeft") - parseInt(el.css("margin-left"), 10),
+						pY: 50,
+						pX: +pEl.prop("offsetLeft"),
+					},
+					click = {
+						y: event.clientY - offset.y,
+						x: event.clientX - offset.x,
+					};
+				console.log( offset );
+				// drag object
+				Self.drag = { el, doc, click, offset, command, key };
+
+				// cover app body
+				Self.els.content.addClass("cover hide-cursor");
+				// bind events
+				Self.drag.doc.on("mousemove mouseup", Self.viewHandle);
+				break;
+			case "mousemove":
+				let top = event.clientY - Drag.click.y,
+					left = event.clientX - Drag.click.x;
+				Drag.el.css({ top, left });
+
+				// TODO
+				Drag.command[Drag.key.nY] = (Drag.offset.pY - top) / Self.data.view.dZ;
+				Drag.command[Drag.key.nX] = (Drag.offset.pX + left) / Self.data.view.dZ;
+				// update canvas
+				Self.draw.glyph(Self);
+				break;
+			case "mouseup":
+				// uncover app body
+				Self.els.content.removeClass("cover hide-cursor");
+				// unbind events
+				Drag.doc.off("mousemove mouseup", Self.viewHandle);
 				break;
 		}
 	},
