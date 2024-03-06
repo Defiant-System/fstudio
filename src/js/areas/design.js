@@ -253,11 +253,11 @@
 				}
 				if (cmd.x1 !== undefined) {
 					let anchor = anchors[anchors.length - 2];
-					if (anchor) handles.push({ i: anchor.i, ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
+					if (anchor) handles.push({ i: anchor.i, h: 1, ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
 				}
 				if (cmd.x2 !== undefined) {
 					let anchor = anchors[anchors.length - 1];
-					if (anchor) handles.push({ i: anchor.i, ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
+					if (anchor) handles.push({ i: anchor.i, h: 2, ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
 				}
 			}
 
@@ -291,7 +291,7 @@
 						if (handles[i].i === a.i) {
 							let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,  // TODO: fix this
 								hx = ((handles[i].x - a.x) * Data.view.dZ) + 10; // TODO: fix this
-							aHandles.push(`<u class="handle" data-i="${handles[i].i}" style="top: ${hy}px; left: ${hx}px;"></u>`);
+							aHandles.push(`<u class="handle" data-i="${handles[i].i}" data-h="${handles[i].h}" style="top: ${hy}px; left: ${hx}px;"></u>`);
 						}
 					}
 					return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
@@ -535,25 +535,28 @@
 			case "mousedown":
 				let doc = $(document),
 					el = $(event.target),
-					pEl = el.parent(),
-					command = Self.data.glyph.path.commands[12],
+					pO = el.offset(".ux-layer"),
+					dZ = Self.data.view.dZ,
+					baseline = FontFile.font.tables.os2.sTypoAscender * dZ,
+					index = +el.data("i") + (el.data("h") === "1" ? 1 : 0),
+					command = Self.data.glyph.path.commands[index],
 					key = {
-						nY: "y1",
-						nX: "x1",
+						nY: `y${el.data("h")}`,
+						nX: `x${el.data("h")}`,
 					},
 					offset = {
 						y: +el.prop("offsetTop") - parseInt(el.css("margin-top"), 10),
 						x: +el.prop("offsetLeft") - parseInt(el.css("margin-left"), 10),
-						pY: 50,
-						pX: +pEl.prop("offsetLeft"),
+						pY: baseline - +el.parent().prop("offsetTop"),
+						pX: +el.parent().prop("offsetLeft"),
 					},
 					click = {
 						y: event.clientY - offset.y,
 						x: event.clientX - offset.x,
 					};
-				console.log( offset );
+					
 				// drag object
-				Self.drag = { el, doc, click, offset, command, key };
+				Self.drag = { el, doc, click, offset, command, key, dZ };
 
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
@@ -566,8 +569,8 @@
 				Drag.el.css({ top, left });
 
 				// TODO
-				Drag.command[Drag.key.nY] = (Drag.offset.pY - top) / Self.data.view.dZ;
-				Drag.command[Drag.key.nX] = (Drag.offset.pX + left) / Self.data.view.dZ;
+				Drag.command[Drag.key.nY] = (Drag.offset.pY - top) / Drag.dZ;
+				Drag.command[Drag.key.nX] = (Drag.offset.pX + left) / Drag.dZ;
 				// update canvas
 				Self.draw.glyph(Self);
 				break;
