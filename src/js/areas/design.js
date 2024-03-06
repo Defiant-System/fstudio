@@ -191,6 +191,9 @@
 				Self.els.hBox.removeClass("show");
 				break;
 			case "show-handle-box":
+				// clear selected anchors
+				Self.dispatch({ type: "clear-selected-anchors" });
+				
 				let bbox = Self.els.uxLayer.find("svg g")[0].getBBox(),
 					offset = Self.els.uxLayer.offset(),
 					baseline = FontFile.font.tables.os2.sTypoAscender * Self.data.view.dZ;
@@ -282,12 +285,14 @@
 				let str = anchors.filter(a => a.type !== "M").map(a => {
 					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half),
-						aHandles = handles.filter(h => h.i === a.i);
-					aHandles = aHandles.map(h => {
-						let hy = (a.y - h.y) * Data.view.dZ,
-							hx = (a.x - h.x) * Data.view.dZ;
-						return `<u class="handle" data-i="${h.i}" style="top: ${hy}px; left: ${hx}px;"></u>`;
-					});
+						aHandles = [];
+					for (let i=0, il=handles.length; i<il; i++) {
+						if (handles[i].i === a.i) {
+							let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,
+								hx = ((handles[i].x - a.x) * Data.view.dZ) + 10;
+							aHandles.push(`<u class="handle" data-i="${handles[i].i}" style="top: ${hy}px; left: ${hx}px;"></u>`);
+						}
+					}
 					return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
 				})
 				str.push(`<svg><g fill="#f00"><path /></g></svg>`);
