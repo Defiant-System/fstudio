@@ -127,7 +127,6 @@ class Path {
 	}
 
 	draw(ctx, Data, Self) {
-
 		// handles
 		ctx.strokeStyle = "#5aa";
 		ctx.lineWidth = .75;
@@ -139,7 +138,7 @@ class Path {
 		ctx.stroke();
 		ctx.closePath();
 
-
+		// anchor elements
 		this.anchors.map((a, i) => {
 			let el = Self.els.uxLayer.find(`.anchor[data-i="${i}"]`),
 				top = a.y - this._view.top - 2,
@@ -151,6 +150,7 @@ class Path {
 			}
 		});
 
+		// handle elements
 		this.handles.map((h, i) => {
 			let el = Self.els.uxLayer.find(`.handle[data-i="${i}"]`),
 				top = h.y - this._view.top,

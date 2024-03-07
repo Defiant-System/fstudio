@@ -220,6 +220,19 @@
 				break;
 		}
 	},
+	glyph: {
+		add(path) {
+			let Self = fstudio.design,
+				Font = FontFile.font,
+				Data = Self.data,
+				os2 = Font.tables.os2,
+				ctx = Self.els.ctx,
+				glyph = Data.glyph;
+
+			// let tmp = glyph.getPath();
+			console.log( path );
+		}
+	},
 	draw: {
 		glyph(Self, newPath) {
 			let Font = FontFile.font,
