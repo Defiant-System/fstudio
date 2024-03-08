@@ -96,7 +96,6 @@
 				// proxy event depending on active tool
 				switch (true) {
 					case (Self.data.tool === "pen"): return Self.viewPath(event);
-					case (Self.data.tool === "pan"): return Self.viewPan(event);
 					case !!Self.drag?.path: /* prevent further checks; creatin new path */ break;
 					case !!el.data("click"): /* prevent further checks & allow normal flow */ break;
 					case el.hasClass("anchor"): return Self.viewAnchor(event);
@@ -114,6 +113,7 @@
 							clientX: event.clientX,
 							clientY: event.clientY,
 						});
+					case (Self.data.tool === "pan"): return Self.viewPan(event);
 				}
 				break;
 			// system events
@@ -306,6 +306,19 @@
 			// selected anchor handles
 			if (Data.draw.anchor.selected.length) this.selected(ctx, handles, Data);
 
+			// prepare UI / style update
+			let half = Data.draw.anchor.size * .5,
+				baseline = os2.sTypoAscender * Data.view.dZ,
+				xheight = baseline - os2.sxHeight * Data.view.dZ,
+				style = {
+					top: Data.view.dY - baseline,
+					left: Math.round(Data.view.dX),
+					width: Math.round(Data.view.dW) + 1,
+					height: Math.round(Data.view.dH) + 1,
+					"--xheight": `${xheight}px`,
+					"--baseline": `${baseline}px`,
+				};
+
 			if (newPath) {
 				// draw svg path as it is
 				this.path(ctx, newPath._path, Data);
@@ -313,17 +326,6 @@
 				newPath.draw(ctx, Data, Self);
 			} else {
 				// puts SVG "ghost" & HTML anchors
-				let half = Data.draw.anchor.size * .5,
-					baseline = os2.sTypoAscender * Data.view.dZ,
-					xheight = baseline - os2.sxHeight * Data.view.dZ,
-					style = {
-						top: Data.view.dY - baseline,
-						left: Math.round(Data.view.dX),
-						width: Math.round(Data.view.dW) + 1,
-						height: Math.round(Data.view.dH) + 1,
-						"--xheight": `${xheight}px`,
-						"--baseline": `${baseline}px`,
-					};
 				if (!Self.els.uxLayer[0].childNodes.length) {
 					let str = anchors.filter(a => a.type !== "M").map(a => {
 						let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
@@ -349,7 +351,7 @@
 						return { i, el, top, left };
 					});
 				}
-
+				
 				let bbox = glyph.path.getBoundingBox(),
 					// tY = Data.view.dH + (bbox.y1 * Data.view.dZ),
 					tY = 300,
