@@ -223,15 +223,11 @@
 	glyph: {
 		add(path) {
 			let Self = fstudio.design,
-				Font = FontFile.font,
 				Data = Self.data,
-				os2 = Font.tables.os2,
-				ctx = Self.els.ctx,
 				glyph = Data.glyph.path,
 				scale = Data.view.dZ,
 				dX = -path._view.left,
 				dY = path._view.height;
-
 			// console.log( path );
 			path.commands.map(cmd => {
 				let x = (dX + (cmd.x || 0)) / scale,
@@ -248,7 +244,6 @@
 					case "Z": glyph.close(); break;
 				}
 			});
-
 			Self.draw.glyph(Self);
 		}
 	},
