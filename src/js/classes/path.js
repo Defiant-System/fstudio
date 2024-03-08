@@ -18,6 +18,10 @@ class Path {
 		return this._closed;
 	}
 
+	get commands() {
+		return this._path.commands;
+	}
+
 	moveHandle(x, y) {
 		let len = this._path.commands.length-1,
 			p1 = this._path.commands[len],

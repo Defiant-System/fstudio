@@ -8,7 +8,7 @@ let Test = {
 		// setTimeout(() => APP.toolbar.els.btnSidebar.trigger("click"), 100);
 		setTimeout(() => APP.content.find(`.glyph-list .glyph:nth(1)`).trigger("click"), 500);
 
-		setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pen"]`).trigger("click"), 700);
+		return setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pen"]`).trigger("click"), 700);
 
 		// setTimeout(() => APP.content.find(`.anchor:nth(11)`).trigger("mousedown").trigger("mouseup"), 600);
 
@@ -26,16 +26,15 @@ let Test = {
 
 
 		setTimeout(() => {
-			let ux = APP.design.els.uxLayer.offset(),
-				path = new Path({ x: 171, y: 228 }, ux),
-				c1 = { x: 241, x1: 135, x2: 244, y: 178, y1: 175, y2: 93 },
-				c2 = { x: 171, x1: 238, x2: 206, y: 228, y1: 263, y2: 279 };
-
-			path._path.bezierCurveTo(c1.x, c1.y, c1.x, c1.y, c1.x, c1.y);
-			path._path.bezierCurveTo(c2.x, c2.y, c2.x, c2.y, c2.x, c2.y);
-			path._path.close();
+			// let ux = APP.design.els.uxLayer.offset();
 			
-			APP.design.glyph.add(path);
+			let commands = [];
+			commands.push({ type: "M", x: 171, y: 228 });
+			commands.push({ type: "C", x: 241, x1: 135, x2: 244, y: 178, y1: 175, y2: 93 });
+			commands.push({ type: "C", x: 171, x1: 238, x2: 206, y: 228, y1: 263, y2: 279 });
+			commands.push({ type: "Z" });
+			
+			APP.design.glyph.add(commands);
 
 		}, 800);
 

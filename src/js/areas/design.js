@@ -221,16 +221,32 @@
 		}
 	},
 	glyph: {
-		add(path) {
+		add(commands) {
 			let Self = fstudio.design,
 				Font = FontFile.font,
 				Data = Self.data,
 				os2 = Font.tables.os2,
 				ctx = Self.els.ctx,
-				glyph = Data.glyph;
+				path = Data.glyph.path,
+				scale = Data.view.dZ;
+			
+			commands.map(cmd => {
+				let x = -(cmd.x || 0) / scale,
+					y =  (cmd.y || 0) / scale,
+					x1 = -(cmd.x1 || 0) / scale,
+					y1 =  (cmd.y1 || 0) / scale,
+					x2 = -(cmd.x2 || 0) / scale,
+					y2 =  (cmd.y2 || 0) / scale;
+				switch (cmd.type) {
+					case "M": path.moveTo(x, y); break;
+					case "L": break;
+					case "C": path.bezierCurveTo(x1, y1, x2, y2, x, y); break;
+					case "Q": break;
+					case "Z": path.close(); break;
+				}
+			});
 
-			// let tmp = glyph.getPath();
-			console.log( path );
+			Self.draw.glyph(Self);
 		}
 	},
 	draw: {
@@ -981,6 +997,8 @@
 					y = event.clientY - Drag.click.y;
 					x = event.clientX - Drag.click.x;
 					Drag.path.releaseHandle(x, y);
+				} else {
+					Self.glyph.add(Drag.path.commands);
 				}
 				// down state
 				Self.drag.downState = false;
