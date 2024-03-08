@@ -229,14 +229,15 @@
 				ctx = Self.els.ctx,
 				path = Data.glyph.path,
 				scale = Data.view.dZ;
+
 			
 			commands.map(cmd => {
-				let x = -(cmd.x || 0) / scale,
-					y =  (cmd.y || 0) / scale,
-					x1 = -(cmd.x1 || 0) / scale,
-					y1 =  (cmd.y1 || 0) / scale,
-					x2 = -(cmd.x2 || 0) / scale,
-					y2 =  (cmd.y2 || 0) / scale;
+				let x = (cmd.x || 0) / scale,
+					y = (cmd.y || 0) / scale,
+					x1 = (cmd.x1 || 0) / scale,
+					y1 = (cmd.y1 || 0) / scale,
+					x2 = (cmd.x2 || 0) / scale,
+					y2 = (cmd.y2 || 0) / scale;
 				switch (cmd.type) {
 					case "M": path.moveTo(x, y); break;
 					case "L": break;
@@ -998,6 +999,9 @@
 					x = event.clientX - Drag.click.x;
 					Drag.path.releaseHandle(x, y);
 				} else {
+					// clear new handles / anchors
+					Self.els.uxLayer.find(".anchor.new, .handle.new").remove();
+					// add new path to glyph
 					Self.glyph.add(Drag.path.commands);
 				}
 				// down state
