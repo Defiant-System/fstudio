@@ -28,13 +28,21 @@ let Test = {
 		setTimeout(() => {
 			// let ux = APP.design.els.uxLayer.offset();
 			
+			let _view = { top: 86, left: 415, width: 200, height: 388 };
 			let commands = [];
-			commands.push({ type: "M", x: 171, y: 228 });
-			commands.push({ type: "C", x: 241, x1: 135, x2: 244, y: 178, y1: 175, y2: 93 });
-			commands.push({ type: "C", x: 171, x1: 238, x2: 206, y: 228, y1: 263, y2: 279 });
+
+			// commands.push({ type: "M", x: 171, y: 228 });
+			// commands.push({ type: "C", x: 241, x1: 135, x2: 244, y: 178, y1: 175, y2: 93 });
+			// commands.push({ type: "C", x: 171, x1: 238, x2: 206, y: 228, y1: 263, y2: 279 });
+			// commands.push({ type: "Z" });
+
+			commands.push({ type: "M", x: 166, y: 299 });
+			commands.push({ type: "L", x: 262, y: 157 });
+			commands.push({ type: "L", x: 311, y: 351 });
+			commands.push({ type: "L", x: 260, y: 271 });
 			commands.push({ type: "Z" });
-			
-			APP.design.glyph.add(commands);
+
+			APP.design.glyph.add({ commands, _view });
 
 		}, 800);
 

@@ -76,11 +76,18 @@ class Path {
 	}
 
 	releaseHandle(x, y) {
-		this._path.bezierCurveTo(x, y, x, y, x, y);
+		let len = this.handles.length-1,
+			handle = this.handles[len];
+		
+		if (handle.x === handle.aX && handle.y === handle.aY) {
+			this._path.lineTo(x, y);
+			this.handles.splice(len, 1);
+		} else {
+			this._path.bezierCurveTo(x, y, x, y, x, y);
+			this.handles[len].x = x;
+			this.handles[len].y = y;
+		}
 
-		let len = this.handles.length-1;
-		this.handles[len].x = x;
-		this.handles[len].y = y;
 		this._down = false;
 	}
 

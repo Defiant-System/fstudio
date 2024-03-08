@@ -221,29 +221,31 @@
 		}
 	},
 	glyph: {
-		add(commands) {
+		add(path) {
 			let Self = fstudio.design,
 				Font = FontFile.font,
 				Data = Self.data,
 				os2 = Font.tables.os2,
 				ctx = Self.els.ctx,
-				path = Data.glyph.path,
-				scale = Data.view.dZ;
+				glyph = Data.glyph.path,
+				scale = Data.view.dZ,
+				dX = -path._view.left,
+				dY = path._view.height;
 
-			
-			commands.map(cmd => {
-				let x = (cmd.x || 0) / scale,
-					y = (cmd.y || 0) / scale,
-					x1 = (cmd.x1 || 0) / scale,
-					y1 = (cmd.y1 || 0) / scale,
-					x2 = (cmd.x2 || 0) / scale,
-					y2 = (cmd.y2 || 0) / scale;
+			// console.log( path );
+			path.commands.map(cmd => {
+				let x = (dX + (cmd.x || 0)) / scale,
+					y = (dY - (cmd.y || 0)) / scale,
+					x1 = (dX + (cmd.x1 || 0)) / scale,
+					y1 = (dY - (cmd.y1 || 0)) / scale,
+					x2 = (dX + (cmd.x2 || 0)) / scale,
+					y2 = (dY - (cmd.y2 || 0)) / scale;
 				switch (cmd.type) {
-					case "M": path.moveTo(x, y); break;
-					case "L": break;
-					case "C": path.bezierCurveTo(x1, y1, x2, y2, x, y); break;
-					case "Q": break;
-					case "Z": path.close(); break;
+					case "M": glyph.moveTo(x, y); break;
+					case "L": glyph.lineTo(x, y); break;
+					case "C": glyph.bezierCurveTo(x1, y1, x2, y2, x, y); break;
+					case "Q": glyph.quadraticCurveTo(x1, y1, x, y); break;
+					case "Z": glyph.close(); break;
 				}
 			});
 
@@ -1002,7 +1004,7 @@
 					// clear new handles / anchors
 					Self.els.uxLayer.find(".anchor.new, .handle.new").remove();
 					// add new path to glyph
-					Self.glyph.add(Drag.path.commands);
+					Self.glyph.add(Drag.path);
 				}
 				// down state
 				Self.drag.downState = false;
