@@ -11,7 +11,7 @@
 		<div class="group-row">
 			<div>
 				<legend class="bold">Layers</legend>
-				<div class="layer-rows">
+				<div class="layer-rows" data-click="select-layer">
 					<div class="row">
 						<span data-click="toggle-visibility">
 							<i class="icon-eye-off c15x15"></i>
@@ -22,8 +22,11 @@
 							</svg>
 						</span>
 						<span>Path 3</span>
+						<span data-click="delete-layer">
+							<i class="icon-trashcan"></i>
+						</span>
 					</div>
-					<div class="row">
+					<div class="row selected">
 						<span data-click="toggle-visibility">
 							<i class="icon-eye-on c15x15"></i>
 						</span>
@@ -33,6 +36,9 @@
 							</svg>
 						</span>
 						<span>Path 2</span>
+						<span data-click="delete-layer">
+							<i class="icon-trashcan"></i>
+						</span>
 					</div>
 					<div class="row">
 						<span data-click="toggle-visibility">
@@ -45,6 +51,33 @@
 							</svg>
 						</span>
 						<span>Path 1</span>
+						<span data-click="delete-layer">
+							<i class="icon-trashcan"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="flex-row arrange">
+				<div class="w48">
+					<div class="option-buttons_ has-title_">
+						<span class="disabled" data-name="z-back" title="Back">
+							<span class="icon-arrange-back c13x19"></span>
+						</span>
+						<span class="disabled" data-name="z-front" title="Front">
+							<span class="icon-arrange-front c13x19"></span>
+						</span>
+					</div>
+				</div>
+
+				<div class="w48">
+					<div class="option-buttons_ has-title_">
+						<span class="disabled" data-name="z-backward" title="Backward">
+							<span class="icon-arrange-backward c13x19"></span>
+						</span>
+						<span class="disabled" data-name="z-forward" title="Forward">
+							<span class="icon-arrange-forward c13x19"></span>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -183,29 +216,7 @@
 			<div class="flex-row">
 				<legend class="bold">Layers</legend>
 			</div>
-			<div class="flex-row arrange">
-				<div class="w48">
-					<div class="option-buttons_ has-title_">
-						<span class="disabled" data-name="z-back" title="Back">
-							<span class="icon-arrange-back c13x19"></span>
-						</span>
-						<span class="disabled" data-name="z-front" title="Front">
-							<span class="icon-arrange-front c13x19"></span>
-						</span>
-					</div>
-				</div>
-
-				<div class="w48">
-					<div class="option-buttons_ has-title_">
-						<span class="disabled" data-name="z-backward" title="Backward">
-							<span class="icon-arrange-backward c13x19"></span>
-						</span>
-						<span class="disabled" data-name="z-forward" title="Forward">
-							<span class="icon-arrange-forward c13x19"></span>
-						</span>
-					</div>
-				</div>
-			</div>
+			
 		</div>
 	</div>
 
