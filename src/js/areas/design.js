@@ -178,7 +178,7 @@
 					dX = (Self.data.cvsDim.width - dW) >> 1,
 					dY = (os2.sTypoAscender - os2.sTypoDescender) * dZ;
 				// temp
-				dX += 150;
+				// dX += 150;
 
 				Self.data.view = { dZ, dX, dY, dW, dH: dY };
 				Self.data.fontSize = fontSize;
@@ -290,11 +290,11 @@
 				}
 				if (cmd.x1 !== undefined) {
 					let anchor = anchors[anchors.length - 2];
-					if (anchor) handles.push({ i: anchor.i, h: 1, ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
+					if (anchor) handles.push({ i: anchor.i, hI: handles.length, h: 1, ox: anchor.x, oy: anchor.y, x: cmd.x1, y: -cmd.y1 });
 				}
 				if (cmd.x2 !== undefined) {
 					let anchor = anchors[anchors.length - 1];
-					if (anchor) handles.push({ i: anchor.i, h: 2, ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
+					if (anchor) handles.push({ i: anchor.i, hI: handles.length, h: 2, ox: anchor.x, oy: anchor.y, x: cmd.x2, y: -cmd.y2 });
 				}
 			}
 
@@ -335,7 +335,7 @@
 							if (handles[i].i === a.i) {
 								let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,  // TODO: fix this
 									hx = ((handles[i].x - a.x) * Data.view.dZ) + 10; // TODO: fix this
-								aHandles.push(`<u class="handle" data-i="${handles[i].i}" data-h="${handles[i].h}" style="top: ${hy}px; left: ${hx}px;"></u>`);
+								aHandles.push(`<u class="handle" data-i="${handles[i].i}" data-hI="${handles[i].hI}" data-h="${handles[i].h}" style="top: ${hy}px; left: ${hx}px;"></u>`);
 							}
 						}
 						return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
@@ -345,10 +345,11 @@
 				} else if (!Self.els._anchors.length) {
 					Self.els._anchors = Self.els.uxLayer.find(".anchor").map(elem => {
 						let el = $(elem),
+							handles = el.find(".handle"),
 							top = elem.offsetTop,
 							left = elem.offsetLeft,
 							i = +elem.getAttribute("data-i");
-						return { i, el, top, left };
+						return { i, el, handles, top, left };
 					});
 				}
 
@@ -371,6 +372,17 @@
 					let top = Math.round(baseline + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half);
 					item.el.css({ top, left });
+
+					if (item.el.hasClass("selected")) {
+						// update handles
+						item.handles.map((h, j) => {
+							let hEl = item.handles.get(j),
+								hI = +hEl.data("hI"),
+								hy = ((handles[hI].y - a.y) * Data.view.dZ) + 9,
+								hx = ((handles[hI].x - a.x) * Data.view.dZ) + 10;
+							hEl.css({ top: hy, left: hx });
+						});
+					}
 				});
 			}
 		},
