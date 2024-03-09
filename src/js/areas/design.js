@@ -351,12 +351,12 @@
 						return { i, el, top, left };
 					});
 				}
-				
+
 				let bbox = glyph.path.getBoundingBox(),
-					// tY = Data.view.dH + (bbox.y1 * Data.view.dZ),
-					tY = 300,
+					tY = baseline,
+					tX = -0.5,
 					// svg element "scale"
-					transform = `translate(-0.5,${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
+					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
 				Self.els.uxLayer.find("svg g").attr({ transform });
 
 				// set path of svg
@@ -368,7 +368,7 @@
 				Self.els._anchors.map(item => {
 					let a = anchors[item.i];
 					if (!a) return;
-					let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
+					let top = Math.round(baseline + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half);
 					item.el.css({ top, left });
 				});

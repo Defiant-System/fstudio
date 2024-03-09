@@ -8,15 +8,17 @@ let Test = {
 		// setTimeout(() => APP.toolbar.els.btnSidebar.trigger("click"), 100);
 		setTimeout(() => APP.content.find(`.glyph-list .glyph:nth(1)`).trigger("click"), 500);
 
+		setTimeout(() => APP.content.find(`.anchor:nth(10)`).trigger("mousedown").trigger("mouseup"), 600);
+
+		// setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pan"]`).trigger("click"), 700);
 		// return setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pen"]`).trigger("click"), 700);
 
 		return setTimeout(() => {
-			APP.content.find(".zoom-value").html("90%");
+			APP.content.find(".zoom-value").html("60%");
 			APP.content.find(`span[data-click="zoom-minus"] i`).trigger("click");
 		}, 700);
 
 
-		// setTimeout(() => APP.content.find(`.anchor:nth(11)`).trigger("mousedown").trigger("mouseup"), 600);
 
 		// setTimeout(() => {
 		// 	let Self = APP.design,
