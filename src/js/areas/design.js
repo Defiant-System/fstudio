@@ -340,7 +340,7 @@
 						}
 						return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
 					});
-					str.push(`<svg><g fill="#f00"><path /></g></svg>`);
+					str.push(`<svg><g></g></svg>`);
 					Self.els.uxLayer.html(str.join(""));
 				} else if (!Self.els._anchors.length) {
 					Self.els._anchors = Self.els.uxLayer.find(".anchor").map(elem => {
@@ -360,9 +360,16 @@
 					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
 				Self.els.uxLayer.find("svg g").attr({ transform });
 
-				// set path of svg
-				let d = glyph.path.toSVG().slice(9, -3);
-				Self.els.uxLayer.find("svg path").attr({ d });
+				// set path(s) of svg
+				let p = [];
+				// split closed paths
+				glyph.path.toSVG().slice(9, -3)
+					.split("Z")
+					.filter(d => d)
+					.map(sP => {
+						p.push(`<path d="${sP}Z"/>`);
+					})
+				Self.els.uxLayer.find("svg g").html(p.join(""));
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
 
