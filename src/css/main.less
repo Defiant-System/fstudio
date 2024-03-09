@@ -232,6 +232,12 @@ content {
 			margin: 5px;
 			opacity: .5;
 
+			&.c15x15 {
+				width: 15px;
+				height: 15px;
+				margin: 0;
+			}
+
 			&.c13x19 {
 				width: 19px;
 				height: 13px;
@@ -239,18 +245,21 @@ content {
 				background-size: 19px auto;
 			}
 
-			&.icon-align-top          { background-image: url(~/icons/icon-align-top.png) }
-			&.icon-align-middle       { background-image: url(~/icons/icon-align-middle.png) }
-			&.icon-align-bottom       { background-image: url(~/icons/icon-align-bottom.png) }
-			&.icon-vertical-centers   { background-image: url(~/icons/icon-vertical-centers.png) }
-			&.icon-align-left         { background-image: url(~/icons/icon-align-left.png) }
-			&.icon-align-center       { background-image: url(~/icons/icon-align-center.png) }
-			&.icon-align-right        { background-image: url(~/icons/icon-align-right.png) }
-			&.icon-horizontal-centers { background-image: url(~/icons/icon-horizontal-centers.png) }
+			&.icon-align-top          { background-image: url(~/icons/icon-align-top.png); }
+			&.icon-align-middle       { background-image: url(~/icons/icon-align-middle.png); }
+			&.icon-align-bottom       { background-image: url(~/icons/icon-align-bottom.png); }
+			&.icon-vertical-centers   { background-image: url(~/icons/icon-vertical-centers.png); }
+			&.icon-align-left         { background-image: url(~/icons/icon-align-left.png); }
+			&.icon-align-center       { background-image: url(~/icons/icon-align-center.png); }
+			&.icon-align-right        { background-image: url(~/icons/icon-align-right.png); }
+			&.icon-horizontal-centers { background-image: url(~/icons/icon-horizontal-centers.png); }
 
-			&.icon-path-union     { background-image: url(~/icons/icon-path-union.png) }
-			&.icon-path-subtract  { background-image: url(~/icons/icon-path-subtract.png) }
-			&.icon-path-intersect { background-image: url(~/icons/icon-path-intersect.png) }
+			&.icon-eye-on  { background-image: url(~/icons/icon-eye-on.png); }
+			&.icon-eye-off { background-image: url(~/icons/icon-eye-off.png); }
+
+			&.icon-path-union     { background-image: url(~/icons/icon-path-union.png); }
+			&.icon-path-subtract  { background-image: url(~/icons/icon-path-subtract.png); }
+			&.icon-path-intersect { background-image: url(~/icons/icon-path-intersect.png); }
 
 			&.icon-arrange-back     { background-image: url(~/icons/icon-arrange-back.png); }
 			&.icon-arrange-front    { background-image: url(~/icons/icon-arrange-front.png); }
@@ -323,6 +332,13 @@ content {
 			.form-radio_,
 			.form-checkbox_ {
 				margin: 0 2px 7px 0;
+			}
+
+			legend {
+				&.bold {
+					font-weight: 500;
+					margin-bottom: 3px;
+				}
 			}
 
 			button {
@@ -399,6 +415,40 @@ content {
 								text-align: center;
 								margin-top: 3px;
 								font-size: 11px;
+							}
+						}
+					}
+				}
+
+				.layer-rows {
+					.row {
+						display: flex;
+						height: 25px;
+						padding: 2px;
+						margin-bottom: 2px;
+						border-radius: 2px;
+						background: rgba(#000,.05);
+
+						span {
+							&:nth-child(1) {
+								position: relative;
+								width: 21px;
+								padding: 3px;
+							}
+
+							&:nth-child(2) {
+								background: #fff;
+								width: 21px;
+								margin: 0 2px;
+								border-radius: 1px;
+							}
+
+							&:nth-child(3) {
+								flex: 1;
+								padding: 5px 0 0 4px;
+								white-space: nowrap;
+								overflow: hidden;
+								text-overflow: ellipsis;
 							}
 						}
 					}

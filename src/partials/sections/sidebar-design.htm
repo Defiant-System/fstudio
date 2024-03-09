@@ -8,6 +8,47 @@
 
 	<!-- Glyph body -->
 	<div class="sidebar-body active">
+		<div class="group-row">
+			<div>
+				<legend class="bold">Layers</legend>
+				<div class="layer-rows">
+					<div class="row">
+						<span data-click="toggle-visibility">
+							<i class="icon-eye-off c15x15"></i>
+						</span>
+						<span>
+							<svg viewBox="0 0 19 19">
+								<path d="M4,6 L2,13 L12,18 L16,2 Z"/>
+							</svg>
+						</span>
+						<span>Path 3</span>
+					</div>
+					<div class="row">
+						<span data-click="toggle-visibility">
+							<i class="icon-eye-on c15x15"></i>
+						</span>
+						<span>
+							<svg viewBox="0 0 19 19">
+								<circle cx="10" cy="10" r="7"/>
+							</svg>
+						</span>
+						<span>Path 2</span>
+					</div>
+					<div class="row">
+						<span data-click="toggle-visibility">
+							<i class="icon-eye-on c15x15"></i>
+						</span>
+						<span>
+							<svg viewBox="0 0 19 19">
+								<rect x="3" y="1" width="9" height="9"/>
+								<circle cx="11" cy="11" r="4"/>
+							</svg>
+						</span>
+						<span>Path 1</span>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<div class="group-row">
 			<div class="flex-row">
@@ -36,9 +77,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="group-row">
 			<div class="flex-row">
 				<legend class="bold">Bearings</legend>
 				<div class="indent has-title" title="Left">
@@ -115,7 +153,7 @@
 		</div>
 
 		<div class="group-row transformation">
-			<div class="flex-row1">
+			<div>
 				<legend class="bold">Transformations</legend>
 				<div>
 					<i class="icon-align-top"></i>
@@ -165,29 +203,6 @@
 						<span class="disabled" data-name="z-forward" title="Forward">
 							<span class="icon-arrange-forward c13x19"></span>
 						</span>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="group-row">
-			<div class="flex-row">
-				<legend class="bold">Rows</legend>
-				<div>
-					<input type="number" min="7" max="999" name="table-rows-num"/>
-					<div>
-						<span></span>
-						<span></span>
-					</div>
-				</div>
-			</div>
-			<div class="flex-row">
-				<legend class="bold">Columns</legend>
-				<div>
-					<input type="number" min="5" max="999" name="table-cols-num"/>
-					<div>
-						<span></span>
-						<span></span>
 					</div>
 				</div>
 			</div>
