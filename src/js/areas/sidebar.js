@@ -6,6 +6,7 @@
 		// fast references
 		this.els = {
 			el: window.find(`.sidebar[data-area="sidebar"]`),
+			wLayers: window.find(`.layer-rows`),
 			content: window.find(`content`),
 		};
 	},
@@ -31,6 +32,24 @@
 					pEl.find(".sidebar-body.active").removeClass("active");
 					pEl.find(`.sidebar-body`).get(el.index()).addClass("active");
 				}
+				break;
+			case "select-layer":
+				Self.els.wLayers.find(".selected").removeClass("selected");
+				el = $(event.target).parents("?.row");
+				el.addClass("selected");
+				break;
+			case "toggle-visibility":
+				el = $(event.el).find("i");
+				if (el.hasClass("icon-eye-off")) {
+					el.removeClass("icon-eye-off icon-eye-on").addClass("icon-eye-on");
+					el.parents(".row").removeClass("layer-off");
+				} else {
+					el.removeClass("icon-eye-off icon-eye-on").addClass("icon-eye-off");
+					el.parents(".row").addClass("layer-off");
+				}
+				Self.dispatch({ type: "select-layer", target: event.target });
+				break;
+			case "delete-layer":
 				break;
 			// forward popup events
 			case "popup-color-ring":
