@@ -761,11 +761,13 @@
 				let dY = event.clientY - Drag.click.y,
 					dX = event.clientX - Drag.click.x;
 				Drag.rotation.radians = Math.atan2(dY, dX);
-				// update canvas
-				Self.draw.glyph(Self);
-
 				// rotate selected "path"
-				Drag.rotateFn(Self.shape, { matrix: Drag.matrix, points: Drag.points, ...Drag.rotation });
+				let rot = {
+						cY: Drag.rotation.cY,
+						cX: Drag.rotation.cX,
+						radians: -Drag.rotation.radians - (Math.PI * .5),
+					};
+				Drag.rotateFn(Self.shape, { ...rot, matrix: Drag.matrix, points: Drag.points });
 				// update canvas
 				Self.draw.glyph(Self);
 				break;
