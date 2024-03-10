@@ -760,7 +760,6 @@
 			case "mousemove":
 				let dY = event.clientY - Drag.click.y,
 					dX = event.clientX - Drag.click.x;
-				Drag.rotation.origo = { y: dY, x: dX };
 				Drag.rotation.radians = Math.atan2(dY, dX);
 				// update canvas
 				Self.draw.glyph(Self);

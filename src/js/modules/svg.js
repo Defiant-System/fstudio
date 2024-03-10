@@ -114,11 +114,11 @@ const Svg = {
 		}
 	},
 	rotate: {
-		matrix: (rad, c) => {
+		matrix: (rad, cy, cx) => {
 			let _cos = Math.cos,
 				_sin = Math.sin;
-			return [[_cos(rad), -_sin(rad), -c.x * _cos(rad) + c.y * _sin(rad) + c.x],
-					[_sin(rad),  _cos(rad), -c.x * _sin(rad) - c.y * _cos(rad) + c.y],
+			return [[_cos(rad), -_sin(rad), -cx * _cos(rad) + cy * _sin(rad) + cx],
+					[_sin(rad),  _cos(rad), -cx * _sin(rad) - cy * _cos(rad) + cy],
 					[0, 0, 1]];
 		},
 		line(xShape, dim) {
@@ -198,7 +198,7 @@ const Svg = {
 		polygon(xShape, dim) {},
 		path(xShape, dim) {
 			// move transform matrix points
-			let mtxScale = dim.matrix(dim.radians, dim.origo),
+			let mtxScale = dim.matrix(dim.radians, dim.cY, dim.cX),
 				pathMap = [0, "z", "M", "m", "L", "l", "C", "c", "Q", "q", "A", "a", "H", "h", "V", "v", "S", "s", "T", "t"],
 				dArr = [];
 			// loop points
