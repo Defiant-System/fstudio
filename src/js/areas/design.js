@@ -208,8 +208,9 @@
 			case "show-handle-box":
 				// clear selected anchors
 				Self.dispatch({ type: "clear-selected-anchors" });
-				
-				let bbox = event.target.getBBox(),
+				Self.shape = event.target;
+
+				let bbox = Self.shape.getBBox(),
 					offset = Self.els.uxLayer.offset(),
 					baseline = FontFile.font.tables.os2.sTypoAscender * Self.data.view.dZ;
 				
@@ -819,14 +820,37 @@
 			Drag = Self.drag;
 		switch(event.type) {
 			case "mousedown":
-				let el = $(event.target),
-					doc = $(document),
+				let doc = $(document),
+					el = $(event.target),
+					shapeName = Self.shape.nodeName,
+					points,
 					click = {
 						y: event.clientY - +el.prop("offsetTop"),
 						x: event.clientX - +el.prop("offsetLeft"),
 					};
+
+				// special cases
+				switch (shapeName) {
+					case "line":
+						points = [
+							{ x: +Self.shape.getAttribute("x1"), y: +Self.shape.getAttribute("y1") },
+							{ x: +Self.shape.getAttribute("x2"), y: +Self.shape.getAttribute("y2") }
+						];
+						break;
+					case "path":
+						points = Self.shape.pathSegList._list;
+						break;
+				}
 				// drag object
-				Self.drag = { el, doc, click };
+				Self.drag = {
+					el,
+					doc,
+					click,
+					points,
+					matrix: Svg.translate.matrix,
+					translate: Svg.translate[shapeName],
+					matrixDot: Svg.matrixDot,
+				};
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
@@ -834,8 +858,12 @@
 				break;
 			case "mousemove":
 				let top = event.clientY - Drag.click.y,
-					left = event.clientX - Drag.click.x;
+					left = event.clientX - Drag.click.x,
+					move = { y: top, x: left };
 				Drag.el.css({ top, left });
+
+				Drag.translate(Self.shape, { move, matrix: Drag.matrix, points: Drag.points });
+				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
 				// uncover app body

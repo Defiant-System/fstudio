@@ -8,7 +8,7 @@ let Test = {
 		// setTimeout(() => APP.toolbar.els.btnSidebar.trigger("click"), 100);
 		setTimeout(() => APP.content.find(`.glyph-list .glyph:nth(1)`).trigger("click"), 500);
 
-		setTimeout(() => APP.content.find(`.ux-layer svg path:nth(2)`).trigger("mousedown").trigger("mouseup"), 700);
+		// setTimeout(() => APP.content.find(`.ux-layer svg path:nth(2)`).trigger("mousedown").trigger("mouseup"), 700);
 
 		return;
 		setTimeout(() => APP.content.find(`.anchor:nth(10)`).trigger("mousedown").trigger("mouseup"), 600);
