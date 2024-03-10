@@ -20,8 +20,9 @@
 	
 	.wrapper {
 		position: relative;
+		left: 1ox;
 		height: 100%;
-		width: 250px;
+		width: 249px;
 		background: var( --sidebar-bg );
 
 		.design-sidebar,
@@ -254,6 +255,10 @@
 
 					&.layer-off {
 						span {
+							&:nth-child(1) i {
+								opacity: .5;
+							}
+
 							&:nth-child(2),
 							&:nth-child(3) {
 								opacity: .5;
@@ -288,7 +293,7 @@
 							cursor: pointer;
 
 							i {
-								opacity: .5;
+								opacity: .65;
 								pointer-events: none;
 							}
 						}
