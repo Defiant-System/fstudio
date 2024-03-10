@@ -119,4 +119,30 @@
 	</div>
 </xsl:template>
 
+
+<xsl:template name="glyph-layers-list">
+	<xsl:for-each select="/data/i">
+		<xsl:call-template name="glyph-layer" />
+	</xsl:for-each>
+</xsl:template>
+
+
+<xsl:template name="glyph-layer">
+	<div class="row">
+		<xsl:attribute name="data-id"><xsl:value-of select="@id"/></xsl:attribute>
+		<span data-click="toggle-visibility">
+			<i class="icon-eye-on c15x15"></i>
+		</span>
+		<span>
+			<svg viewBox="0 0 19 19">
+				<xsl:value-of select="." disable-output-escaping="yes"/>
+			</svg>
+		</span>
+		<span><xsl:value-of select="@name"/></span>
+		<span data-click="delete-layer">
+			<i class="icon-trashcan"></i>
+		</span>
+	</div>
+</xsl:template>
+
 </xsl:stylesheet>

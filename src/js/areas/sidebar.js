@@ -13,10 +13,20 @@
 	dispatch(event) {
 		let APP = fstudio,
 			Self = APP.sidebar,
+			data,
 			value,
 			el;
 		// console.log(event);
 		switch (event.type) {
+			case "render-glyph-layers":
+				value = [];
+				value.push(`<i id="3" name="Path 3"><![CDATA[<path d="M4,6 L2,13 L12,18 L16,2 Z"/>]]></i>`);
+				value.push(`<i id="2" name="Path 2"><![CDATA[<circle cx="10" cy="10" r="7"/>]]></i>`);
+				value.push(`<i id="1" name="Path 1"><![CDATA[<rect x="3" y="1" width="9" height="9"/><circle cx="11" cy="11" r="4"/>]]></i>`);
+				data = $.xmlFromString(`<data>${value.join("")}</data>`);
+				// render data to DOM elements
+				window.render({ template: "glyph-layers-list", target: Self.els.wLayers, data, });
+				break;
 			case "toggle-sidebar":
 				value = Self.els.content.hasClass("show-sidebar");
 				Self.els.content.toggleClass("show-sidebar", value);

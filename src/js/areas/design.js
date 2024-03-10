@@ -106,7 +106,7 @@
 					case el.hasClass("handle"): return Self.viewResize(event);
 					case el.hasClass("handle-box"): return Self.viewMove(event);
 					case el.nodeName() === "path":
-						Self.dispatch({ type: "show-handle-box" });
+						Self.dispatch({ type: "show-handle-box", target: event.target });
 						return Self.viewMove({
 							type: "mousedown",
 							target: Self.els.hBox[0],
@@ -134,7 +134,10 @@
 				// console.log( FontFile.font );
 				// console.log( Self.data.glyph.path.commands[1] );
 
+				// auto fit glyph in work area
 				Self.dispatch({ type: "zoom-fit" });
+				// render sidebar glyph layers
+				APP.sidebar.dispatch({ type: "render-glyph-layers" });
 				break;
 			// custom events
 			case "clear-selected-anchors":
@@ -206,7 +209,7 @@
 				// clear selected anchors
 				Self.dispatch({ type: "clear-selected-anchors" });
 				
-				let bbox = Self.els.uxLayer.find("svg g")[0].getBBox(),
+				let bbox = event.target.getBBox(),
 					offset = Self.els.uxLayer.offset(),
 					baseline = FontFile.font.tables.os2.sTypoAscender * Self.data.view.dZ;
 				
@@ -360,16 +363,18 @@
 					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
 				Self.els.uxLayer.find("svg g").attr({ transform });
 
-				// set path(s) of svg
-				let p = [];
-				// split closed paths
-				glyph.path.toSVG().slice(9, -3)
-					.split("Z")
-					.filter(d => d)
-					.map(sP => {
-						p.push(`<path d="${sP}Z"/>`);
-					})
-				Self.els.uxLayer.find("svg g").html(p.join(""));
+				if (!Self.els.uxLayer.find("svg g path").length) {
+					// set path(s) of svg
+					let p = [];
+					// split closed paths
+					glyph.path.toSVG().slice(9, -3)
+						.split("Z")
+						.filter(d => d)
+						.map(sP => {
+							p.push(`<path d="${sP}Z"/>`);
+						})
+					Self.els.uxLayer.find("svg g").html(p.join(""));
+				}
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
 

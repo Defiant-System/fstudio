@@ -5,8 +5,8 @@
 		<meta name="author" value="Hakan Bilgin" namespace="ant"/>
 		<meta name="license" value="AGPL-3.0"/>
 		<meta name="repository" value="https://github.com/Defiant-System/fstudio"/>
-		<meta name="width" value="980"/>
-		<meta name="height" value="640"/>
+		<meta name="width" value="980" min="880"/>
+		<meta name="height" value="640" min="560"/>
 		<meta name="top" value="165"/>
 		<meta name="left" value="95"/>
 		<meta name="minimize"/>
