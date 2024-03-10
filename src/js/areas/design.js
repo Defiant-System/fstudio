@@ -90,7 +90,7 @@
 				// prevent default behaviour
 				event.preventDefault();
 				el = $(event.target);
-				if (!el.hasClass("handle-box") && !el.hasClass("handle") && !el.hasClass("rotator")) {
+				if (!el.hasClass("handle-box") && !el.hasClass("hb-handle") && !el.hasClass("rotator")) {
 					Self.dispatch({ type: "hide-handle-box" });
 				}
 				// proxy event depending on active tool
@@ -103,7 +103,7 @@
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
 					case el.hasClass("rotator"): return Self.viewRotate(event);
-					case el.hasClass("handle"): return Self.viewResize(event);
+					case el.hasClass("hb-handle"): return Self.viewResize(event);
 					case el.hasClass("handle-box"): return Self.viewMove(event);
 					case el.nodeName() === "path":
 						Self.dispatch({ type: "show-handle-box", target: event.target });
@@ -249,6 +249,25 @@
 				}
 			});
 			Self.draw.glyph(Self);
+		},
+		getPoints() {
+			let Self = fstudio.design,
+				shapeName = Self.shape.nodeName,
+				points = Self.shape.getAttribute("points");
+			// special cases
+			switch (shapeName) {
+				case "line":
+					points = [
+						{ x: +Self.shape.getAttribute("x1"), y: +Self.shape.getAttribute("y1") },
+						{ x: +Self.shape.getAttribute("x2"), y: +Self.shape.getAttribute("y2") }
+					];
+					break;
+				case "path":
+					points = Self.shape.pathSegList._list;
+					break;
+			}
+			// return points
+			return points;
 		}
 	},
 	draw: {
@@ -715,9 +734,14 @@
 					click = {
 						y: event.clientY + (bH >> 1) + 29,
 						x: event.clientX - event.offsetX,
-					};
+					},
+					TAU = Math.PI / 180,
+					points = Self.glyph.getPoints(),
+					matrix = Svg.rotate.matrix,
+					rotateFn = Svg.rotate[Self.shape.nodeName],
+					matrixDot = Svg.matrixDot;
 				// drag object
-				Self.drag = { el, doc, click, rotation };
+				Self.drag = { el, doc, click, rotation, TAU, points, matrix, rotateFn, matrixDot };
 
 				// start drawing rotation
 				Self.drag.rotation.on = true;
@@ -736,7 +760,13 @@
 			case "mousemove":
 				let dY = event.clientY - Drag.click.y,
 					dX = event.clientX - Drag.click.x;
+				Drag.rotation.origo = { y: dY, x: dX };
 				Drag.rotation.radians = Math.atan2(dY, dX);
+				// update canvas
+				Self.draw.glyph(Self);
+
+				// rotate selected "path"
+				Drag.rotateFn(Self.shape, { matrix: Drag.matrix, points: Drag.points, ...Drag.rotation });
 				// update canvas
 				Self.draw.glyph(Self);
 				break;
@@ -771,10 +801,14 @@
 					click = {
 						y: event.clientY,
 						x: event.clientX,
-					};
+					},
+					points = Self.glyph.getPoints(),
+					matrix = Svg.scale.matrix,
+					scaleFn = Svg.scale[Self.shape.nodeName],
+					matrixDot = Svg.matrixDot;
 
 				// drag object
-				Self.drag = { el, type, hBox, doc, offset, click };
+				Self.drag = { el, type, hBox, doc, offset, click, points, matrix, scaleFn, matrixDot };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
@@ -806,6 +840,16 @@
 					dim.height = event.clientY - Drag.click.y + Drag.offset.h;
 				}
 				Drag.hBox.css(dim);
+
+				// calculate scale
+				let scale = {
+						x: dim.width / Drag.offset.w,
+						y: dim.height / Drag.offset.h,
+					};
+				// move selected "path"
+				Drag.scaleFn(Self.shape, { ...dim, scale, matrix: Drag.matrix, points: Drag.points });
+				// update canvas
+				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
 				// uncover app body
@@ -822,35 +866,17 @@
 			case "mousedown":
 				let doc = $(document),
 					el = $(event.target),
-					shapeName = Self.shape.nodeName,
-					points,
 					click = {
 						y: event.clientY - +el.prop("offsetTop"),
 						x: event.clientX - +el.prop("offsetLeft"),
-					};
-
-				// special cases
-				switch (shapeName) {
-					case "line":
-						points = [
-							{ x: +Self.shape.getAttribute("x1"), y: +Self.shape.getAttribute("y1") },
-							{ x: +Self.shape.getAttribute("x2"), y: +Self.shape.getAttribute("y2") }
-						];
-						break;
-					case "path":
-						points = Self.shape.pathSegList._list;
-						break;
-				}
+					},
+					points = Self.glyph.getPoints(),
+					matrix = Svg.translate.matrix,
+					translateFn = Svg.translate[Self.shape.nodeName],
+					matrixDot = Svg.matrixDot;
+				
 				// drag object
-				Self.drag = {
-					el,
-					doc,
-					click,
-					points,
-					matrix: Svg.translate.matrix,
-					translate: Svg.translate[shapeName],
-					matrixDot: Svg.matrixDot,
-				};
+				Self.drag = { el, doc, click, points, matrix, translateFn, matrixDot };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
@@ -861,8 +887,9 @@
 					left = event.clientX - Drag.click.x,
 					move = { y: top, x: left };
 				Drag.el.css({ top, left });
-
-				Drag.translate(Self.shape, { move, matrix: Drag.matrix, points: Drag.points });
+				// move selected "path"
+				Drag.translateFn(Self.shape, { move, matrix: Drag.matrix, points: Drag.points });
+				// update canvas
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
