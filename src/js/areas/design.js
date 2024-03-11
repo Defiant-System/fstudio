@@ -400,12 +400,9 @@
 						})
 					Self.els.uxLayer.find("svg g").html(p.join(""));
 
-					let test = new OpenType.Path();
-					console.log( test.fromSVG );
 					Self.els.uxLayer.find("svg path").map(pEl => {
-						// let path = new OpenType.Path();
-						// let tmp = path.fromSVG(pEl.getAttribute("d"));
-						// console.log( tmp );
+						let path = OpenType.Path.fromSVG(pEl.getAttribute("d"));
+						console.log( path );
 					});
 				}
 				// ux-layer dimensions
