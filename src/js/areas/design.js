@@ -131,6 +131,9 @@
 				// fetch flyph by unicode
 				Self.data.glyph = FontFile.getGlyphByUnicode(event.id);
 
+				// reset ux-wrapper
+				Self.els.uxLayer.html("");
+
 				// console.log( FontFile.font );
 				// console.log( Self.data.glyph.path.commands[1] );
 
@@ -377,15 +380,18 @@
 							}
 							return `<b class="anchor" ${range} data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
 						});
-					str.push(`<svg><g></g></svg>`);
+					str.push(`<svg viewBox="0 0 ${Math.round(Data.view.dW)} ${Math.round(Data.view.dH)}"><g></g></svg>`);
 					Self.els.uxLayer.html(str.join(""));
 				}
 
 				let bbox = glyph.path.getBoundingBox(),
-					tY = baseline,
+					// tY = baseline - (bbox.y1 * Data.view.dZ),
+					tY = 0,
 					tX = -0.5,
 					// svg element "scale"
-					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, -${Data.view.dZ})`;
+					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, ${Data.view.dZ})`;
+				console.log( bbox );
+				console.log( Data.view.dH, baseline , (bbox.y1 * Data.view.dZ) );
 				Self.els.uxLayer.find("svg g").attr({ transform });
 
 				if (!Self.els.uxLayer.find("svg g path").length) {
@@ -395,15 +401,15 @@
 					glyph.path.toSVG().slice(9, -3)
 						.split("Z")
 						.filter(d => d)
-						.map(sP => {
-							p.push(`<path d="${sP}Z"/>`);
-						})
+						.map(sP => p.push(`<path d="${sP}Z"/>`));
 					Self.els.uxLayer.find("svg g").html(p.join(""));
 
-					Self.els.uxLayer.find("svg path").map(pEl => {
-						let path = OpenType.Path.fromSVG(pEl.getAttribute("d"));
-						console.log( path );
-					});
+					// let count = 0;
+					// Self.els.uxLayer.find("svg path").map(pEl => {
+					// 	let path = OpenType.Path.fromSVG(pEl.getAttribute("d"));
+					// 	count += path.commands.length-1;
+					// 	console.log( count );
+					// });
 				}
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
