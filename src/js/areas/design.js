@@ -319,7 +319,7 @@
 					aE = i;
 				}
 				if (cmd.x !== undefined) {
-					let aObj = { i, type: cmd.type, x: cmd.x, y: -cmd.y };
+					let aObj = { i: anchors.length, type: cmd.type, x: cmd.x, y: -cmd.y };
 					if (aS !== undefined && aE !== undefined) {
 						aObj = { ...aObj, aS, aE };
 						aS = undefined;
@@ -380,18 +380,26 @@
 							}
 							return `<b class="anchor" ${range} data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
 						});
-					str.push(`<svg viewBox="0 0 ${Math.round(Data.view.dW)} ${Math.round(Data.view.dH)}"><g></g></svg>`);
+					str.push(`<svg><g></g></svg>`);
 					Self.els.uxLayer.html(str.join(""));
+
+				} else if (!Self.els._anchors.length) {
+					Self.els._anchors = Self.els.uxLayer.find(".anchor").map(elem => {
+						let el = $(elem),
+							handles = el.find(".handle"),
+							i = +elem.getAttribute("data-i");
+						return { i, el, handles };
+					});
 				}
 
 				let bbox = glyph.path.getBoundingBox(),
 					// tY = baseline - (bbox.y1 * Data.view.dZ),
-					tY = 0,
-					tX = -0.5,
+					tY = baseline - ((bbox.y2 + bbox.y1) * Data.view.dZ),
+					tX = -1,
 					// svg element "scale"
 					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, ${Data.view.dZ})`;
-				console.log( bbox );
-				console.log( Data.view.dH, baseline , (bbox.y1 * Data.view.dZ) );
+				// console.log( bbox );
+				// console.log( Data.view.dH, baseline , () );
 				Self.els.uxLayer.find("svg g").attr({ transform });
 
 				if (!Self.els.uxLayer.find("svg g path").length) {
@@ -413,6 +421,7 @@
 				}
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
+
 
 				Self.els._anchors.map(item => {
 					let a = anchors[item.i];
