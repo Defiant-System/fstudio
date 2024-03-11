@@ -312,11 +312,11 @@
 			for (let i=0, aS, aE, il=commands.length-1; i<il; i += 1) {
 				let cmd = commands[i];
 				if (cmd.type === "M") {
-					aS = i+1;
+					aS = anchors.length+1;
 					aE = undefined;
 				}
 				if (commands[i+1].type === "Z") {
-					aE = i;
+					aE = anchors.length;
 				}
 				if (cmd.x !== undefined) {
 					let aObj = { i: anchors.length, type: cmd.type, x: cmd.x, y: -cmd.y };
@@ -411,13 +411,6 @@
 						.filter(d => d)
 						.map(sP => p.push(`<path d="${sP}Z"/>`));
 					Self.els.uxLayer.find("svg g").html(p.join(""));
-
-					// let count = 0;
-					// Self.els.uxLayer.find("svg path").map(pEl => {
-					// 	let path = OpenType.Path.fromSVG(pEl.getAttribute("d"));
-					// 	count += path.commands.length-1;
-					// 	console.log( count );
-					// });
 				}
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
@@ -429,6 +422,8 @@
 					let top = Math.round(baseline + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half);
 					item.el.css({ top, left });
+
+					if (a.aS && a.aE) console.log(a);
 
 					if (item.el.hasClass("selected")) {
 						// update handles
