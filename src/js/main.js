@@ -1,6 +1,6 @@
 
 @import "./ext/pathseg.js"
-@import "./ext/opentypejs_1-3-1.js"
+@import "./ext/opentype.module.js"  // opentypejs_1-3-1.js
 
 @import "./classes/file.js"
 @import "./classes/path.js"

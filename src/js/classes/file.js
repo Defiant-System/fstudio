@@ -53,12 +53,15 @@ class File {
 		// parseNext();
 
 		// add font details to app blueprint
-		let xParent = window.bluePrint.selectSingleNode(`//Data/Files`),
+		let tables = this.font.tables.name,
+			xParent = window.bluePrint.selectSingleNode(`//Data/Files`),
 			xAttr = [],
 			xGroups = [];
+		// font object 
+		tables = tables.fontFamily ? tables : tables.macintosh || tables.windows;
 		// font node details
-		xAttr.push(`name="${this.font.tables.name.fontFamily.en}"`);
-		xAttr.push(`style="${this.font.tables.name.fontSubfamily.en || "Regular"}"`);
+		xAttr.push(`name="${tables.fontFamily.en}"`);
+		xAttr.push(`style="${tables.fontSubfamily.en || "Regular"}"`);
 		xAttr.push(`glyphs="${this.font.numGlyphs}"`);
 		xAttr.push(`filename="${this.base}"`);
 		xAttr.push(`size="${+(fsFile.size / 1024).toFixed(1)} kB"`);

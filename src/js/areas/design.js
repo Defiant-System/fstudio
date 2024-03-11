@@ -213,7 +213,7 @@
 				let bbox = Self.shape.getBBox(),
 					offset = Self.els.uxLayer.offset(),
 					baseline = FontFile.font.tables.os2.sTypoAscender * Self.data.view.dZ;
-				
+
 				width = Math.round(bbox.width * Self.data.view.dZ);
 				height = Math.round(bbox.height * Self.data.view.dZ);
 				top = Math.round(offset.top + baseline - height - (bbox.y * Self.data.view.dZ));
@@ -306,10 +306,23 @@
 			this.path(ctx, path, Data);
 
 			// glyph path info; anchors + handles
-			for (let i=0, il=commands.length; i<il; i += 1) {
+			for (let i=0, aS, aE, il=commands.length-1; i<il; i += 1) {
 				let cmd = commands[i];
+				if (cmd.type === "M") {
+					aS = i+1;
+					aE = undefined;
+				}
+				if (commands[i+1].type === "Z") {
+					aE = i;
+				}
 				if (cmd.x !== undefined) {
-					anchors.push({ i, type: cmd.type, x: cmd.x, y: -cmd.y });
+					let aObj = { i, type: cmd.type, x: cmd.x, y: -cmd.y };
+					if (aS !== undefined && aE !== undefined) {
+						aObj = { ...aObj, aS, aE };
+						aS = undefined;
+						aE = undefined;
+					}
+					anchors.push(aObj);
 				}
 				if (cmd.x1 !== undefined) {
 					let anchor = anchors[anchors.length - 2];
@@ -351,29 +364,21 @@
 				// puts SVG "ghost" & HTML anchors
 				if (!Self.els.uxLayer[0].childNodes.length) {
 					let str = anchors.filter(a => a.type !== "M").map(a => {
-						let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
-							left = Math.round((a.x * Data.view.dZ) - half),
-							aHandles = [];
-						for (let i=0, il=handles.length; i<il; i++) {
-							if (handles[i].i === a.i) {
-								let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,  // TODO: fix this
-									hx = ((handles[i].x - a.x) * Data.view.dZ) + 10; // TODO: fix this
-								aHandles.push(`<u class="handle" data-i="${handles[i].i}" data-hI="${handles[i].hI}" data-h="${handles[i].h}" style="top: ${hy}px; left: ${hx}px;"></u>`);
+							let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
+								left = Math.round((a.x * Data.view.dZ) - half),
+								aHandles = [],
+								range = a.aS && a.aE ? `data-r="${a.aS},${a.aE}"` : "";
+							for (let i=0, il=handles.length; i<il; i++) {
+								if (handles[i].i === a.i) {
+									let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,  // TODO: fix this
+										hx = ((handles[i].x - a.x) * Data.view.dZ) + 10; // TODO: fix this
+									aHandles.push(`<u class="handle" data-i="${handles[i].i}" data-hI="${handles[i].hI}" data-h="${handles[i].h}" style="top: ${hy}px; left: ${hx}px;"></u>`);
+								}
 							}
-						}
-						return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
-					});
+							return `<b class="anchor" ${range} data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
+						});
 					str.push(`<svg><g></g></svg>`);
 					Self.els.uxLayer.html(str.join(""));
-				} else if (!Self.els._anchors.length) {
-					Self.els._anchors = Self.els.uxLayer.find(".anchor").map(elem => {
-						let el = $(elem),
-							handles = el.find(".handle"),
-							top = elem.offsetTop,
-							left = elem.offsetLeft,
-							i = +elem.getAttribute("data-i");
-						return { i, el, handles, top, left };
-					});
 				}
 
 				let bbox = glyph.path.getBoundingBox(),
@@ -394,6 +399,14 @@
 							p.push(`<path d="${sP}Z"/>`);
 						})
 					Self.els.uxLayer.find("svg g").html(p.join(""));
+
+					let test = new OpenType.Path();
+					console.log( test.fromSVG );
+					Self.els.uxLayer.find("svg path").map(pEl => {
+						// let path = new OpenType.Path();
+						// let tmp = path.fromSVG(pEl.getAttribute("d"));
+						// console.log( tmp );
+					});
 				}
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
