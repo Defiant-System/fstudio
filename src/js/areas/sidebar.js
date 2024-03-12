@@ -43,16 +43,28 @@
 						bbox = shape.getBBox(),
 						// resize path
 						size = 19,
-						r = Math.min(...[size / bbox.width, size / bbox.height]),
-						dim = {
-							scale: { x: r, y: r },
-							matrix: Svg.scale.matrix,
-							points: shape.pathSegList._list,
-						},
+						dim = size / Math.max(bbox.width, bbox.height),
 						// image to transfer to canvas
 						img = new Image;
-					// move selected "path"
-					Svg.scale.path(shape, dim);
+					
+					// resize "path"
+					Svg.scale.path(shape, {
+							scale: { x: dim, y: dim },
+							matrix: Svg.scale.matrix,
+							points: shape.pathSegList._list,
+						});
+
+					bbox = shape.getBBox();
+					// move "path"
+					Svg.translate.path(shape, {
+						move: {
+							x: -bbox.x + ((size - bbox.width) / 2),
+							y: -bbox.y + ((size - bbox.height) / 2),
+						},
+						matrix: Svg.translate.matrix,
+						points: shape.pathSegList._list,
+					});
+
 					// reset canvas
 					cvs.attr({ width: size, height: size });
 					// wait until image is "transfered"
