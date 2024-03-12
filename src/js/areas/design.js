@@ -140,7 +140,7 @@
 				// auto fit glyph in work area
 				Self.dispatch({ type: "zoom-fit" });
 				// render sidebar glyph layers
-				APP.sidebar.dispatch({ type: "render-glyph-layers" });
+				APP.sidebar.dispatch({ type: "render-glyph-layers", glyph: Self.data.glyph });
 				break;
 			// custom events
 			case "clear-selected-anchors":
@@ -220,14 +220,10 @@
 
 				width = Math.round(bbox.width * Self.data.view.dZ);
 				height = Math.round(bbox.height * Self.data.view.dZ);
-				// top = Math.round(offset.top + baseline + height - (bbox.y * Self.data.view.dZ));
 				top = Math.round(offset.top + (bbox.y * Self.data.view.dZ) + pY);
 				left = Math.round(offset.left + (bbox.x * Self.data.view.dZ)) - 1;
 				
-				// console.log( bbox );
-				// console.log( offset.top , baseline , height , (bbox.y * Self.data.view.dZ) );
-
-				// console.log( top, left, width, height );
+				// show handle box
 				Self.els.hBox.addClass("show").css({ top, left, width, height });
 				break;
 		}

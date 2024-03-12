@@ -134,9 +134,8 @@
 			<i class="icon-eye-on c15x15"></i>
 		</span>
 		<span>
-			<svg viewBox="0 0 19 19">
-				<xsl:value-of select="." disable-output-escaping="yes"/>
-			</svg>
+			<svg><xsl:value-of select="." disable-output-escaping="yes"/></svg>
+			<canvas width="19" height="19"></canvas>
 		</span>
 		<span><xsl:value-of select="@name"/></span>
 		<span data-click="delete-layer">

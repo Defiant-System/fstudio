@@ -50,7 +50,8 @@ const Svg = {
 		},
 		path(xShape, dim) {
 			// move transform matrix points
-			let mtxScale = dim.matrix(dim.move.x, dim.move.y),
+			let matrixDot = this.matrixDot || Svg.matrixDot,
+				mtxScale = dim.matrix(dim.move.x, dim.move.y),
 				pathMap = [0, "z", "M", "m", "L", "l", "C", "c", "Q", "q", "A", "a", "H", "h", "V", "v", "S", "s", "T", "t"],
 				dArr = [];
 			// loop points
@@ -65,12 +66,12 @@ const Svg = {
 				switch (type) {
 					case 13: // relative horizontal line (h)
 					case 12: // absolute horizontal line (H)
-						[x, y] = this.matrixDot(mtxScale, [[seg.x], [1], [1]]);
+						[x, y] = matrixDot(mtxScale, [[seg.x], [1], [1]]);
 						dArr.push(`${c}${x} `);
 						break;
 					case 15: // relative vertical line (v)
 					case 14: // absolute vertical line (V)
-						[x, y] = this.matrixDot(mtxScale, [[1], [seg.y], [1]]);
+						[x, y] = matrixDot(mtxScale, [[1], [seg.y], [1]]);
 						dArr.push(`${c}${y} `);
 						break;
 					case 3:  // relative move (m)
@@ -79,32 +80,32 @@ const Svg = {
 					case 2:  // absolute move (M)
 					case 4:  // absolute line (L)
 					case 18: // absolute smooth quad (T)
-						[x, y] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x, y] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
 						dArr.push(`${c}${x},${y} `);
 						break;
 					case 7: // relative cubic (c)
 					case 6: // absolute cubic (C)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x],  [seg.y],  [1]]);
-						[x1, y1] = this.matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
-						[x2, y2] = this.matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x],  [seg.y],  [1]]);
+						[x1, y1] = matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
+						[x2, y2] = matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
 						dArr.push(`${c}${x1},${y1} ${x2},${y2} ${x},${y} `);
 						break;
 					case 9: // relative quad (q)
 					case 8: // absolute quad (Q)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[x1, y1] = this.matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x1, y1] = matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
 						dArr.push(`${c}${x1},${y1} ${x},${y} `);
 						break;
 					case 11: // relative elliptical arc (a)
 					case 10: // absolute elliptical arc (A)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[r1, r2] = this.matrixDot(mtxScale, [[seg.r1], [seg.r2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[r1, r2] = matrixDot(mtxScale, [[seg.r1], [seg.r2], [1]]);
 						dArr.push(`${c}${r1},${r2} ${seg.angle} ${ Number(seg.largeArcFlag)} ${Number(seg.sweepFlag)} ${x},${y} `);
 						break;
 					case 17: // relative smooth cubic (s)
 					case 16: // absolute smooth cubic (S)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[x2, y2] = this.matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x2, y2] = matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
 						dArr.push(`${c}${x2},${y2} ${x},${y} `);
 						break;
 				}
@@ -198,7 +199,8 @@ const Svg = {
 		polygon(xShape, dim) {},
 		path(xShape, dim) {
 			// move transform matrix points
-			let mtxScale = dim.matrix(dim.radians, dim.cY, dim.cX),
+			let matrixDot = this.matrixDot || Svg.matrixDot,
+				mtxScale = dim.matrix(dim.radians, dim.cY, dim.cX),
 				pathMap = [0, "z", "M", "m", "L", "l", "C", "c", "Q", "q", "A", "a", "H", "h", "V", "v", "S", "s", "T", "t"],
 				dArr = [];
 			// loop points
@@ -213,12 +215,12 @@ const Svg = {
 				switch (type) {
 					case 13: // relative horizontal line (h)
 					case 12: // absolute horizontal line (H)
-						[x, y] = this.matrixDot(mtxScale, [[seg.x], [1], [1]]);
+						[x, y] = matrixDot(mtxScale, [[seg.x], [1], [1]]);
 						dArr.push(`${c}${x} `);
 						break;
 					case 15: // relative vertical line (v)
 					case 14: // absolute vertical line (V)
-						[x, y] = this.matrixDot(mtxScale, [[1], [seg.y], [1]]);
+						[x, y] = matrixDot(mtxScale, [[1], [seg.y], [1]]);
 						dArr.push(`${c}${y} `);
 						break;
 					case 3:  // relative move (m)
@@ -227,32 +229,32 @@ const Svg = {
 					case 2:  // absolute move (M)
 					case 4:  // absolute line (L)
 					case 18: // absolute smooth quad (T)
-						[x, y] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x, y] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
 						dArr.push(`${c}${x},${y} `);
 						break;
 					case 7: // relative cubic (c)
 					case 6: // absolute cubic (C)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x],  [seg.y],  [1]]);
-						[x1, y1] = this.matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
-						[x2, y2] = this.matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x],  [seg.y],  [1]]);
+						[x1, y1] = matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
+						[x2, y2] = matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
 						dArr.push(`${c}${x1},${y1} ${x2},${y2} ${x},${y} `);
 						break;
 					case 9: // relative quad (q)
 					case 8: // absolute quad (Q)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[x1, y1] = this.matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x1, y1] = matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
 						dArr.push(`${c}${x1},${y1} ${x},${y} `);
 						break;
 					case 11: // relative elliptical arc (a)
 					case 10: // absolute elliptical arc (A)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[r1, r2] = this.matrixDot(mtxScale, [[seg.r1], [seg.r2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[r1, r2] = matrixDot(mtxScale, [[seg.r1], [seg.r2], [1]]);
 						dArr.push(`${c}${r1},${r2} ${seg.angle} ${ Number(seg.largeArcFlag)} ${Number(seg.sweepFlag)} ${x},${y} `);
 						break;
 					case 17: // relative smooth cubic (s)
 					case 16: // absolute smooth cubic (S)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[x2, y2] = this.matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x2, y2] = matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
 						dArr.push(`${c}${x2},${y2} ${x},${y} `);
 						break;
 				}
@@ -266,9 +268,10 @@ const Svg = {
 							[0, y, 0],
 							[0, 0, 1]],
 		line(xShape, dim) {
-			let mtxScale = dim.matrix(dim.scale.x, dim.scale.y),
-				[x1, y1] = this.matrixDot(mtxScale, [[dim.points[0].x], [dim.points[0].y], [1]]),
-				[x2, y2] = this.matrixDot(mtxScale, [[dim.points[1].x], [dim.points[1].y], [1]]);
+			let matrixDot = this.matrixDot || Svg.matrixDot,
+				mtxScale = dim.matrix(dim.scale.x, dim.scale.y),
+				[x1, y1] = matrixDot(mtxScale, [[dim.points[0].x], [dim.points[0].y], [1]]),
+				[x2, y2] = matrixDot(mtxScale, [[dim.points[1].x], [dim.points[1].y], [1]]);
 			// scale line
 			xShape.attr({ x1, y1, x2, y2 });
 		},
@@ -299,25 +302,28 @@ const Svg = {
 		},
 		polygon(xShape, dim) {
 			// scale transform matrix points
-			let mtxScale = dim.matrix(dim.scale.x, dim.scale.y),
+			let matrixDot = this.matrixDot || Svg.matrixDot,
+				mtxScale = dim.matrix(dim.scale.x, dim.scale.y),
 				points = dim.points.map(p => {
-					let [x, y] = this.matrixDot(mtxScale, [[p[0]], [p[1]], [1]]);
+					let [x, y] = matrixDot(mtxScale, [[p[0]], [p[1]], [1]]);
 					return `${x},${y}`;
 				}).join(" ");
 			xShape.attr({ points });
 		},
 		polyline(xShape, dim) {
 			// scale transform matrix points
-			let mtxScale = dim.matrix(dim.scale.x, dim.scale.y),
+			let matrixDot = this.matrixDot || Svg.matrixDot,
+				mtxScale = dim.matrix(dim.scale.x, dim.scale.y),
 				points = dim.points.map(p => {
-					let [x, y] = this.matrixDot(mtxScale, [[p[0]], [p[1]], [1]]);
+					let [x, y] = matrixDot(mtxScale, [[p[0]], [p[1]], [1]]);
 					return `${x},${y}`;
 				}).join(" ");
 			xShape.attr({ points });
 		},
 		path(xShape, dim) {
 			// scale transform matrix points
-			let mtxScale = dim.matrix(dim.scale.x, dim.scale.y),
+			let matrixDot = this.matrixDot || Svg.matrixDot,
+				mtxScale = dim.matrix(dim.scale.x, dim.scale.y),
 				pathMap = [0, "z", "M", "m", "L", "l", "C", "c", "Q", "q", "A", "a", "H", "h", "V", "v", "S", "s", "T", "t"],
 				dArr = [];
 			// loop points
@@ -332,12 +338,12 @@ const Svg = {
 				switch (type) {
 					case 13: // relative horizontal line (h)
 					case 12: // absolute horizontal line (H)
-						[x, y] = this.matrixDot(mtxScale, [[seg.x], [1], [1]]);
+						[x, y] = matrixDot(mtxScale, [[seg.x], [1], [1]]);
 						dArr.push(`${c}${x} `);
 						break;
 					case 15: // relative vertical line (v)
 					case 14: // absolute vertical line (V)
-						[x, y] = this.matrixDot(mtxScale, [[1], [seg.y], [1]]);
+						[x, y] = matrixDot(mtxScale, [[1], [seg.y], [1]]);
 						dArr.push(`${c}${y} `);
 						break;
 					case 3:  // relative move (m)
@@ -346,32 +352,32 @@ const Svg = {
 					case 2:  // absolute move (M)
 					case 4:  // absolute line (L)
 					case 18: // absolute smooth quad (T)
-						[x, y] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x, y] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
 						dArr.push(`${c}${x},${y} `);
 						break;
 					case 7: // relative cubic (c)
 					case 6: // absolute cubic (C)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x],  [seg.y],  [1]]);
-						[x1, y1] = this.matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
-						[x2, y2] = this.matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x],  [seg.y],  [1]]);
+						[x1, y1] = matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
+						[x2, y2] = matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
 						dArr.push(`${c}${x1},${y1} ${x2},${y2} ${x},${y} `);
 						break;
 					case 9: // relative quad (q)
 					case 8: // absolute quad (Q)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[x1, y1] = this.matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x1, y1] = matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
 						dArr.push(`${c}${x1},${y1} ${x},${y} `);
 						break;
 					case 11: // relative elliptical arc (a)
 					case 10: // absolute elliptical arc (A)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[r1, r2] = this.matrixDot(mtxScale, [[seg.r1], [seg.r2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[r1, r2] = matrixDot(mtxScale, [[seg.r1], [seg.r2], [1]]);
 						dArr.push(`${c}${r1},${r2} ${seg.angle} ${ Number(seg.largeArcFlag)} ${Number(seg.sweepFlag)} ${x},${y} `);
 						break;
 					case 17: // relative smooth cubic (s)
 					case 16: // absolute smooth cubic (S)
-						[x,  y ] = this.matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
-						[x2, y2] = this.matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
+						[x,  y ] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
+						[x2, y2] = matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
 						dArr.push(`${c}${x2},${y2} ${x},${y} `);
 						break;
 				}

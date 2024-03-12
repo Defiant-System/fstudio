@@ -20,7 +20,7 @@
 	
 	.wrapper {
 		position: relative;
-		left: 1ox;
+		left: 1px;
 		height: 100%;
 		width: 249px;
 		background: var( --sidebar-bg );
@@ -301,7 +301,24 @@
 							background: #fff;
 							width: 21px;
 							margin: 0 2px;
+							padding: 1px 0 0 1px;
 							border-radius: 1px;
+
+							canvas {
+								// position: relative;
+								// top: -400px;
+								// left: -800px;
+								// z-index: 99;
+								// background: red;
+							}
+
+							svg {
+								// display: none;
+								position: absolute;
+								opacity: 0;
+								overflow: visible;
+								pointer-events: none;
+							}
 						}
 
 						&:nth-child(3) {

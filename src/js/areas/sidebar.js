@@ -19,13 +19,46 @@
 		// console.log(event);
 		switch (event.type) {
 			case "render-glyph-layers":
+				// set path(s) of svg
 				value = [];
-				value.push(`<i id="3" name="Path 3"><![CDATA[<path d="M4,6 L2,13 L12,18 L16,2 Z"/>]]></i>`);
-				value.push(`<i id="2" name="Path 2"><![CDATA[<circle cx="10" cy="10" r="7"/>]]></i>`);
-				value.push(`<i id="1" name="Path 1"><![CDATA[<rect x="3" y="1" width="9" height="9"/><circle cx="11" cy="11" r="4"/>]]></i>`);
+
+				// split closed paths
+				event.glyph.path.toSVG().slice(9, -3)
+					.split("Z")
+					.filter(d => d)
+					.map((sP, i) => {
+						value.unshift(`<i id="${i+1}" name="Path ${i+1}"><![CDATA[<path d="${sP}Z"/>]]></i>`);
+					});
+
+				// render xml to DOM elements
 				data = $.xmlFromString(`<data>${value.join("")}</data>`);
-				// render data to DOM elements
-				window.render({ template: "glyph-layers-list", target: Self.els.wLayers, data, });
+				window.render({ template: "glyph-layers-list", target: Self.els.wLayers, data });
+
+				// paint thumbnails
+				Self.els.wLayers.find(`canvas`).map(el => {
+					let cvs = $(el),
+						ctx = el.getContext("2d"),
+						svg = cvs.prevAll("svg"),
+						shape = svg.find("path")[0],
+						bbox = shape.getBBox(),
+						// resize path
+						size = 19,
+						r = Math.min(...[size / bbox.width, size / bbox.height]),
+						dim = {
+							scale: { x: r, y: r },
+							matrix: Svg.scale.matrix,
+							points: shape.pathSegList._list,
+						},
+						// image to transfer to canvas
+						img = new Image;
+					// move selected "path"
+					Svg.scale.path(shape, dim);
+					// reset canvas
+					cvs.attr({ width: size, height: size });
+					// wait until image is "transfered"
+					img.onload = () => ctx.drawImage(img, 0, 0, size, size);
+					img.src = `data:image/svg+xml,${encodeURIComponent(svg[0].xml)}`;
+				});
 				break;
 			case "toggle-sidebar":
 				value = Self.els.content.hasClass("show-sidebar");
