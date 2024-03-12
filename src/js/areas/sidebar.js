@@ -54,8 +54,8 @@
 							points: shape.pathSegList._list,
 						});
 
-					bbox = shape.getBBox();
 					// move "path"
+					bbox = shape.getBBox();
 					Svg.translate.path(shape, {
 						move: {
 							x: -bbox.x + ((size - bbox.width) / 2),
@@ -88,7 +88,11 @@
 					pEl.find(`.sidebar-body`).get(el.index()).addClass("active");
 				}
 				break;
+			case "deselect-layer":
+				Self.els.wLayers.find(".selected").removeClass("selected");
+				break;
 			case "select-layer":
+				if (event.id) event.target = Self.els.wLayers.find(`.row[data-id="${event.id}"]`)[0];
 				Self.els.wLayers.find(".selected").removeClass("selected");
 				el = $(event.target).parents("?.row");
 				el.addClass("selected");

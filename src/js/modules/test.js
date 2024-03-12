@@ -9,10 +9,10 @@ let Test = {
 		setTimeout(() => APP.content.find(`.glyph-list .glyph:nth(1)`).trigger("click"), 600);
 
 		// return;
-		// setTimeout(() => APP.content.find(`.ux-layer svg path:nth(2)`).trigger("mousedown").trigger("mouseup"), 700);
+		setTimeout(() => APP.content.find(`.ux-layer svg path:nth(2)`).trigger("mousedown").trigger("mouseup"), 700);
 
 		return;
-		// setTimeout(() => APP.content.find(`.anchor:nth(10)`).trigger("mousedown").trigger("mouseup"), 600);
+		setTimeout(() => APP.content.find(`.anchor:nth(10)`).trigger("mousedown").trigger("mouseup"), 600);
 
 		// setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pan"]`).trigger("click"), 700);
 		// return setTimeout(() => APP.toolbar.els.el.find(`div[data-arg="pen"]`).trigger("click"), 700);

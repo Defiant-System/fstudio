@@ -207,6 +207,8 @@
 			case "hide-handle-box":
 				// auto-hide handle box
 				Self.els.hBox.removeClass("show");
+				// deselect sidebar layer
+				APP.sidebar.dispatch({ type: "deselect-layer" });
 				break;
 			case "show-handle-box":
 				// clear selected anchors
@@ -225,6 +227,8 @@
 				
 				// show handle box
 				Self.els.hBox.addClass("show").css({ top, left, width, height });
+				// select sidebar layer
+				APP.sidebar.dispatch({ type: "select-layer", id: Self.shape.getAttribute("data-id") });
 				break;
 		}
 	},
@@ -408,7 +412,7 @@
 					glyph.path.toSVG().slice(9, -3)
 						.split("Z")
 						.filter(d => d)
-						.map(sP => p.push(`<path d="${sP}Z"/>`));
+						.map((sP, i) => p.push(`<path data-id="${i+1}" d="${sP}Z"/>`));
 					Self.els.uxLayer.find("svg g").html(p.join(""));
 				}
 				// ux-layer dimensions
@@ -421,8 +425,6 @@
 					let top = Math.round(baseline + (a.y * Data.view.dZ) - half),
 						left = Math.round((a.x * Data.view.dZ) - half);
 					item.el.css({ top, left });
-
-					// if (a.aS && a.aE) console.log(a);
 
 					if (item.el.hasClass("selected")) {
 						// update handles
