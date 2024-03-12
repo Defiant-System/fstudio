@@ -736,6 +736,11 @@
 					bX = +el.parent().prop("offsetLeft"),
 					bW = +el.parent().prop("offsetWidth"),
 					bH = +el.parent().prop("offsetHeight"),
+					bbox = Self.shape.getBBox(),
+					shape = {
+						cY: bbox.y + (bbox.height * .5),
+						cX: bbox.x + (bbox.width * .5),
+					},
 					rotation = Self.data.draw.rotation,
 					click = {
 						y: event.clientY + (bH >> 1) + 29,
@@ -746,8 +751,11 @@
 					matrix = Svg.rotate.matrix,
 					rotateFn = Svg.rotate[Self.shape.nodeName],
 					matrixDot = Svg.matrixDot;
+
+				// console.log( bbox );
+
 				// drag object
-				Self.drag = { el, doc, click, rotation, TAU, points, matrix, rotateFn, matrixDot };
+				Self.drag = { el, doc, click, shape, rotation, TAU, points, matrix, rotateFn, matrixDot };
 
 				// start drawing rotation
 				Self.drag.rotation.on = true;
@@ -769,9 +777,9 @@
 				Drag.rotation.radians = Math.atan2(dY, dX);
 				// rotate selected "path"
 				let rot = {
-						cY: Drag.rotation.cY,
-						cX: Drag.rotation.cX,
-						radians: -Drag.rotation.radians - (Math.PI * .5),
+						cY: Drag.shape.cY,
+						cX: Drag.shape.cX,
+						radians: Drag.rotation.radians + (Math.PI * .5),
 					};
 				Drag.rotateFn(Self.shape, { ...rot, matrix: Drag.matrix, points: Drag.points });
 				// update canvas
