@@ -279,7 +279,7 @@
 		}
 	},
 	draw: {
-		glyph(Self, newPath) {
+		glyph(Self, opt={}) {
 			let Font = FontFile.font,
 				Data = Self.data,
 				os2 = Font.tables.os2,
@@ -350,11 +350,11 @@
 					"--baseline": `${baseline}px`,
 				};
 
-			if (newPath) {
+			if (opt.newPath) {
 				// draw svg path as it is
-				this.path(ctx, newPath._path, Data);
+				this.path(ctx, opt.newPath._path, Data);
 				// draw new path with anchors & handles
-				newPath.draw(ctx, Data, Self);
+				opt.newPath.draw(ctx, Data, Self);
 			} else {
 				// puts SVG "ghost" & HTML anchors
 				if (!Self.els.uxLayer[0].childNodes.length) {
@@ -383,13 +383,15 @@
 					});
 				}
 
-				let bbox = glyph.path.getBoundingBox(),
-					// tY = baseline - (bbox.y1 * Data.view.dZ),
-					tY = baseline - ((bbox.y2 + bbox.y1) * Data.view.dZ),
-					tX = -1,
-					// svg element "scale"
-					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, ${Data.view.dZ})`;
-				Self.els.uxLayer.find("svg g").attr({ tX, tY, transform });
+				if (!opt.skipGhostTransform) {
+					let bbox = glyph.path.getBoundingBox(),
+						// tY = baseline - (bbox.y1 * Data.view.dZ),
+						tY = baseline - ((bbox.y2 + bbox.y1) * Data.view.dZ),
+						tX = -1,
+						// svg element "scale"
+						transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, ${Data.view.dZ})`;
+					Self.els.uxLayer.find("svg g").attr({ tX, tY, transform });
+				}
 
 				// ghost SVG
 				if (!Self.els.uxLayer.find("svg g path").length) {
@@ -917,7 +919,7 @@
 				Drag.target.fromSVG(Drag.paths.join(" "), { flipYBase: Drag.yBase });
 
 				// update canvas
-				Self.draw.glyph(Self);
+				Self.draw.glyph(Self, { skipGhostTransform: true });
 				break;
 			case "mouseup":
 				// uncover app body
@@ -1096,7 +1098,7 @@
 					Drag.cursor = cursor;
 				}
 				// update canvas with new path
-				Self.draw.glyph(Self, Drag.path);
+				Self.draw.glyph(Self, { newPath: Drag.path });
 				break;
 			case "mouseup":
 				if (!Drag.path.closed) {
