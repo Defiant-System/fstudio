@@ -52,18 +52,20 @@
 							scale: { x: dim, y: dim },
 							matrix: Svg.scale.matrix,
 							points: shape.pathSegList._list,
+							commit: true,
 						});
 
 					// move "path"
 					bbox = shape.getBBox();
 					Svg.translate.path(shape, {
-						move: {
-							x: -bbox.x + ((size - bbox.width) / 2),
-							y: -bbox.y + ((size - bbox.height) / 2),
-						},
-						matrix: Svg.translate.matrix,
-						points: shape.pathSegList._list,
-					});
+							move: {
+								x: -bbox.x + ((size - bbox.width) / 2),
+								y: -bbox.y + ((size - bbox.height) / 2),
+							},
+							matrix: Svg.translate.matrix,
+							points: shape.pathSegList._list,
+							commit: true,
+						});
 
 					// reset canvas
 					cvs.attr({ width: size, height: size });

@@ -46,14 +46,14 @@ const Svg = {
 					[x, y] = matrixDot(mtxScale, [[seg.x], [1], [1]]);
 					dArr.push(`${c}${x} `);
 					// update segment
-					seg.x = x;
+					if (dim.commit) seg.x = x;
 					break;
 				case 15: // relative vertical line (v)
 				case 14: // absolute vertical line (V)
 					[x, y] = matrixDot(mtxScale, [[1], [seg.y], [1]]);
 					dArr.push(`${c}${y} `);
 					// update segment
-					seg.y = y;
+					if (dim.commit) seg.y = y;
 					break;
 				case 3:  // relative move (m)
 				case 5:  // relative line (l)
@@ -64,8 +64,10 @@ const Svg = {
 					[x, y] = matrixDot(mtxScale, [[seg.x], [seg.y], [1]]);
 					dArr.push(`${c}${x},${y} `);
 					// update segment
-					seg.x = x;
-					seg.y = y;
+					if (dim.commit) {
+						seg.x = x;
+						seg.y = y;
+					}
 					break;
 				case 7: // relative cubic (c)
 				case 6: // absolute cubic (C)
@@ -74,12 +76,14 @@ const Svg = {
 					[x2, y2] = matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
 					dArr.push(`${c}${x1},${y1} ${x2},${y2} ${x},${y} `);
 					// update segment
-					seg.x = x;
-					seg.y = y;
-					seg.x1 = x1;
-					seg.y1 = y1;
-					seg.x2 = x2;
-					seg.y2 = y2;
+					if (dim.commit) {
+						seg.x = x;
+						seg.y = y;
+						seg.x1 = x1;
+						seg.y1 = y1;
+						seg.x2 = x2;
+						seg.y2 = y2;
+					}
 					break;
 				case 9: // relative quad (q)
 				case 8: // absolute quad (Q)
@@ -87,10 +91,12 @@ const Svg = {
 					[x1, y1] = matrixDot(mtxScale, [[seg.x1], [seg.y1], [1]]);
 					dArr.push(`${c}${x1},${y1} ${x},${y} `);
 					// update segment
-					seg.x = x;
-					seg.y = y;
-					seg.x1 = x1;
-					seg.y1 = y1;
+					if (dim.commit) {
+						seg.x = x;
+						seg.y = y;
+						seg.x1 = x1;
+						seg.y1 = y1;
+					}
 					break;
 				case 11: // relative elliptical arc (a)
 				case 10: // absolute elliptical arc (A)
@@ -98,10 +104,12 @@ const Svg = {
 					[r1, r2] = matrixDot(mtxScale, [[seg.r1], [seg.r2], [1]]);
 					dArr.push(`${c}${r1},${r2} ${seg.angle} ${ Number(seg.largeArcFlag)} ${Number(seg.sweepFlag)} ${x},${y} `);
 					// update segment
-					seg.x = x;
-					seg.y = y;
-					seg.r1 = r1;
-					seg.r2 = r2;
+					if (dim.commit) {
+						seg.x = x;
+						seg.y = y;
+						seg.r1 = r1;
+						seg.r2 = r2;
+					}
 					break;
 				case 17: // relative smooth cubic (s)
 				case 16: // absolute smooth cubic (S)
@@ -109,10 +117,12 @@ const Svg = {
 					[x2, y2] = matrixDot(mtxScale, [[seg.x2], [seg.y2], [1]]);
 					dArr.push(`${c}${x2},${y2} ${x},${y} `);
 					// update segment
-					seg.x = x;
-					seg.y = y;
-					seg.x2 = x2;
-					seg.y2 = y2;
+					if (dim.commit) {
+						seg.x = x;
+						seg.y = y;
+						seg.x2 = x2;
+						seg.y2 = y2;
+					}
 					break;
 			}
 		});

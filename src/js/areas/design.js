@@ -405,14 +405,11 @@
 					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, ${Data.view.dZ})`;
 				Self.els.uxLayer.find("svg g").attr({ tX, tY, transform });
 
+				// ghost SVG
 				if (!Self.els.uxLayer.find("svg g path").length) {
-					// set path(s) of svg
-					let p = [];
 					// split closed paths
-					glyph.path.toSVG().slice(9, -3)
-						.split("Z")
-						.filter(d => d)
-						.map((sP, i) => p.push(`<path data-id="${i+1}" d="${sP}Z"/>`));
+					let p = glyph.path.toSVG().slice(9, -3).split("Z").filter(d => d)
+								.map((sP, i) => `<path data-id="${i+1}" d="${sP}Z"/>`);
 					Self.els.uxLayer.find("svg g").html(p.join(""));
 				}
 				// ux-layer dimensions
@@ -888,29 +885,39 @@
 			case "mousedown":
 				let doc = $(document),
 					el = $(event.target),
-					click = {
-						y: event.clientY - +el.prop("offsetTop"),
-						x: event.clientX - +el.prop("offsetLeft"),
+					offset = {
+						y: +el.prop("offsetTop"),
+						x: +el.prop("offsetLeft"),
 					},
+					click = {
+						y: event.clientY,
+						x: event.clientX,
+					},
+					dZ = Self.data.view.dZ,
 					points = Self.glyph.getPoints(),
 					matrix = Svg.translate.matrix,
 					translateFn = Svg.translate[Self.shape.nodeName],
 					matrixDot = Svg.matrixDot;
-				
 				// drag object
-				Self.drag = { el, doc, click, points, matrix, translateFn, matrixDot };
+				Self.drag = { el, doc, click, offset, dZ, points, matrix, translateFn, matrixDot };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
 				Self.drag.doc.on("mousemove mouseup", Self.viewMove);
 				break;
 			case "mousemove":
-				let top = event.clientY - Drag.click.y,
-					left = event.clientX - Drag.click.x,
-					move = { y: top, x: left };
-				Drag.el.css({ top, left });
+				let y = event.clientY - Drag.click.y,
+					x = event.clientX - Drag.click.x,
+					move = {
+						top: y + Drag.offset.y,
+						left: x + Drag.offset.x,
+					};
+				Drag.el.css(move);
 				// move selected "path"
+				move.y = y / Drag.dZ,
+				move.x = x / Drag.dZ;
 				Drag.translateFn(Self.shape, { move, matrix: Drag.matrix, points: Drag.points });
+				
 				// update canvas
 				Self.draw.glyph(Self);
 				break;
