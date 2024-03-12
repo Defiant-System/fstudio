@@ -401,7 +401,7 @@
 				// ux-layer dimensions
 				Self.els.uxLayer.css(style);
 
-
+				// update anchor / handles positions
 				Self.els._anchors.map(item => {
 					let a = anchors[item.i];
 					if (!a) return;
@@ -888,6 +888,7 @@
 					matrix = Svg.translate.matrix,
 					translateFn = Svg.translate[Self.shape.nodeName],
 					matrixDot = Svg.matrixDot;
+
 				// drag object
 				Self.drag = { el, doc, click, offset, dZ, target, paths, pathIndex, points, matrix, translateFn, matrixDot };
 				// cover app body
@@ -909,10 +910,10 @@
 				move.x = x / Drag.dZ;
 				Drag.translateFn(Self.shape, { move, matrix: Drag.matrix, points: Drag.points });
 
-				// TODO: move selected path points with matrix
+				// move selected path points with matrix
 				Drag.paths[Drag.pathIndex] = Self.shape.getAttribute("d");
-				Drag.target.fromSVG(Drag.paths.join(" "));
-				
+				Drag.target.fromSVG(Drag.paths.join(" "), { flipYBase: 616 });
+
 				// update canvas
 				Self.draw.glyph(Self);
 				break;
