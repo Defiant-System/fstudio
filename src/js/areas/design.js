@@ -314,23 +314,10 @@
 			this.path(ctx, path, Data);
 
 			// glyph path info; anchors + handles
-			for (let i=0, aS, aE, il=commands.length-1; i<il; i += 1) {
+			for (let i=0, il=commands.length-1; i<il; i += 1) {
 				let cmd = commands[i];
-				if (cmd.type === "M") {
-					aS = anchors.length+1;
-					aE = undefined;
-				}
-				if (commands[i+1].type === "Z") {
-					aE = anchors.length;
-				}
 				if (cmd.x !== undefined) {
-					let aObj = { i: anchors.length, type: cmd.type, x: cmd.x, y: -cmd.y };
-					if (aS !== undefined && aE !== undefined) {
-						aObj = { ...aObj, aS, aE };
-						aS = undefined;
-						aE = undefined;
-					}
-					anchors.push(aObj);
+					anchors.push({ i: anchors.length, type: cmd.type, x: cmd.x, y: -cmd.y });
 				}
 				if (cmd.x1 !== undefined) {
 					let anchor = anchors[anchors.length - 2];
@@ -374,8 +361,7 @@
 					let str = anchors.filter(a => a.type !== "M").map(a => {
 							let top = Math.round(style.height - style.top + (a.y * Data.view.dZ) - half),
 								left = Math.round((a.x * Data.view.dZ) - half),
-								aHandles = [],
-								range = a.aS && a.aE ? `data-r="${a.aS},${a.aE}"` : "";
+								aHandles = [];
 							for (let i=0, il=handles.length; i<il; i++) {
 								if (handles[i].i === a.i) {
 									let hy = ((handles[i].y - a.y) * Data.view.dZ) + 9,  // TODO: fix this
@@ -383,7 +369,7 @@
 									aHandles.push(`<u class="handle" data-i="${handles[i].i}" data-hI="${handles[i].hI}" data-h="${handles[i].h}" style="top: ${hy}px; left: ${hx}px;"></u>`);
 								}
 							}
-							return `<b class="anchor" ${range} data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
+							return `<b class="anchor" data-i="${a.i}" style="top: ${top}px; left: ${left}px;">${aHandles.join("")}</b>`;
 						});
 					str.push(`<svg><g></g></svg>`);
 					Self.els.uxLayer.html(str.join(""));
