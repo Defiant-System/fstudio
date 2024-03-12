@@ -894,12 +894,16 @@
 						x: event.clientX,
 					},
 					dZ = Self.data.view.dZ,
+					target = Self.data.glyph.path,
+					pathEl = $(Self.shape),
+					pathIndex = pathEl.index(),
+					paths = pathEl.parent().find("path").map(s => s.getAttribute("d")),
 					points = Self.glyph.getPoints(),
 					matrix = Svg.translate.matrix,
 					translateFn = Svg.translate[Self.shape.nodeName],
 					matrixDot = Svg.matrixDot;
 				// drag object
-				Self.drag = { el, doc, click, offset, dZ, points, matrix, translateFn, matrixDot };
+				Self.drag = { el, doc, click, offset, dZ, target, paths, pathIndex, points, matrix, translateFn, matrixDot };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
@@ -913,10 +917,15 @@
 						left: x + Drag.offset.x,
 					};
 				Drag.el.css(move);
+
 				// move selected "path"
 				move.y = y / Drag.dZ,
 				move.x = x / Drag.dZ;
 				Drag.translateFn(Self.shape, { move, matrix: Drag.matrix, points: Drag.points });
+
+				// TODO: move selected path points with matrix
+				Drag.paths[Drag.pathIndex] = Self.shape.getAttribute("d");
+				Drag.target.fromSVG(Drag.paths.join(" "));
 				
 				// update canvas
 				Self.draw.glyph(Self);
