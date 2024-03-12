@@ -215,13 +215,18 @@
 
 				let bbox = Self.shape.getBBox(),
 					offset = Self.els.uxLayer.offset(),
-					baseline = FontFile.font.tables.os2.sTypoAscender * Self.data.view.dZ;
+					baseline = FontFile.font.tables.os2.sTypoAscender * Self.data.view.dZ,
+					pY = +Self.shape.parentNode.getAttribute("tY");
 
 				width = Math.round(bbox.width * Self.data.view.dZ);
 				height = Math.round(bbox.height * Self.data.view.dZ);
-				top = Math.round(offset.top + baseline - height - (bbox.y * Self.data.view.dZ));
+				// top = Math.round(offset.top + baseline + height - (bbox.y * Self.data.view.dZ));
+				top = Math.round(offset.top + (bbox.y * Self.data.view.dZ) + pY);
 				left = Math.round(offset.left + (bbox.x * Self.data.view.dZ)) - 1;
 				
+				// console.log( bbox );
+				// console.log( offset.top , baseline , height , (bbox.y * Self.data.view.dZ) );
+
 				// console.log( top, left, width, height );
 				Self.els.hBox.addClass("show").css({ top, left, width, height });
 				break;
@@ -398,9 +403,7 @@
 					tX = -1,
 					// svg element "scale"
 					transform = `translate(${tX},${tY}) scale(${Data.view.dZ}, ${Data.view.dZ})`;
-				// console.log( bbox );
-				// console.log( Data.view.dH, baseline , () );
-				Self.els.uxLayer.find("svg g").attr({ transform });
+				Self.els.uxLayer.find("svg g").attr({ tX, tY, transform });
 
 				if (!Self.els.uxLayer.find("svg g path").length) {
 					// set path(s) of svg
@@ -423,7 +426,7 @@
 						left = Math.round((a.x * Data.view.dZ) - half);
 					item.el.css({ top, left });
 
-					if (a.aS && a.aE) console.log(a);
+					// if (a.aS && a.aE) console.log(a);
 
 					if (item.el.hasClass("selected")) {
 						// update handles
