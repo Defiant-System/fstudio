@@ -29,7 +29,7 @@ const Svg = {
 	pointsMap(xShape, dim, mtxScale) {
 		// move transform matrix points
 		let matrixDot = this.matrixDot || Svg.matrixDot,
-			pathMap = [0, "z", "M", "m", "L", "l", "C", "c", "Q", "q", "A", "a", "H", "h", "V", "v", "S", "s", "T", "t"],
+			pathMap = [0, "z", "M", "m", "L", "l", "C", "c", "Q", "q", "A", "a", "H", "h", "V", "v", "S", "s", "T", "t", "Z"],
 			dArr = [];
 		// loop points
 		dim.points.map(seg => {
@@ -123,6 +123,10 @@ const Svg = {
 						seg.x2 = x2;
 						seg.y2 = y2;
 					}
+					break;
+				case 1:  // end of path (z)
+				case 20: // end of path (Z)
+					dArr.push(`${c}`);
 					break;
 			}
 		});
