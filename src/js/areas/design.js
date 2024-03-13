@@ -841,7 +841,7 @@
 					bbox = target.getBoundingBox(),
 					yBase = bbox.y2 + bbox.y1,
 					pathEl = $(Self.shape),
-					pathIndex = +pathEl.data("id"),
+					pathIndex = pathEl.index(),
 					paths = pathEl.parent().find("path").map(s => s.getAttribute("d")),
 
 					points = Self.glyph.getPoints(),
