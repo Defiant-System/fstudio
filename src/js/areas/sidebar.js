@@ -7,28 +7,43 @@
 		this.els = {
 			el: window.find(`.sidebar[data-area="sidebar"]`),
 			wLayers: window.find(`.layer-rows`),
+			preCvs: window.find(`.glyph-preview canvas`),
 			content: window.find(`content`),
 		};
+		// context for preview canvas
+		this.els.preCtx = this.els.preCvs[0].getContext("2d");
+
+		// subscript to events
+		window.on("glyph-update", this.dispatch);
 	},
 	dispatch(event) {
 		let APP = fstudio,
 			Self = APP.sidebar,
 			data,
+			path,
 			value,
 			el;
 		// console.log(event);
 		switch (event.type) {
+			// subscribed events
+			case "glyph-update":
+				// proxy event
+				Self.dispatch({ type: "preview-glyph", glyph: event.detail.glyph });
+				break;
+			// custom events
+			case "preview-glyph":
+				Self.els.preCvs.attr({ width: 249, height: 140 });
+				// preview draw glyph
+				path = event.glyph.getPath(89, 114, 140);
+				data = { draw: { preview: "#222" } };
+				APP.design.draw.path(Self.els.preCtx, path, data);
+				break;
 			case "render-glyph-layers":
-				// set path(s) of svg
-				value = [];
-
 				// split closed paths
-				event.glyph.path.toSVG().slice(9, -3)
+				value = event.glyph.path.toSVG().slice(9, -3)
 					.split("Z")
 					.filter(d => d)
-					.map((sP, i) => {
-						value.unshift(`<i id="${i+1}" name="Path ${i+1}"><![CDATA[<path d="${sP}Z"/>]]></i>`);
-					});
+					.map((sP, i) => `<i id="${i+1}" name="Path ${i+1}"><![CDATA[<path d="${sP}Z"/>]]></i>`);
 
 				// render xml to DOM elements
 				data = $.xmlFromString(`<data>${value.join("")}</data>`);

@@ -140,6 +140,7 @@
 				// auto fit glyph in work area
 				Self.dispatch({ type: "zoom-fit" });
 				// render sidebar glyph layers
+				APP.sidebar.dispatch({ type: "preview-glyph", glyph: Self.data.glyph });
 				APP.sidebar.dispatch({ type: "render-glyph-layers", glyph: Self.data.glyph });
 				break;
 			// custom events
@@ -616,6 +617,11 @@
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
+				// update ghost + canvas
+				Self.els.uxLayer.find("svg g path").remove();
+				Self.draw.glyph(Self);
+				// emit update
+				window.emit("glyph-update", { glyph: Self.data.glyph });
 				// do appropriate stuff when anchor(s) are selected
 				Self.dispatch({ type: "anchors-selected", anchors: Drag.el });
 				// cover app body
