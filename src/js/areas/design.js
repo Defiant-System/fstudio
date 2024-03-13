@@ -103,7 +103,8 @@
 					case el.hasClass("zoom-value"): return Self.viewZoom(event);
 					case el.hasClass("glyph-editor") && Self.data.tool === "move": return Self.viewLasso(event);
 					case el.hasClass("rotator"): return Self.viewRotate(event);
-					case el.hasClass("hb-handle"): return Self.viewResize(event);
+					case el.hasClass("hb-handle"): 
+						return Self.viewResize(event);
 					case el.hasClass("handle-box"): return Self.viewMove(event);
 					case el.nodeName() === "path":
 						Self.dispatch({ type: "show-handle-box", target: event.target });
@@ -614,7 +615,7 @@
 					item.anchor.move({ y: -dY / Self.data.view.dZ, x: dX / Self.data.view.dZ });
 				});
 				// update canvas
-				Self.draw.glyph(Self);
+				Self.draw.glyph(Self, { skipGhostTransform: true });
 				break;
 			case "mouseup":
 				// update ghost + canvas
@@ -678,6 +679,11 @@
 				Self.draw.glyph(Self);
 				break;
 			case "mouseup":
+				// update ghost + canvas
+				Self.els.uxLayer.find("svg g path").remove();
+				Self.draw.glyph(Self);
+				// emit update
+				window.emit("glyph-update", { glyph: Self.data.glyph });
 				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
 				// unbind events
@@ -794,7 +800,14 @@
 			case "mouseup":
 				// stop drawing rotation
 				Drag.rotation.on = false;
-				Self.draw.glyph(Self);
+				// dont do stuff, if not needed
+				if (event.clientY !== Drag.click.y && event.clientX !== Drag.click.x) {
+					// update ghost + canvas
+					Self.els.uxLayer.find("svg g path").remove();
+					Self.draw.glyph(Self);
+					// emit update
+					window.emit("glyph-update", { glyph: Self.data.glyph });
+				}
 				// show handle box
 				Self.els.hBox.addClass("show");
 				// uncover app body
@@ -823,20 +836,30 @@
 						y: event.clientY,
 						x: event.clientX,
 					},
+					
+					target = Self.data.glyph.path,
+					bbox = target.getBoundingBox(),
+					yBase = bbox.y2 + bbox.y1,
+					pathEl = $(Self.shape),
+					pathIndex = +pathEl.data("id"),
+					paths = pathEl.parent().find("path").map(s => s.getAttribute("d")),
+
 					points = Self.glyph.getPoints(),
 					matrix = Svg.scale.matrix,
 					scaleFn = Svg.scale[Self.shape.nodeName],
 					matrixDot = Svg.matrixDot;
 
 				// drag object
-				Self.drag = { el, type, hBox, doc, offset, click, points, matrix, scaleFn, matrixDot };
+				Self.drag = { el, type, hBox, doc, offset, target, yBase, paths, pathIndex, click, points, matrix, scaleFn, matrixDot };
 				// cover app body
 				Self.els.content.addClass("cover hide-cursor");
 				// bind events
 				Self.drag.doc.on("mousemove mouseup", Self.viewResize);
 				break;
 			case "mousemove":
-				let dim = {
+				let y = event.clientY - Drag.click.y,
+					x = event.clientX - Drag.click.x,
+					dim = {
 						top: Drag.offset.y,
 						left: Drag.offset.x,
 						width: Drag.offset.w,
@@ -844,21 +867,21 @@
 					};
 				// movement: east
 				if (Drag.type.includes("e")) {
-					dim.left = event.clientX - Drag.click.x + Drag.offset.x;
-					dim.width = Drag.offset.w + Drag.click.x - event.clientX;
+					dim.left = x + Drag.offset.x;
+					dim.width = Drag.offset.w - x;
 				}
 				// movement: west
 				if (Drag.type.includes("w")) {
-					dim.width = event.clientX - Drag.click.x + Drag.offset.w;
+					dim.width = x + Drag.offset.w;
 				}
 				// movement: north
 				if (Drag.type.includes("n")) {
-					dim.top = event.clientY - Drag.click.y + Drag.offset.y;
-					dim.height = Drag.offset.h + Drag.click.y - event.clientY;
+					dim.top = y + Drag.offset.y;
+					dim.height = Drag.offset.h - y;
 				}
 				// movement: south
 				if (Drag.type.includes("s")) {
-					dim.height = event.clientY - Drag.click.y + Drag.offset.h;
+					dim.height = y + Drag.offset.h;
 				}
 				Drag.hBox.css(dim);
 
@@ -869,10 +892,23 @@
 					};
 				// move selected "path"
 				Drag.scaleFn(Self.shape, { ...dim, scale, matrix: Drag.matrix, points: Drag.points });
+
+				// // move selected path points with matrix
+				Drag.paths[Drag.pathIndex] = Self.shape.getAttribute("d");
+				Drag.target.fromSVG(Drag.paths.join(" "), { flipYBase: Drag.yBase });
+
 				// update canvas
-				Self.draw.glyph(Self);
+				Self.draw.glyph(Self, { skipGhostTransform: true });
 				break;
 			case "mouseup":
+				// dont do stuff, if not needed
+				if (event.clientY !== Drag.click.y && event.clientX !== Drag.click.x) {
+					// update ghost + canvas
+					Self.els.uxLayer.find("svg g path").remove();
+					Self.draw.glyph(Self);
+					// emit update
+					window.emit("glyph-update", { glyph: Self.data.glyph });
+				}
 				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
 				// unbind events
@@ -936,6 +972,14 @@
 				Self.draw.glyph(Self, { skipGhostTransform: true });
 				break;
 			case "mouseup":
+				// dont do stuff, if not needed
+				if (event.clientY !== Drag.click.y && event.clientX !== Drag.click.x) {
+					// update ghost + canvas
+					Self.els.uxLayer.find("svg g path").remove();
+					Self.draw.glyph(Self);
+					// emit update
+					window.emit("glyph-update", { glyph: Self.data.glyph });
+				}
 				// uncover app body
 				Self.els.content.removeClass("cover hide-cursor");
 				// unbind events
