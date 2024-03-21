@@ -836,14 +836,12 @@
 						y: event.clientY,
 						x: event.clientX,
 					},
-					
 					target = Self.data.glyph.path,
 					bbox = target.getBoundingBox(),
 					yBase = bbox.y2 + bbox.y1,
 					pathEl = $(Self.shape),
 					pathIndex = pathEl.index(),
 					paths = pathEl.parent().find("path").map(s => s.getAttribute("d")),
-
 					points = Self.glyph.getPoints(),
 					matrix = Svg.scale.matrix,
 					scaleFn = Svg.scale[Self.shape.nodeName],
@@ -887,9 +885,10 @@
 
 				// calculate scale
 				let scale = {
-						x: dim.width / Drag.offset.w,
-						y: dim.height / Drag.offset.h,
+						y: (dim.height / Drag.offset.h),
+						x: (dim.width / Drag.offset.w),
 					};
+				console.log( scale );
 				// move selected "path"
 				Drag.scaleFn(Self.shape, { ...dim, scale, matrix: Drag.matrix, points: Drag.points });
 

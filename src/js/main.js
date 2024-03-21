@@ -44,7 +44,7 @@ const fstudio = {
 			// custom events
 			case "load-sample":
 				// temp font file
-				value = `~/fonts/${event.name}`;
+				value = `/cdn/fonts/${event.name}`;
 				// fetch file
 				window.fetch(value, { responseType: "arrayBuffer" })
 					// forward event to app

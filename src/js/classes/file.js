@@ -37,8 +37,8 @@ class File {
 				pEl.css({ "--progress": (1 - (keys.length / workload)) * 100 | 1 });
 
 				cvs.toBlob(async blob => {
-					let name = `${hexCode}.png`,
-						test = await window.cache.set({ name, blob });
+					let name = `${hexCode}.png`;
+					await window.cache.set({ name, blob });
 					// add bg-node for rendereing
 					this._cached.push(hexCode);
 					// look up HTML element & add attribute
@@ -49,8 +49,8 @@ class File {
 				});
 			};
 		// temp:
-		this._cached.push("0x41", "0x42", "0x43");
-		// parseNext();
+		// this._cached.push("0x41", "0x42", "0x43");
+		parseNext();
 
 		// add font details to app blueprint
 		let tables = this.font.tables.name,
