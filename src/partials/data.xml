@@ -1,9 +1,9 @@
 <Data>
 	<Samples>
-		<i path="Times New Roman.woff" img="~/icons/tmp-file-times.png"/>
-		<i path="Helvetica Neue.otf" img="~/icons/tmp-file-helvetica.png"/>
-		<i path="Courier New.ttf" img="~/icons/tmp-file-courier.png"/>
-		<i path="Comic Sans.ttf" img="~/icons/tmp-file-comic-sans.png"/>
+		<i name="Cubano-Normal.otf" img="~/icons/tmp-file-times.png"/>
+		<i name="Oblegg-Regular.otf" img="~/icons/tmp-file-helvetica.png"/>
+		<i name="Typographica.ttf" img="~/icons/tmp-file-courier.png"/>
+		<i name="BerkshireSwash-Regular.ttf" img="~/icons/tmp-file-comic-sans.png"/>
 	</Samples>
 
 	<Files />

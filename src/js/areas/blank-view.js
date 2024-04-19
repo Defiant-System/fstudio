@@ -14,6 +14,7 @@
 	dispatch(event) {
 		let APP = fstudio,
 			Self = APP.blankView,
+			name,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -33,6 +34,10 @@
 					target: Self.els.el,
 				});
 				break;
+			case "show-blank-view":
+				//  change class name of content element
+				Self.els.content.addClass("show-blank-view");
+				break;
 			case "hide-blank-view":
 				//  change class name of content element
 				Self.els.content.removeClass("show-blank-view");
@@ -41,7 +46,9 @@
 				// TODO
 				break;
 			case "select-sample":
-				APP.dispatch({ type: "load-sample" });
+				el = $(event.target).parents("?.sample");
+				name = el.find(".name").text();
+				APP.dispatch({ type: "load-sample", name });
 				break;
 			case "select-recent-file":
 				break;

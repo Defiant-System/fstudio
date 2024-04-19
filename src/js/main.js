@@ -33,15 +33,20 @@ const fstudio = {
 			value,
 			pEl,
 			el;
+		// console.log(event);
 		switch (event.type) {
 			// system events
 			case "window.init":
+				Self.dispatch({ type: "show-blank-view" });
 				break;
 			case "window.resize":
 				// proxy event
 				Self[Self.head.active].dispatch(event);
 				break;
 			// custom events
+			case "show-blank-view":
+				Self.blankView.dispatch({ type: "show-blank-view" });
+				break;
 			case "load-sample":
 				// temp font file
 				value = `/cdn/fonts/${event.name}`;
