@@ -888,7 +888,7 @@
 						y: (dim.height / Drag.offset.h),
 						x: (dim.width / Drag.offset.w),
 					};
-				console.log( scale );
+				// console.log( scale );
 				// move selected "path"
 				Drag.scaleFn(Self.shape, { ...dim, scale, matrix: Drag.matrix, points: Drag.points });
 
