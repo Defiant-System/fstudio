@@ -1,9 +1,9 @@
 <Data>
 	<Samples>
-		<i name="Cubano-Normal.otf" img="~/icons/tmp-file-times.png"/>
-		<i name="Oblegg-Regular.otf" img="~/icons/tmp-file-helvetica.png"/>
-		<i name="Typographica.ttf" img="~/icons/tmp-file-courier.png"/>
-		<i name="BerkshireSwash-Regular.ttf" img="~/icons/tmp-file-comic-sans.png"/>
+		<i name="Cubano-Normal.otf" img="~/icons/file-cubano-normal.png"/>
+		<i name="Oblegg-Regular.otf" img="~/icons/file-oblegg-regular.png"/>
+		<i name="Typographica.ttf" img="~/icons/file-typographica.png"/>
+		<i name="BerkshireSwash-Regular.ttf" img="~/icons/file-berkshireswash-regular.png"/>
 	</Samples>
 
 	<Files />

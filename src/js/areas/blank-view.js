@@ -37,10 +37,14 @@
 			case "show-blank-view":
 				//  change class name of content element
 				Self.els.content.addClass("show-blank-view");
+				// disable toolbar tools
+				APP.toolbar.dispatch({ type: "disable-tools" });
 				break;
 			case "hide-blank-view":
 				//  change class name of content element
 				Self.els.content.removeClass("show-blank-view");
+				// enable toolbar tools
+				APP.toolbar.dispatch({ type: "enable-tools" });
 				break;
 			case "from-clipboard":
 				// TODO

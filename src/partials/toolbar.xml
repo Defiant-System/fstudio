@@ -7,19 +7,19 @@
 	</Group>
 	<Group width="62%">
 		<Options>
-			<Tool symbol="icon-move" click="select-design-tool" arg="move" state="active"/>
-			<Tool symbol="icon-pan" click="select-design-tool" arg="pan"/>
-			<Tool symbol="icon-pen" click="select-design-tool" arg="pen"/>
+			<Tool symbol="icon-move" state="disabled" click="select-design-tool" arg="move"/>
+			<Tool symbol="icon-pan" state="disabled" click="select-design-tool" arg="pan"/>
+			<Tool symbol="icon-pen" state="disabled" click="select-design-tool" arg="pen"/>
 		</Options>
 		<Options>
-			<Tool symbol="icon-path-add" click="select-design-tool" arg="anchor-add"/>
-			<Tool symbol="icon-new-rectangle" click="select-design-tool" arg="path-rectangle"/>
-			<Tool symbol="icon-new-oval" click="select-design-tool" arg="path-oval"/>
-			<Tool symbol="icon-new-path" click="select-design-tool" arg="path-add"/>
+			<Tool symbol="icon-path-add" state="disabled" click="select-design-tool" arg="anchor-add"/>
+			<Tool symbol="icon-new-rectangle" state="disabled" click="select-design-tool" arg="path-rectangle"/>
+			<Tool symbol="icon-new-oval" state="disabled" click="select-design-tool" arg="path-oval"/>
+			<Tool symbol="icon-new-path" state="disabled" click="select-design-tool" arg="path-add"/>
 		</Options>
 		<Options>
-			<Tool symbol="icon-filled" click="set-design-mode" arg="preview"/>
-			<Tool symbol="icon-outline" click="set-design-mode" arg="outline" state="active"/>
+			<Tool symbol="icon-filled" state="disabled" click="set-design-mode" arg="preview"/>
+			<Tool symbol="icon-outline" state="disabled" click="set-design-mode" arg="outline"/>
 		</Options>
 	</Group>
 	<Group width="21%">
